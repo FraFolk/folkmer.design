@@ -3,6 +3,7 @@
 // Inspired by Google Labs' "Be the first to experiment". Without JS it's a plain horizontal scroll list.
 import { url } from '../lib/url.js';
 import { lab } from '../lib/projects.js';
+import Icon from './Icon.astro';
 const { headingLevel = 3, start = 2 } = Astro.props;
 const H = `h${headingLevel}`;
 ---
@@ -47,15 +48,15 @@ const H = `h${headingLevel}`;
                 : item.title}
             </H>
             <p class="lc__summary">{item.summary}</p>
-            {href && <span class="lc__cta" aria-hidden="true">{item.cta} <span class="lc__cta-arrow">→</span></span>}
+            {href && <span class="lc__cta" aria-hidden="true">{item.cta} <Icon name={item.external ? "arrow-up-right" : "arrow-right"} size={16} class="lc__cta-arrow" /></span>}
           </li>
         );
       })}
     </ul>
   </div>
   <div class="lc__controls">
-    <button class="lc__btn" type="button" data-lc-prev aria-label="Previous project">‹</button>
-    <button class="lc__btn" type="button" data-lc-next aria-label="Next project">›</button>
+    <button class="lc__btn" type="button" data-lc-prev aria-label="Previous project"><Icon name="chevron-left" size={22} /></button>
+    <button class="lc__btn" type="button" data-lc-next aria-label="Next project"><Icon name="chevron-right" size={22} /></button>
   </div>
   <p class="sr-only" aria-live="polite" data-lc-status></p>
 </div>
@@ -87,9 +88,9 @@ const H = `h${headingLevel}`;
   .lc__link:focus-visible { outline: none; }
   .lc__link::after { content: ''; position: absolute; inset: 0; border-radius: 36px; z-index: 1; }
   .lc__summary { color: var(--ink-2); font-size: 16px; line-height: 1.45; }
-  .lc__cta { margin-top: auto; padding-top: 12px; font-weight: 500; font-size: 15px; }
-  .lc__cta-arrow { display: inline-block; transition: transform .4s var(--ease-spring); }
-  .lc__card:hover .lc__cta-arrow { transform: translateX(4px); }
+  .lc__cta { margin-top: auto; padding-top: 12px; font-weight: 500; font-size: 15px; display: inline-flex; align-items: center; gap: 6px; }
+  .lc__cta :global(.lc__cta-arrow) { transition: transform .4s var(--ease-spring); }
+  .lc__card:hover :global(.lc__cta-arrow) { transform: translateX(4px); }
   .lc__card--soon { background: #fff; }
 
   /* drawn visuals */
@@ -114,14 +115,17 @@ const H = `h${headingLevel}`;
   .v-soon p { font-size: 30px; font-weight: 500; text-align: center; line-height: 1.05; color: var(--ink-2); }
 
   /* controls (Figma-like round buttons) */
-  .lc__controls { display: flex; justify-content: center; gap: 16px; }
+  .lc__controls { position: relative; z-index: 2; display: flex; justify-content: center; gap: 16px; }
   .lc__btn {
-    width: 56px; height: 56px; border-radius: 50%;
-    border: 2px solid var(--line); background: transparent; color: var(--ink);
-    font: 500 28px/1 'Satoshi', sans-serif; cursor: pointer;
-    transition: background-color .3s var(--ease-out), transform .4s var(--ease-spring);
+    width: 56px; height: 56px; border-radius: 50%; padding: 0;
+    display: grid; place-items: center;
+    border: 0; background: #fff; color: var(--ink);
+    box-shadow: 0 1px 0 rgba(0,0,0,.02), 0 10px 24px -12px rgba(27,32,30,.35);
+    cursor: pointer;
+    transition: transform .4s var(--ease-spring), box-shadow .3s;
   }
-  .lc__btn:hover { background: var(--surface-2); transform: scale(1.06); }
+  .lc__btn:hover { transform: scale(1.06); }
+  .lc__btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
   /* no JS: plain scroll list */
   :global(.no-js) .lc__track { display: flex; gap: 24px; overflow-x: auto; height: auto; padding-bottom: 16px; }

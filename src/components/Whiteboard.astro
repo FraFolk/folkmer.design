@@ -1,0 +1,163 @@
+---
+// The visitors' wall: a shared whiteboard (dotted canvas, a few brushes and colours).
+// You can undo only your own strokes; other people's marks can't be erased (only Francesca can).
+// For now strokes live in this browser; `store` is the single place to plug in a shared backend later.
+import Icon from './Icon.astro';
+const brushes = [
+  { id: 'pen', label: 'Pen', size: 3, alpha: 1 },
+  { id: 'marker', label: 'Marker', size: 9, alpha: 1 },
+  { id: 'highlighter', label: 'Highlighter', size: 22, alpha: .35 },
+];
+const colours = [
+  { id: 'ink', label: 'Ink', value: '#2a2f2d' },
+  { id: 'orange', label: 'Orange', value: '#d4380f' },
+  { id: 'sage', label: 'Sage', value: '#5e7663' },
+  { id: 'forest', label: 'Forest', value: '#405e47' },
+  { id: 'sky', label: 'Blue', value: '#2f5d8a' },
+];
+---
+<section class="wall container" aria-labelledby="wall-title">
+  <h2 id="wall-title" class="h2 wall__title">You scrolled all the way down.<br />Most people don't.</h2>
+  <p class="wall__sub">So leave your mark: draw something on the wall. Nobody can erase what you draw, and you can't erase theirs.</p>
+
+  <div class="board" data-board>
+    <canvas class="board__canvas" data-board-canvas role="img" aria-label="A shared drawing wall. Visitors' doodles appear here."></canvas>
+    <p class="board__empty" data-board-empty aria-hidden="true">Draw here</p>
+
+    <div class="board__tools" role="toolbar" aria-label="Drawing tools">
+      <div class="board__group" role="radiogroup" aria-label="Brush">
+        {brushes.map((b, i) => (
+          <button type="button" class="tool" role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-brush={b.id} data-size={b.size} data-alpha={b.alpha}>
+            <span class="tool__dot" style={`--d:${Math.min(b.size + 4, 20)}px; opacity:${b.alpha === 1 ? 1 : .55}`} aria-hidden="true"></span>
+            <span class="sr-only">{b.label}</span>
+          </button>
+        ))}
+      </div>
+      <span class="board__sep" aria-hidden="true"></span>
+      <div class="board__group" role="radiogroup" aria-label="Colour">
+        {colours.map((c, i) => (
+          <button type="button" class="swatch" role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-colour={c.value} style={`--c:${c.value}`}>
+            <span class="sr-only">{c.label}</span>
+          </button>
+        ))}
+      </div>
+      <span class="board__sep" aria-hidden="true"></span>
+      <button type="button" class="tool" data-board-undo disabled>
+        <Icon name="arrow-uturn-left" size={20} />
+        <span class="sr-only">Undo my last stroke</span>
+      </button>
+    </div>
+  </div>
+  <p class="board__note">Coming soon: the wall goes live and you'll see everyone's doodles. For now, what you draw stays on your screen.</p>
+</section>
+
+<style>
+  .wall { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; margin-bottom: clamp(110px, 12vw, 200px); }
+  .wall__sub { color: var(--ink-2); max-width: 52ch; }
+
+  .board {
+    position: relative; width: 100%; margin-top: 32px; aspect-ratio: 16 / 9; min-height: 380px;
+    border-radius: var(--radius-card); overflow: hidden;
+    background-color: #fff;
+    background-image: radial-gradient(circle, #cfd5d2 1px, transparent 1.2px);
+    background-size: 22px 22px; background-position: 11px 11px;
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .board__canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+  .board__empty { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; font: 500 40px/1 'Caveat', cursive; color: #b4bab7; transition: opacity .3s; }
+  .board.has-ink .board__empty { opacity: 0; }
+
+  .board__tools {
+    position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 6px; padding: 6px 8px;
+    background: #fff; border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 12px 28px -12px rgba(27,32,30,.35);
+  }
+  .board__group { display: flex; align-items: center; gap: 4px; }
+  .board__sep { width: 1px; height: 24px; background: var(--line); margin: 0 4px; }
+  .tool { width: 40px; height: 40px; border: 0; border-radius: 10px; background: transparent; color: var(--ink); display: grid; place-items: center; cursor: pointer; }
+  .tool:hover { background: var(--surface); }
+  .tool[aria-checked='true'] { background: var(--surface-2); }
+  .tool:disabled { opacity: .35; cursor: default; background: transparent; }
+  .tool__dot { width: var(--d); height: var(--d); border-radius: 50%; background: var(--ink); }
+  .swatch { width: 28px; height: 28px; border-radius: 50%; border: 0; background: var(--c); cursor: pointer; box-shadow: 0 0 0 2px #fff, 0 0 0 3px transparent; transition: box-shadow .2s, transform .3s var(--ease-spring); }
+  .swatch:hover { transform: scale(1.1); }
+  .swatch[aria-checked='true'] { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--c); }
+  .tool:focus-visible, .swatch:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .board__note { color: var(--ink-2); font-size: 15px; max-width: 60ch; margin-top: 8px; }
+
+  @media (max-width: 600px) {
+    .board { aspect-ratio: 3 / 4; }
+    .board__tools { gap: 2px; padding: 4px; }
+    .tool { width: 34px; height: 34px; }
+    .swatch { width: 22px; height: 22px; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector('[data-board]');
+  if (root) {
+    const canvas = root.querySelector('[data-board-canvas]');
+    const ctx = canvas.getContext('2d');
+    const undoBtn = root.querySelector('[data-board-undo]');
+    // Strokes use 0..1 coordinates so the drawing scales with the board.
+    // { pts: [[x,y],...], colour, size, alpha, mine }
+    const store = {
+      others: [],   // later: loaded from the shared wall (read-only for visitors)
+      mine: [],
+      save() { /* later: send the new stroke to the shared wall */ },
+    };
+    let brush = { size: 3, alpha: 1 };
+    let colour = '#2a2f2d';
+    let current = null;
+
+    const radio = (group, btn) => group.querySelectorAll('[role="radio"]').forEach((b) => b.setAttribute('aria-checked', String(b === btn)));
+    root.querySelectorAll('[data-brush]').forEach((b) => b.addEventListener('click', () => { brush = { size: +b.dataset.size, alpha: +b.dataset.alpha }; radio(b.parentElement, b); }));
+    root.querySelectorAll('[data-colour]').forEach((b) => b.addEventListener('click', () => { colour = b.dataset.colour; radio(b.parentElement, b); }));
+    // arrow keys inside a radio group
+    root.querySelectorAll('[role="radiogroup"]').forEach((g) => g.addEventListener('keydown', (e) => {
+      if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+      const items = [...g.querySelectorAll('[role="radio"]')];
+      const i = items.indexOf(document.activeElement);
+      const n = items[(i + (e.key === 'ArrowRight' ? 1 : -1) + items.length) % items.length];
+      n.focus(); n.click(); e.preventDefault();
+    }));
+
+    const scale = () => { const r = canvas.getBoundingClientRect(); return { w: r.width, h: r.height }; };
+    const resize = () => {
+      const { w, h } = scale(); const dpr = Math.min(devicePixelRatio || 1, 2);
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); draw();
+    };
+    const line = (s) => {
+      const { w, h } = scale(); const k = Math.min(w, h) / 600;
+      ctx.globalAlpha = s.alpha; ctx.strokeStyle = s.colour; ctx.lineWidth = Math.max(1.5, s.size * k);
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.beginPath();
+      s.pts.forEach(([x, y], i) => (i ? ctx.lineTo(x * w, y * h) : ctx.moveTo(x * w, y * h)));
+      if (s.pts.length === 1) ctx.lineTo(s.pts[0][0] * w + .1, s.pts[0][1] * h);
+      ctx.stroke(); ctx.globalAlpha = 1;
+    };
+    const draw = () => {
+      const { w, h } = scale(); ctx.clearRect(0, 0, w, h);
+      [...store.others, ...store.mine, ...(current ? [current] : [])].forEach(line);
+      root.classList.toggle('has-ink', store.others.length + store.mine.length > 0 || !!current);
+      undoBtn.disabled = store.mine.length === 0;
+    };
+    const pt = (e) => { const r = canvas.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; };
+
+    canvas.addEventListener('pointerdown', (e) => {
+      canvas.setPointerCapture(e.pointerId);
+      current = { pts: [pt(e)], colour, size: brush.size, alpha: brush.alpha, mine: true };
+      draw();
+    });
+    canvas.addEventListener('pointermove', (e) => { if (!current) return; current.pts.push(pt(e)); draw(); });
+    const end = () => { if (!current) return; store.mine.push(current); store.save(current); current = null; draw(); };
+    canvas.addEventListener('pointerup', end);
+    canvas.addEventListener('pointercancel', end);
+    undoBtn.addEventListener('click', () => { store.mine.pop(); draw(); });
+
+    new ResizeObserver(resize).observe(canvas);
+    resize();
+  }
+</script>

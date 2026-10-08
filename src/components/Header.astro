@@ -28,7 +28,7 @@ const parent = path.startsWith('/lab/')
         <span class="profile__text">
           <span class="profile__name">Francesca Folkmer</span>
           <span class="profile__status">
-            <img src={url('/img/available.svg')} alt="" width="24" height="24" />
+            <span class="status-dot" aria-hidden="true"></span>
             Available
           </span>
         </span>
@@ -63,7 +63,7 @@ const parent = path.startsWith('/lab/')
   /* frosted glass: white, slightly see-through, blurred, with a soft bottom edge */
   .site-header::before {
     content: ''; position: absolute; inset: 0 0 -24px; z-index: -1; pointer-events: none;
-    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    background: color-mix(in srgb, var(--bg) 45%, transparent);
     -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2);
     -webkit-mask-image: linear-gradient(to bottom, #000 65%, transparent);
             mask-image: linear-gradient(to bottom, #000 65%, transparent);
@@ -95,7 +95,11 @@ const parent = path.startsWith('/lab/')
   .profile__text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
   .profile__name { font-weight: 500; font-size: 20px; line-height: 1.2; white-space: nowrap; }
   .profile__status { display: inline-flex; align-items: center; gap: 6px; color: var(--mint); font-size: 14px; }
-  .profile__status img { width: 24px; height: 24px; animation: pulse 2.4s ease-in-out infinite; }
+  /* status dot: a solid dot with a ripple that grows and fades */
+  .status-dot { position: relative; width: 7px; height: 7px; margin: 0 3px 0 2px; border-radius: 50%; background: var(--mint); flex: none; }
+  .status-dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--mint); animation: status-pulse 2s var(--ease-out) infinite; }
+  @keyframes status-pulse { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(2.8); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .status-dot::after { animation: none; } }
   .profile__chevron { width: 24px; height: 24px; transition: transform .45s var(--ease-spring); }
   .profile__pill[aria-expanded='true'] .profile__chevron { transform: rotate(180deg); }
 

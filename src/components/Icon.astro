@@ -1,0 +1,13 @@
+---
+// Heroicons v2, outline (MIT). One icon kit for the whole site.
+const paths = {
+  'arrow-right': 'M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3',
+  'arrow-up-right': 'm4.5 19.5 15-15m0 0H8.25m11.25 0v11.25',
+  'arrow-down': 'M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3',
+  'chevron-left': 'M15.75 19.5 8.25 12l7.5-7.5',
+  'chevron-right': 'm8.25 4.5 7.5 7.5-7.5 7.5',
+  'arrow-uturn-left': 'M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3',
+};
+const { name, size = 20, class: cls = '' } = Astro.props;
+---
+<svg class={`icon ${cls}`} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d={paths[name]} /></svg>

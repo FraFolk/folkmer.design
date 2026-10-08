@@ -58,6 +58,13 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
         <p class="talk__enter" data-talk-enter aria-hidden="true">or press <kbd>Enter</kbd> ↵</p>
       </div>
     </form>
+
+    <div class="talk__done" data-talk-done hidden tabindex="-1">
+      <p class="talk__q talk__q--summary">Lovely, <b data-talk-who></b>. Thanks for reaching out!</p>
+      <p class="talk__done-sub">Your email app should be opening with the message ready: hit send and I'll get back to you soon.</p>
+      <p class="talk__done-sub">Nothing opened? <button type="button" class="talk__copy" data-talk-copy>Copy the message</button> and send it to <a href="mailto:folkmer.design@gmail.com">folkmer.design@gmail.com</a>.</p>
+      <p class="talk__copied" data-talk-copied aria-live="polite"></p>
+    </div>
   </div>
   <div class="site-footer__bar">
     <p>©2026 • <span>1% better every day</span></p>
@@ -121,6 +128,13 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
   .talk__btn--send { background: var(--orange); border-color: var(--orange); color: #121614; }
   .talk__enter { color: #9aa29e; font-size: 15px; display: inline-flex; align-items: center; gap: 8px; }
 
+  .talk__done { padding-top: clamp(40px, 5vw, 72px); display: flex; flex-direction: column; gap: 14px; outline: none; animation: step-in .55s var(--ease-out); }
+  .talk__done-sub { color: #c4cac7; font-size: 18px; max-width: 56ch; }
+  .talk__done-sub a, .talk__copy { color: var(--orange); }
+  .talk__copy { font: inherit; background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .talk__copy:focus-visible { outline: 3px solid #f4f6f5; outline-offset: 3px; }
+  .talk__copied { color: #9aa29e; font-size: 15px; }
+  .talk__done :global(b) { color: var(--orange); font-weight: 500; }
   .talk__nojs { display: none; margin-top: 48px; font-size: 22px; }
   .talk__nojs a { color: var(--orange); }
   :global(.no-js) .talk__nojs { display: block; }
@@ -229,6 +243,18 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       const c = company.value.trim();
       const body = `Hi Francesca, I'm ${name.value.trim()}${c ? ` from ${c}` : ''}. I'd love to talk about ${topic.value.trim() || 'anything'}. You can reach me at ${email.value.trim()}.`;
       location.href = `mailto:folkmer.design@gmail.com?subject=${encodeURIComponent(`Hi from ${name.value.trim()}`)}&body=${encodeURIComponent(body)}`;
+      // feedback: the sentence is done
+      const done = root.querySelector('[data-talk-done]');
+      root.querySelector('[data-talk-who]').textContent = name.value.trim();
+      form.hidden = true; done.hidden = false;
+      dots.forEach((d) => { d.classList.add('is-done'); d.classList.remove('is-current'); });
+      root.querySelector('.talk__progress').style.setProperty('--p', '100%');
+      count.textContent = 'Sent to your email app';
+      done.focus({ preventScroll: true });
+      root.querySelector('[data-talk-copy]').onclick = async () => {
+        try { await navigator.clipboard.writeText(body); root.querySelector('[data-talk-copied]').textContent = 'Copied. Paste it in an email to me.'; }
+        catch { root.querySelector('[data-talk-copied]').textContent = body; }
+      };
     });
     back.addEventListener('click', () => { err.textContent = ''; show(Math.max(0, cur - 1)); });
 
