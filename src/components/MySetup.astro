@@ -17,13 +17,13 @@ const apps = [
 ];
 ---
 <section class="setup" aria-labelledby="setup-title" data-setup>
-  <div class="setup__head reveal">
-    <h2 id="setup-title" class="h2">My setup</h2>
-    <p>The desktop I work on every day. Pick an app to see how I use it.</p>
-  </div>
 
   <div class="setup__screen reveal">
     <img class="setup__wall" src={url('/img/setup-wallpaper.jpg')} alt="" loading="lazy" />
+    <div class="setup__head">
+      <h2 id="setup-title" class="h2">My setup</h2>
+      <p>The desktop I work on every day. Pick an app to see how I use it.</p>
+    </div>
     <div class="setup__note" aria-live="polite" data-setup-note>
       <p class="setup__note-app" data-setup-name>{apps[0].name}</p>
       <p data-setup-text>{apps[0].note}</p>
@@ -46,14 +46,15 @@ const apps = [
 </section>
 
 <style>
-  .setup { display: flex; flex-direction: column; gap: 32px; }
-  .setup__head { display: flex; flex-direction: column; gap: 8px; }
+  .setup { display: flex; flex-direction: column; }
+  .setup__head { position: absolute; top: 7%; left: 50%; transform: translateX(-50%); width: 90%; text-align: center; color: #fff; display: flex; flex-direction: column; gap: 6px; text-shadow: 0 2px 12px rgba(0,0,0,.45); }
+  .setup__head p { color: rgba(255,255,255,.92); }
   .setup__screen { position: relative; aspect-ratio: 16 / 10; border-radius: var(--radius-l, 40px); overflow: hidden; box-shadow: 0 30px 60px -30px rgba(0,0,0,.45); }
   .setup__wall { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
   /* the note: a scrap of paper in the middle of the desktop */
   .setup__note {
-    position: absolute; left: 50%; top: 42%; width: min(380px, 70%);
+    position: absolute; left: 50%; top: 53%; width: min(380px, 70%);
     transform: translate(-50%, -50%) rotate(-2deg);
     background: #fbf8f0; color: #2a2f2d;
     padding: 22px 24px 24px; border-radius: 3px; font-size: 17px; line-height: 1.5; text-align: left;
@@ -92,7 +93,9 @@ const apps = [
 
   @media (max-width: 700px) {
     .setup__screen { aspect-ratio: 3 / 4; }
-    .setup__note { width: 84%; font-size: 15px; top: 40%; }
+    .setup__note { width: 84%; font-size: 15px; top: 52%; }
+    .setup__head { top: 5%; }
+    .setup__head .h2 { font-size: 28px; }
     .setup__app { --s: 44px; }
     .setup__dock { gap: 6px; padding: 6px 8px; border-radius: 18px; }
     .setup__q { width: 18px; height: 18px; font-size: 12px; top: -6px; right: -6px; }

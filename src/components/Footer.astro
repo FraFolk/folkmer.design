@@ -63,8 +63,7 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
 
     <div class="talk__done" data-talk-done hidden tabindex="-1">
       <div data-talk-ok>
-        <p class="talk__q talk__q--summary">Message sent. Thanks, <b data-talk-who></b>!</p>
-        <p class="talk__done-sub">So nice that you got in touch. I'll reply as soon as I can.</p>
+        <p class="talk__q talk__q--summary">Thanks, <b data-talk-who></b>! So nice that you got in touch. I'll reply as soon as I can.</p>
       </div>
       <div data-talk-fail hidden>
         <p class="talk__q talk__q--summary">Hmm, that didn't go through.</p>
@@ -204,7 +203,11 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       topic.value = parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts.at(-1)}` : (parts[0] || '');
       fit(topic); syncPills();
     };
-    pills.forEach((p) => p.addEventListener('click', () => togglePill(p)));
+    pills.forEach((p) => {
+      p.addEventListener('click', () => togglePill(p));
+      // Enter = Continue (as the hint says); Space still toggles the pill
+      p.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); form.requestSubmit(); } });
+    });
     topic.addEventListener('input', syncPills);
 
     const recapHtml = (upTo) => {

@@ -32,11 +32,33 @@ const colours = [
       <div class="board__group" role="radiogroup" aria-label="Brush">
         {brushes.map((b, i) => (
           <button type="button" class={`tool tool--${b.id}`} role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-brush={b.id} data-size={b.size} data-alpha={b.alpha}>
-            <svg viewBox="0 0 24 56" width="24" height="56" aria-hidden="true">
-              {b.id === 'pencil' && <g><path d="M7 56V20l5-14 5 14v36z" fill="#fff" stroke="#2a2f2d" stroke-width="1.5"/><path d="M9.4 13.2 12 6l2.6 7.2z" class="tip"/><path d="M7 20h10" stroke="#2a2f2d" stroke-width="1.2"/></g>}
-              {b.id === 'marker' && <g><path d="M6 56V22h12v34z" fill="#fff" stroke="#2a2f2d" stroke-width="1.5"/><path d="M8 22v-8h8v8" fill="#fff" stroke="#2a2f2d" stroke-width="1.5"/><path d="M9.5 14l1-6h3l1 6z" class="tip"/></g>}
-              {b.id === 'highlighter' && <g><path d="M5 56V24h14v32z" fill="#fff" stroke="#2a2f2d" stroke-width="1.5"/><path d="M7 24v-9h10v9" fill="#fff" stroke="#2a2f2d" stroke-width="1.5"/><path d="M8 15V8l8-3v10z" class="tip" opacity=".7"/></g>}
-              {b.id === 'eraser' && <g><path d="M6 56V18h12v38z" fill="#fff" stroke="#2a2f2d" stroke-width="1.5"/><path d="M6 18v-8a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v8z" fill="#f2b6c4" stroke="#2a2f2d" stroke-width="1.5"/><path d="M6 26h12M6 30h12" stroke="#2a2f2d" stroke-width="1.2"/></g>}
+            <svg viewBox="0 0 28 72" width="28" height="72" aria-hidden="true">
+              <defs>
+                <linearGradient id={`sh-${b.id}`} x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".18"/><stop offset=".35" stop-color="#fff" stop-opacity=".35"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>
+              </defs>
+              {b.id === 'pencil' && <g>
+                <rect x="7" y="26" width="14" height="46" fill="#f3c42f"/><rect x="12" y="26" width="4" height="46" fill="#1f1f1f"/>
+                <path d="M7 26 14 6l7 20z" fill="#e7bf8c"/><path d="M11.6 12.8 14 6l2.4 6.8z" class="tip"/>
+                <rect x="7" y="26" width="14" height="46" fill={`url(#sh-${b.id})`}/>
+              </g>}
+              {b.id === 'marker' && <g>
+                <rect x="6" y="34" width="16" height="38" rx="2" fill="#f4f2ec"/>
+                <path d="M7.5 34V24h13v10z" class="tip"/><path d="M10 24v-6h8v6z" class="tip"/>
+                <path d="M12 18c0-5 1-10 2-12 1 2 2 7 2 12z" class="tip ink"/>
+                <rect x="6" y="18" width="16" height="54" fill={`url(#sh-${b.id})`} opacity=".9"/>
+              </g>}
+              {b.id === 'highlighter' && <g>
+                <rect x="5" y="34" width="18" height="38" rx="2" fill="#f4f2ec"/>
+                <path d="M7 34V22h14v12z" fill="#ebe8df"/><path d="M9.5 22v-5h9v5z" fill="#ebe8df"/>
+                <path d="M10 17V9l8-3v11z" class="tip ink"/>
+                <rect x="5" y="9" width="18" height="63" fill={`url(#sh-${b.id})`} opacity=".8"/>
+              </g>}
+              {b.id === 'eraser' && <g>
+                <rect x="7" y="34" width="14" height="38" fill="#f3c42f"/><rect x="12" y="34" width="4" height="38" fill="#1f1f1f"/>
+                <rect x="6.5" y="22" width="15" height="12" rx="1" fill="#d9b25a"/><path d="M6.5 25.5h15M6.5 30h15" stroke="#a9842f" stroke-width="1"/>
+                <path d="M7.5 22v-8a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v8z" fill="#ec8d98"/>
+                <rect x="6.5" y="10" width="15" height="62" fill={`url(#sh-${b.id})`}/>
+              </g>}
             </svg>
             <span class="sr-only">{b.label}</span>
           </button>
@@ -65,7 +87,7 @@ const colours = [
 
   .board {
     position: relative; width: 100%; margin-top: 32px; aspect-ratio: 16 / 9; min-height: 380px;
-    border-radius: 10px; overflow: hidden;
+    border-radius: 20px; overflow: hidden;
     background-color: #fff;
     background-image: radial-gradient(circle, #cfd5d2 1px, transparent 1.2px);
     background-size: 22px 22px; background-position: 11px 11px;
@@ -78,35 +100,39 @@ const colours = [
   .board__tools {
     position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%);
     display: flex; align-items: center; gap: 6px; padding: 6px 8px;
-    background: #fff; border-radius: 12px; padding-top: 0; padding-bottom: 0; height: 68px;
+    background: #fff; border-radius: 12px; padding-top: 0; padding-bottom: 0; height: 72px;
     box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 12px 28px -12px rgba(27,32,30,.35);
   }
   .board__group { display: flex; align-items: center; gap: 4px; }
+  .board__group:has(.swatch) { gap: 12px; padding: 0 6px; }
   .board__sep { width: 1px; height: 24px; background: var(--line); margin: 0 4px; }
   .tool { width: 40px; height: 40px; border: 0; border-radius: 10px; background: transparent; color: var(--ink); display: grid; place-items: center; cursor: pointer; }
-  .tool[data-brush] { height: 64px; width: 38px; align-items: end; padding: 0; border-radius: 6px; overflow: hidden; }
-  .tool[data-brush] svg { transform: translateY(18px); transition: transform .3s var(--ease-spring); }
+  .tool[data-brush] { height: 72px; width: 36px; align-items: end; padding: 0; border-radius: 6px; overflow: hidden; }
+  .tool[data-brush] svg { transform: translateY(24px); transition: transform .3s var(--ease-spring); }
   .tool[data-brush]:hover { background: transparent; }
-  .tool[data-brush]:hover svg { transform: translateY(13px); }
+  .tool[data-brush]:hover svg { transform: translateY(18px); }
   .tool[data-brush][aria-checked='true'] { background: transparent; }
-  .tool[data-brush][aria-checked="true"] svg { transform: translateY(6px); }
+  .tool[data-brush][aria-checked="true"] svg { transform: translateY(8px); }
   .tool .tip { fill: var(--pen, #1f1f1f); }
+  .tool .tip.ink { filter: brightness(.82); }
   .tool:hover { background: var(--surface); }
   .tool[aria-checked='true'] { background: var(--surface-2); }
   .tool:disabled { opacity: .35; cursor: default; background: transparent; }
-  .swatch { width: 28px; height: 28px; border-radius: 50%; border: 0; background: var(--c); cursor: pointer; box-shadow: 0 0 0 2px #fff, 0 0 0 3px transparent; transition: box-shadow .2s, transform .3s var(--ease-spring); }
+  .swatch { width: 22px; height: 22px; border-radius: 50%; border: 0; background: var(--c); cursor: pointer; box-shadow: 0 0 0 2px #fff, 0 0 0 3px transparent; transition: box-shadow .2s, transform .3s var(--ease-spring); }
   .swatch:hover { transform: scale(1.1); }
   .swatch[aria-checked='true'] { box-shadow: 0 0 0 2px #fff, 0 0 0 4.5px #8452f0; }
   .swatch[data-colour='#ffffff'] { box-shadow: inset 0 0 0 1px #d8dcda, 0 0 0 2px #fff; }
   .swatch[data-colour='#ffffff'][aria-checked='true'] { box-shadow: inset 0 0 0 1px #d8dcda, 0 0 0 2px #fff, 0 0 0 4.5px #8452f0; }
-  .tool:focus-visible, .swatch:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .tool:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .swatch:focus-visible { outline: 2px solid var(--focus); outline-offset: 5px; }
   .board__note { color: var(--ink-2); font-size: 15px; max-width: 60ch; margin-top: 8px; }
 
   @media (max-width: 600px) {
     .board { aspect-ratio: 3 / 4; }
     .board__tools { gap: 2px; padding: 4px; }
     .tool { width: 34px; height: 34px; }
-    .swatch { width: 22px; height: 22px; }
+    .swatch { width: 18px; height: 18px; }
+    .board__group:has(.swatch) { gap: 8px; }
   }
 </style>
 

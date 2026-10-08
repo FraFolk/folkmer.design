@@ -92,12 +92,10 @@ const quotes = [
     </h2>
     <p class="story__lead reveal">I love climbing. I'm just not very good at it. So I took it to the one place where I know what I'm doing: design. Alé is an app for climbers, built by four of us in the evenings and at weekends. I lead the product design.</p>
     <a class="ale-card reveal" href={url('/ale/')}>
-      <span class="ale-card__media"><img src={url(ale.image)} alt="" width="662" height="395" loading="lazy" /></span>
+      <img src={url(ale.image)} alt="" width="662" height="395" loading="lazy" />
       <span class="ale-card__body">
-        <span class="ale-card__tags">Co-founder · Product design · Launch Dec 2026</span>
         <span class="ale-card__title">Alé, from the inside</span>
-        <span class="ale-card__text">How a side project for climbers turned into a real product: the research, the decisions, the team, and where we are today.</span>
-        <span class="ale-card__facts" aria-hidden="true"><span><b>50+</b> climbers surveyed</span><span><b>5</b> interviews</span><span><b>4</b> people</span></span>
+        <span class="ale-card__facts" aria-hidden="true"><span><b>50+</b> climbers surveyed</span><span><b>5</b> interviews</span><span><b>4</b> people</span><span>Launch <b>Dec 2026</b></span></span>
         <span class="ale-card__cta">Follow the journey <Icon name="arrow-right" size={18} /></span>
       </span>
     </a>
@@ -117,7 +115,7 @@ const quotes = [
     </div>
     <div class="lab-stage">
       <svg class="spill" viewBox="0 0 1400 620" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M700 46C960 26 1250 92 1318 250c62 146-58 290-312 318-178 20-300-12-452 2-196 18-420-44-462-212-40-162 150-292 608-312z" />
+        <path d="M612 52c58-14 96 22 148 18 66-5 92-46 162-38 84 9 96 72 168 84 78 13 150-26 214 18 58 40 26 104 44 156 20 58 82 84 60 150-24 72-118 74-180 104-70 34-64 96-142 118-86 24-136-34-218-28-74 6-108 62-188 58-82-4-106-60-176-82-76-24-162 4-212-54-46-54 6-118-14-178-18-56-104-82-86-150 18-70 112-78 174-108 56-27 74-74 142-86 58-10 92 32 144 18z" />
       </svg>
       <LabCarousel />
     </div>
@@ -234,17 +232,15 @@ const quotes = [
   .a11y__text { display: flex; flex-direction: column; gap: 14px; }
   .a11y__title { font-size: var(--fs-h3); font-weight: 500; }
 
-  .ale-card { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: stretch; background: var(--surface); border-radius: var(--radius-card); overflow: hidden; text-decoration: none; color: var(--ink); text-align: left; box-shadow: inset 0 0 0 2px transparent; transition: box-shadow .35s var(--ease-out); }
-  .ale-card:hover { box-shadow: inset 0 0 0 2px var(--line); }
-  .ale-card__media { display: block; overflow: hidden; }
-  .ale-card__media img { width: 100%; height: 100%; min-height: 320px; object-fit: cover; transition: transform .9s var(--ease-out); }
-  .ale-card:hover .ale-card__media img { transform: scale(1.03); }
-  .ale-card__body { display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: clamp(24px, 4vw, 56px); }
-  .ale-card__tags { font-style: italic; color: var(--ink-2); }
+  .ale-card { position: relative; display: block; width: 100%; margin-top: 12px; border-radius: var(--radius-card); overflow: hidden; text-decoration: none; color: #fff; text-align: left; }
+  .ale-card img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; transition: transform .9s var(--ease-out); }
+  .ale-card:hover img { transform: scale(1.03); }
+  /* dark-to-transparent gradient under the text, so white text always reads (WCAG AA) */
+  .ale-card__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 140px 32px 28px; display: flex; flex-direction: column; gap: 12px;
+    background: linear-gradient(to top, rgba(12,15,14,.92) 0%, rgba(12,15,14,.78) 40%, rgba(12,15,14,0) 100%); }
   .ale-card__title { font-size: var(--fs-h3); font-weight: 500; }
-  .ale-card__text { color: var(--ink-2); }
   .ale-card__facts { display: flex; flex-wrap: wrap; gap: 8px; font-size: 15px; }
-  .ale-card__facts span { background: var(--bg); color: var(--ink); border-radius: 99px; padding: 6px 12px; }
+  .ale-card__facts span { background: rgba(12,15,14,.7); border: 1px solid rgba(255,255,255,.35); color: #fff; border-radius: 99px; padding: 5px 12px; }
 
   /* Lab: tip, pour, spill, cards */
   .lab-section { position: relative; overflow-x: clip; }
@@ -279,7 +275,7 @@ const quotes = [
 
   @media (max-width: 900px) {
     .secret-case, .a11y { grid-template-columns: 1fr; }
-    .ale-card { grid-template-columns: 1fr; } .ale-card__media img { min-height: 0; aspect-ratio: 16 / 10; }
+    .ale-card img { aspect-ratio: 4 / 5; }
   }
   @media (prefers-reduced-motion: reduce) {
     .plot__old::after { transform: scaleX(1) rotate(-3deg); transition: none; }
