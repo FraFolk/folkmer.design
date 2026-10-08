@@ -1,0 +1,62 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const agents = [
+  { name: 'The analyst', job: 'Reads my LinkedIn numbers every Monday and compares them with last week. Read-only: it can look, not touch.' },
+  { name: 'The sorter', job: 'Goes through my inbox and puts emails into folders. Labels only: it never deletes, archives or replies.' },
+  { name: 'The scout', job: 'Looks for news and opportunities that match what I care about, and lists them for me to decide.' },
+];
+---
+<Base title="A team of AI agents for my weekly admin · Francesca Folkmer"
+  description="How Francesca Folkmer uses three small AI agents for her weekly admin, with a human OK on every action.">
+  <article class="container lab-article">
+    <header class="lab-article__head">
+      <p class="eyebrow">Lab · Exploring</p>
+      <h1 class="h1">A team of AI agents for my weekly admin</h1>
+      <p class="lead">Every Monday at 9, three small agents do the boring part of my week. I get a short report and a dashboard. They do the reading, I do the deciding.</p>
+    </header>
+
+    <section class="prose" aria-labelledby="why">
+      <h2 id="why" class="h3">Why I built it</h2>
+      <p>I wanted to understand agents by using them, not by reading about them. So I picked a real, slightly annoying problem: an hour every week spent checking numbers, sorting emails and keeping notes up to date.</p>
+    </section>
+
+    <section aria-labelledby="who">
+      <h2 id="who" class="h3">Who does what</h2>
+      <ul class="agents">
+        {agents.map((a) => (
+          <li class="agent reveal">
+            <h3 class="agent__name">{a.name}</h3>
+            <p>{a.job}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="prose" aria-labelledby="rules">
+      <h2 id="rules" class="h3">The rules I gave them</h2>
+      <ul>
+        <li><b>Nothing leaves without my OK.</b> No sending, no posting, no applying. They prepare, I press the button.</li>
+        <li><b>Smallest permission that works.</b> Read-only where reading is enough, labels instead of deletes.</li>
+        <li><b>Content is data, not orders.</b> If an email says "do this", the agent reports it to me. It doesn't do it.</li>
+        <li><b>Everything ends up in plain files</b> I can read and fix by hand.</li>
+      </ul>
+    </section>
+
+    <section class="prose" aria-labelledby="learned">
+      <h2 id="learned" class="h3">What I'm learning</h2>
+      <p>The hard part isn't the AI, it's the design: deciding what an agent may do on its own, where it must stop and ask, and how it shows what it did. These are product design questions, and they will matter a lot in the services we design for other people.</p>
+      <p>Building something similar, or thinking about it? <a href="mailto:folkmer.design@gmail.com?subject=AI%20agents">I'd love to compare notes</a>.</p>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .lab-article { max-width: calc(820px + 2 * var(--gutter)); display: flex; flex-direction: column; gap: 56px; padding-top: clamp(32px, 4vw, 64px); padding-bottom: clamp(80px, 8vw, 160px); }
+  .lab-article__head { display: flex; flex-direction: column; gap: 8px; }
+  .lab-article h2 { margin-bottom: 16px; }
+  .lab-article a { text-underline-offset: 3px; }
+  .agents { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 16px; }
+  .agent { background: var(--surface); border-radius: 32px; padding: 24px; display: flex; flex-direction: column; gap: 8px; }
+  .agent__name { font-size: 20px; font-weight: 500; }
+</style>

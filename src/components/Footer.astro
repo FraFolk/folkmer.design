@@ -1,0 +1,244 @@
+---
+// "Let's connect": a step-by-step sentence. Each answer shrinks into a small recap line and the
+// next blank appears. At the end: the whole sentence and a Send button (opens the email app,
+// nothing is stored). Layout inspired by a conversational form (progress, Back/Continue, Enter).
+const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', 'just saying hi'];
+---
+<footer class="site-footer">
+  <div class="talk container" data-talk>
+    <div class="talk__top">
+      <h2 class="talk__label">Let's connect</h2>
+      <p class="talk__count" data-talk-count aria-hidden="true">1 of 5</p>
+    </div>
+    <ol class="talk__progress" aria-hidden="true">
+      {[0, 1, 2, 3, 4].map((i) => <li data-talk-dot={i}></li>)}
+    </ol>
+
+    <!-- Without JavaScript: a plain way to get in touch -->
+    <p class="talk__nojs">Write to me at <a href="mailto:folkmer.design@gmail.com">folkmer.design@gmail.com</a>. I promise to keep the jargon to a minimum.</p>
+
+    <form class="talk__form" data-talk-form novalidate>
+      <p class="talk__recap" data-talk-recap aria-live="polite"></p>
+
+      <div class="talk__step" data-step="0">
+        <label class="talk__q" for="t-name">Hi Francesca, I'm</label>
+        <input id="t-name" class="talk__blank" name="name" type="text" autocomplete="name" placeholder="your name" required />
+      </div>
+
+      <div class="talk__step" data-step="1" hidden>
+        <label class="talk__q" for="t-company">from</label>
+        <input id="t-company" class="talk__blank" name="company" type="text" autocomplete="organization" placeholder="company or project" />
+        <p class="talk__hint">Optional. Skip it if you like.</p>
+      </div>
+
+      <div class="talk__step" data-step="2" hidden>
+        <label class="talk__q" for="t-topic">I'd love to talk about</label>
+        <input id="t-topic" class="talk__blank talk__blank--wide" name="topic" type="text" placeholder="pick below or write anything" />
+        <ul class="talk__pills" aria-label="Suggestions">
+          {topics.map((t, i) => (
+            <li><button type="button" class="pill" data-pill={t} aria-pressed="false">{t} <kbd aria-hidden="true">{i + 1}</kbd></button></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="talk__step" data-step="3" hidden>
+        <label class="talk__q" for="t-email">You can reach me at</label>
+        <input id="t-email" class="talk__blank talk__blank--wide" name="email" type="email" autocomplete="email" placeholder="your email" required />
+      </div>
+
+      <div class="talk__step" data-step="4" hidden>
+        <p class="talk__q talk__q--summary" data-talk-summary tabindex="-1"></p>
+      </div>
+
+      <p class="talk__error" role="alert" data-talk-error></p>
+
+      <div class="talk__actions">
+        <button type="button" class="talk__btn talk__btn--ghost" data-talk-back hidden>← Back</button>
+        <button type="submit" class="talk__btn talk__btn--primary" data-talk-next>Continue</button>
+        <p class="talk__enter" data-talk-enter aria-hidden="true">or press <kbd>Enter</kbd> ↵</p>
+      </div>
+    </form>
+  </div>
+  <div class="site-footer__bar">
+    <p>©2026 • <span>1% better every day</span></p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: #121614; color: #f4f6f5; }
+  .talk [hidden] { display: none !important; }
+  .talk { padding-top: clamp(56px, 7vw, 112px); padding-bottom: clamp(56px, 6vw, 96px); display: flex; flex-direction: column; }
+  .talk__top { display: flex; justify-content: space-between; align-items: baseline; }
+  .talk__label { font-size: clamp(28px, 1.6vw + 16px, 40px); font-weight: 500; }
+  .talk__count { color: #9aa29e; }
+  .talk__progress { list-style: none; margin: 20px 0 0; padding: 0; display: flex; justify-content: space-between; position: relative; }
+  .talk__progress::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: #2c3330; }
+  .talk__progress::after { content: ''; position: absolute; left: 0; top: 50%; height: 2px; margin-top: -.5px; width: var(--p, 0%); background: #f4f6f5; transition: width .6s var(--ease-out); }
+  .talk__progress li { position: relative; z-index: 1; width: 9px; height: 9px; border-radius: 50%; background: #121614; box-shadow: inset 0 0 0 1px #4a524e; transition: background-color .3s, box-shadow .3s, transform .4s var(--ease-spring); }
+  .talk__progress li.is-done { background: #f4f6f5; box-shadow: none; }
+  .talk__progress li.is-current { background: var(--orange); box-shadow: 0 0 0 4px rgba(255,92,51,.25); transform: scale(1.3); }
+
+  .talk__form { padding-top: clamp(40px, 5vw, 72px); display: flex; flex-direction: column; gap: 20px; }
+  .talk__recap { color: #9aa29e; font-size: clamp(16px, 1vw + 10px, 22px); min-height: 1.5em; }
+  .talk__recap :global(b) { color: #f4f6f5; font-weight: 500; }
+  .talk__step { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .35em; animation: step-in .55s var(--ease-out); }
+  @keyframes step-in { from { opacity: 0; transform: translateY(14px); } }
+  .talk__q { font-size: clamp(36px, 4.6vw + 8px, 88px); font-weight: 500; line-height: 1.05; letter-spacing: -.02em; color: #8b938f; }
+  .talk__q--summary { color: #f4f6f5; font-size: clamp(30px, 3.4vw + 8px, 64px); max-width: 22ch; outline: none; }
+  .talk__q--summary :global(b) { color: var(--orange); font-weight: 500; }
+  .talk__blank {
+    font: 500 clamp(36px, 4.6vw + 8px, 88px)/1.05 'Satoshi', sans-serif; letter-spacing: -.02em;
+    color: var(--orange); background: transparent; border: 0; border-bottom: 3px solid #3a423e; border-radius: 0;
+    padding: 0 .05em; width: 7ch; min-width: 3ch; max-width: 100%;
+    caret-color: var(--orange);
+  }
+  .talk__blank--wide { width: 12ch; }
+  .talk__blank::placeholder { color: #4f5753; }
+  .talk__blank:focus { outline: none; border-bottom-color: var(--orange); }
+  .talk__blank[aria-invalid='true'] { border-bottom-style: dashed; border-bottom-color: var(--orange); }
+  .talk__hint { width: 100%; color: #9aa29e; font-size: 16px; margin-top: 8px; }
+
+  .talk__pills { list-style: none; margin: 20px 0 0; padding: 0; width: 100%; display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    font: 500 18px/1 'Satoshi', sans-serif; color: #f4f6f5;
+    background: transparent; border: 1.5px solid #3a423e; border-radius: 99px; padding: 12px 14px 12px 20px; cursor: pointer;
+    transition: border-color .25s, background-color .25s, transform .4s var(--ease-spring);
+  }
+  .pill:hover { border-color: #8b938f; }
+  .pill[aria-pressed='true'] { border-color: var(--orange); background: rgba(255,92,51,.12); box-shadow: 0 0 0 3px rgba(255,92,51,.25); }
+  .pill:active { transform: scale(.96); }
+  .pill:focus-visible, .talk__btn:focus-visible { outline: 3px solid #f4f6f5; outline-offset: 3px; }
+  .pill kbd, .talk__enter kbd { font: 12px/1 ui-monospace, monospace; border: 1px solid #3a423e; border-radius: 6px; padding: 3px 6px; color: #9aa29e; }
+
+  .talk__error { color: var(--orange); font-weight: 500; min-height: 1.5em; }
+  .talk__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+  .talk__btn { font: 500 18px/1 'Satoshi', sans-serif; border-radius: 99px; padding: 16px 28px; cursor: pointer; border: 1.5px solid #3a423e; transition: transform .4s var(--ease-spring), background-color .25s; }
+  .talk__btn--ghost { background: transparent; color: #f4f6f5; padding: 16px 22px; }
+  .talk__btn--ghost:hover { border-color: #8b938f; }
+  .talk__btn--primary { background: #f4f6f5; color: #121614; border-color: #f4f6f5; }
+  .talk__btn--primary:hover { transform: scale(1.04); }
+  .talk__btn--send { background: var(--orange); border-color: var(--orange); color: #121614; }
+  .talk__enter { color: #9aa29e; font-size: 15px; display: inline-flex; align-items: center; gap: 8px; }
+
+  .talk__nojs { display: none; margin-top: 48px; font-size: 22px; }
+  .talk__nojs a { color: var(--orange); }
+  :global(.no-js) .talk__nojs { display: block; }
+  :global(.no-js) .talk__form, :global(.no-js) .talk__progress, :global(.no-js) .talk__count { display: none; }
+
+  .site-footer__bar { background: #121614; color: rgba(255,255,255,.7); border-top: 1px solid #2c3330; min-height: 78px; display: grid; place-items: center; padding: 10px 16px; font-size: 14px; }
+  .site-footer__bar span { font-weight: 500; }
+
+  @media (hover: none) { .talk__enter, .pill kbd { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .talk__step { animation: none; } .talk__progress::after { transition: none; } }
+</style>
+
+<script>
+  const root = document.querySelector('[data-talk]');
+  if (root) {
+    const form = root.querySelector('[data-talk-form]');
+    const steps = [...root.querySelectorAll('[data-step]')];
+    const dots = [...root.querySelectorAll('[data-talk-dot]')];
+    const count = root.querySelector('[data-talk-count]');
+    const recap = root.querySelector('[data-talk-recap]');
+    const err = root.querySelector('[data-talk-error]');
+    const back = root.querySelector('[data-talk-back]');
+    const next = root.querySelector('[data-talk-next]');
+    const enter = root.querySelector('[data-talk-enter]');
+    const summary = root.querySelector('[data-talk-summary]');
+    const name = root.querySelector('#t-name');
+    const company = root.querySelector('#t-company');
+    const topic = root.querySelector('#t-topic');
+    const email = root.querySelector('#t-email');
+    const pills = [...root.querySelectorAll('[data-pill]')];
+    const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    let cur = 0;
+
+    // blanks grow with the text, like writing on a line
+    // measure the real text (or the placeholder) in the input's own font
+    const probe = document.createElement('span');
+    probe.setAttribute('aria-hidden', 'true');
+    probe.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;left:-9999px;top:0';
+    root.appendChild(probe);
+    const fit = (el) => {
+      const cs = getComputedStyle(el);
+      probe.style.font = cs.font; probe.style.letterSpacing = cs.letterSpacing;
+      probe.textContent = el.value || el.placeholder;
+      el.style.width = `${Math.ceil(probe.offsetWidth) + 24}px`;
+    };
+    document.fonts?.ready.then(() => [name, company, topic, email].forEach(fit));
+    addEventListener('resize', () => [name, company, topic, email].forEach(fit));
+    [name, company, topic, email].forEach((el) => { el.addEventListener('input', () => { fit(el); el.removeAttribute('aria-invalid'); err.textContent = ''; }); fit(el); });
+
+    // pills compose the topic; the field stays editable
+    const syncPills = () => {
+      const v = topic.value.toLowerCase();
+      pills.forEach((p) => p.setAttribute('aria-pressed', String(v.includes(p.dataset.pill.toLowerCase()))));
+    };
+    const togglePill = (p) => {
+      const t = p.dataset.pill;
+      let parts = topic.value.split(/\s*(?:,|\band\b)\s*/).map((s) => s.trim()).filter(Boolean);
+      parts = parts.some((s) => s.toLowerCase() === t.toLowerCase()) ? parts.filter((s) => s.toLowerCase() !== t.toLowerCase()) : [...parts, t];
+      topic.value = parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts.at(-1)}` : (parts[0] || '');
+      fit(topic); syncPills();
+    };
+    pills.forEach((p) => p.addEventListener('click', () => togglePill(p)));
+    topic.addEventListener('input', syncPills);
+
+    const recapHtml = (upTo) => {
+      const parts = [];
+      if (upTo > 0) parts.push(`Hi, I'm <b>${esc(name.value.trim())}</b>`);
+      if (upTo > 1 && company.value.trim()) parts.push(`from <b>${esc(company.value.trim())}</b>`);
+      let s = parts.join(' ');
+      if (upTo > 2 && topic.value.trim()) s += `. I'd love to talk about <b>${esc(topic.value.trim())}</b>`;
+      return s ? `${s}.` : '';
+    };
+
+    const show = (i, focus = true) => {
+      cur = i;
+      steps.forEach((s, k) => { s.hidden = k !== i; });
+      dots.forEach((d, k) => { d.classList.toggle('is-done', k < i); d.classList.toggle('is-current', k === i); });
+      root.style.setProperty('--p', `${(i / (steps.length - 1)) * 100}%`);
+      root.querySelector('.talk__progress').style.setProperty('--p', `${(i / (steps.length - 1)) * 100}%`);
+      count.textContent = `${i + 1} of ${steps.length}`;
+      back.hidden = i === 0;
+      const last = i === steps.length - 1;
+      recap.innerHTML = last ? '' : recapHtml(i);
+      next.textContent = last ? 'Send it' : 'Continue';
+      next.classList.toggle('talk__btn--send', last);
+      enter.hidden = last;
+      if (last) {
+        const c = company.value.trim();
+        summary.innerHTML = `Hi Francesca, I'm <b>${esc(name.value.trim())}</b>${c ? ` from <b>${esc(c)}</b>` : ''}. I'd love to talk about <b>${esc(topic.value.trim() || 'anything')}</b>. You can reach me at <b>${esc(email.value.trim())}</b>.`;
+      }
+      const inp = steps[i].querySelector('input'); if (inp) fit(inp);
+      if (focus) (inp || summary).focus({ preventScroll: true });
+    };
+
+    const valid = () => {
+      if (cur === 0 && !name.value.trim()) { name.setAttribute('aria-invalid', 'true'); err.textContent = 'I need your name to know who to thank.'; return false; }
+      if (cur === 3 && (!email.value.trim() || !email.checkValidity())) { email.setAttribute('aria-invalid', 'true'); err.textContent = 'That email looks a bit off. Can you check it?'; return false; }
+      err.textContent = '';
+      return true;
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!valid()) return;
+      if (cur < steps.length - 1) { show(cur + 1); return; }
+      const c = company.value.trim();
+      const body = `Hi Francesca, I'm ${name.value.trim()}${c ? ` from ${c}` : ''}. I'd love to talk about ${topic.value.trim() || 'anything'}. You can reach me at ${email.value.trim()}.`;
+      location.href = `mailto:folkmer.design@gmail.com?subject=${encodeURIComponent(`Hi from ${name.value.trim()}`)}&body=${encodeURIComponent(body)}`;
+    });
+    back.addEventListener('click', () => { err.textContent = ''; show(Math.max(0, cur - 1)); });
+
+    // number keys pick a suggestion (only when not typing in a field)
+    root.addEventListener('keydown', (e) => {
+      if (cur !== 2 || e.target.matches('input')) return;
+      const n = Number(e.key);
+      if (n >= 1 && n <= pills.length) { e.preventDefault(); togglePill(pills[n - 1]); }
+    });
+
+    show(0, false);
+  }
+</script>

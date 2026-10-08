@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Accessible PDFs, with AI · Francesca Folkmer"
+  description="Francesca Folkmer is exploring how AI can turn ordinary PDFs into documents everyone can read, screen readers included.">
+  <article class="container lab-article">
+    <header class="lab-article__head">
+      <p class="eyebrow">Lab · Exploring</p>
+      <h1 class="h1">Accessible PDFs, with AI</h1>
+      <p class="lead">Forms, bills, medical reports, contracts. The documents that matter most often arrive as PDFs, and most of them are hard or impossible to read with a screen reader.</p>
+    </header>
+
+    <section class="prose" aria-labelledby="problem">
+      <h2 id="problem" class="h3">The problem</h2>
+      <p>An accessible PDF needs structure under the surface: headings, reading order, tables that make sense, text alternatives for images, the right language. Fixing a long document by hand takes hours, and it needs skills most teams don't have.</p>
+      <p>With the European Accessibility Act, more and more services have to get this right. Today many of them simply can't keep up.</p>
+    </section>
+
+    <section class="prose" aria-labelledby="question">
+      <h2 id="question" class="h3">The question I'm exploring</h2>
+      <p>Can AI do the heavy lifting, with a person checking the result? AI is good at guessing structure and describing images. It's not good at being sure. So the interesting design work is in between:</p>
+      <ul>
+        <li>what the tool fixes on its own, and what it asks a person to confirm;</li>
+        <li>how it shows what it changed, so a non-expert can trust it;</li>
+        <li>how it checks the result against WCAG and PDF/UA, instead of just saying "done".</li>
+      </ul>
+    </section>
+
+    <section class="prose" aria-labelledby="status">
+      <h2 id="status" class="h3">Where I am</h2>
+      <p>It's a personal project I work on in the evenings and at weekends. Early days, so no screens yet: I'll share more when there's something worth showing.</p>
+      <p>Do you deal with inaccessible PDFs at work? <a href="mailto:folkmer.design@gmail.com?subject=Accessible%20PDFs">Tell me about it</a>: real problems are the best input I can get.</p>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .lab-article { max-width: calc(820px + 2 * var(--gutter)); display: flex; flex-direction: column; gap: 56px; padding-top: clamp(32px, 4vw, 64px); padding-bottom: clamp(80px, 8vw, 160px); }
+  .lab-article__head { display: flex; flex-direction: column; gap: 8px; }
+  .lab-article h2 { margin-bottom: 16px; }
+  .lab-article a { text-underline-offset: 3px; }
+</style>

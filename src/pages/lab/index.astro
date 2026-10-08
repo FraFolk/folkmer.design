@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import LabCarousel from '../../components/LabCarousel.astro';
+---
+<Base title="Lab: built with AI · Francesca Folkmer"
+  description="What Francesca Folkmer builds and explores with AI, outside her case studies.">
+  <div class="lab">
+    <header class="container lab__intro">
+      <p class="eyebrow">Lab</p>
+      <h1 class="h1">Built with AI</h1>
+      <p class="lead">What I build outside the case studies. Small, real things that help me learn fast: AI makes the work quicker, I still make the decisions.</p>
+    </header>
+    <LabCarousel headingLevel={2} />
+  </div>
+</Base>
+
+<style>
+  .lab { display: flex; flex-direction: column; gap: clamp(32px, 4vw, 56px); padding-top: clamp(32px, 4vw, 64px); padding-bottom: clamp(80px, 8vw, 160px); overflow-x: clip; }
+  .lab__intro { display: flex; flex-direction: column; gap: 8px; }
+  .lab__intro .lead { max-width: 60ch; }
+</style>

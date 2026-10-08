@@ -1,0 +1,20 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="31.4443" height="30.3971" viewBox="0 0 31.4443 30.3971" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Cursor">
+<g id="Cursor_2" filter="url(#filter0_d_620_2828)">
+<path d="M11.9232 25.1077L7.65844 5.0729L27.2401 14.9619L17.5945 17.5412L11.9232 25.1077Z" fill="black"/>
+<path d="M11.9232 25.1077L7.65844 5.0729L27.2401 14.9619L17.5945 17.5412L11.9232 25.1077Z" stroke="white" stroke-width="1.25539"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_620_2828" x="4.2439" y="2.68341" width="27.2004" height="27.7137" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1.25539"/>
+<feGaussianBlur stdDeviation="1.25539"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_620_2828"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_620_2828" result="shape"/>
+</filter>
+</defs>
+</svg>

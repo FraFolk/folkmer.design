@@ -1,0 +1,239 @@
+---
+import Base from '../layouts/Base.astro';
+import CaseIntro from '../components/CaseIntro.astro';
+import { url } from '../lib/url.js';
+
+const dock = [
+  { name: 'Perplexity', img: 'dock-perplexity.png' },
+  { name: 'Gemini', img: 'dock-gemini.png' },
+  { name: 'Figma', img: 'dock-figma.png' },
+  { name: 'Users', img: null },
+  { name: 'Antigravity', img: 'dock-antigravity.png' },
+];
+
+// The founder diary: update this list as Alé moves forward.
+const steps = [
+  { state: 'done', when: 'Jul 2025', title: 'Discovery', text: 'A survey with 50+ climbers and 5 in-depth interviews. The problem was real: information is scattered and out of date.' },
+  { state: 'done', when: 'Jan - Sep 2026', title: 'Product design', text: 'From personas and journeys to the full app design, tested with climbers along the way.' },
+  { state: 'now', when: 'Now', title: 'Development and partnerships', text: 'We are finishing development. In parallel we are talking with the main climbing events to build partnerships for 2027: the B2B side of Alé.' },
+  { state: 'next', when: 'Dec 2026', title: 'Launch', text: 'Alé goes live on the stores. Then the real test starts: how climbers actually use it.' },
+];
+---
+<Base title="Alé: building an app for climbers · Francesca Folkmer"
+  description="Alé is a community app for climbers that Francesca Folkmer co-founded. From discovery to launch, with AI in the workflow.">
+  <article class="container case">
+    <CaseIntro
+      tags={['Co-founder', 'Product Discovery', 'AI Workflow', 'Mobile App']}
+      title="Alé: an app for climbers, by climbers"
+      facts={[['Timeline', 'Jul 2025 - Now'], ['Role', 'Co-founder & Product Design Lead'], ['Team', '2 founders, 1 developer, 1 designer']]}
+    >
+      <Fragment slot="media">
+        <img src={url('/img/ale-hero-bg.png')} alt="" />
+        <div class="phone ale-hero__phone">
+          <img class="phone__screen" src={url('/img/ale-hero-screen.png')} alt="Alé home screen: search for a spot and your next adventure." />
+          <img class="phone__frame" src={url('/img/phone-frame-2.svg')} alt="" />
+        </div>
+      </Fragment>
+      <p>I co-founded Alé with Marta. We make the business decisions together, and I lead the product design: from the first survey to the MVP.</p>
+    </CaseIntro>
+
+    <section class="split" aria-labelledby="challenge">
+      <div class="split__text reveal">
+        <div class="split__title">
+          <p class="eyebrow">The challenge</p>
+          <h2 id="challenge" class="h2">"Finding the right spot shouldn't be harder than the climb."</h2>
+        </div>
+        <div class="prose">
+          <p>Climbing information is scattered between <b>expensive, outdated guidebooks</b> and <b>fragmented forums</b>.</p>
+          <ul>
+            <li><b>The gap:</b> no single, up-to-date place to find, share and update climbing spots.</li>
+            <li><b>The friction:</b> beginners don't know where to start, experts waste time scouting new places.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="split__media questions reveal" aria-hidden="true">
+        <img src={url('/img/ale-challenge.png')} alt="" />
+        <span class="q q--0">Does it have chains?</span>
+        <span class="q q--1">What's it graded?</span>
+        <span class="q q--2">Is the pitch clean?</span>
+      </div>
+    </section>
+
+    <section class="split split--media-first" aria-labelledby="strategy">
+      <div class="split__media dock-scene reveal" aria-hidden="true">
+        <img class="dock-scene__rock" src={url('/img/rock.png')} alt="" />
+        <div class="dock" data-dock>
+          {dock.map((d) => (
+            <span class="dock__item">
+              {d.img ? <img src={url(`/img/${d.img}`)} alt="" /> : (
+                <span class="dock__users">
+                  <img src={url('/img/dock-users-base.svg')} alt="" />
+                  <img class="dock__users-icon" src={url('/img/dock-users-icon.svg')} alt="" />
+                </span>
+              )}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div class="split__text reveal">
+        <div class="split__title">
+          <p class="eyebrow">The strategy</p>
+          <h2 id="strategy" class="h2">People first, then AI</h2>
+        </div>
+        <div class="prose">
+          <p>We started from climbers: a <b>survey with 50+ people</b> and <b>5 in-depth interviews</b>. Then I used AI to speed up the parts that don't need a human:</p>
+          <ul>
+            <li><b>Benchmarking:</b> analysing existing outdoor apps to find the gaps.</li>
+            <li><b>Synthesis:</b> turning answers into personas and journeys, then checking them against the interviews.</li>
+            <li><b>Prototyping in code:</b> working side by side with our developer, with AI helping both of us move faster.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="split" aria-labelledby="solution">
+      <div class="split__text reveal">
+        <div class="split__title">
+          <p class="eyebrow">The solution</p>
+          <h2 id="solution" class="h2">Designed by climbers, for climbers</h2>
+        </div>
+        <div class="prose">
+          <p>Alé is more than a map: it's the community that keeps the information alive.</p>
+          <ul>
+            <li><b>Crowdsourced spots:</b> suggest, rate and update spots with real-time conditions.</li>
+            <li><b>Community grades:</b> the official grade next to the community one. Because we all know it's never the same.</li>
+            <li><b>Community wisdom:</b> tips on gear, difficulty and safety, from climbers to climbers.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="split__media reveal">
+        <img class="float" src={url('/img/ale-solution.png')} alt="Boulder detail screen in Alé: official grade 6a+ next to community grade 6b, description, tags and an 'Alé! Chiuso' button." width="638" height="650" />
+      </div>
+    </section>
+
+    <section class="progress" aria-labelledby="now">
+      <div class="split__title reveal">
+        <p class="eyebrow">Where we are now</p>
+        <h2 id="now" class="h2">The road so far</h2>
+        <p class="progress__updated">Last update: October 2026</p>
+      </div>
+      <ol class="tl">
+        {steps.map((s) => (
+          <li class={`tl__item tl__item--${s.state} reveal`}>
+            <span class="tl__tick" aria-hidden="true"></span>
+            <p class="tl__when">{s.when}</p>
+            <h3 class="tl__title">{s.title}</h3>
+            <p class="tl__text">{s.text}</p>
+            <p class="sr-only">Status: {s.state === 'done' ? 'done' : s.state === 'now' ? 'in progress' : 'next'}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="retro reveal" aria-labelledby="soon">
+      <h2 id="soon" class="h2 soon">No more spoilers for now.<br />The launch is just around the corner.</h2>
+      <p>Coming to the stores in <b>December 2026</b>. Want to be among the first climbers to try it?</p>
+      <p><a class="btn" href="https://aleclimbing.app/" target="_blank" rel="noopener">
+        <span>Join the waiting list<span class="sr-only"> (opens aleclimbing.app in a new tab)</span></span>
+        <span class="btn__icon"><img src={url('/img/arrow-down-dark.svg')} alt="" width="24" height="24" style="transform: rotate(-135deg)" /></span>
+      </a></p>
+    </section>
+  </article>
+</Base>
+
+<style>
+  /* phone mockup (Figma "iphone 15") */
+  .phone { position: absolute; aspect-ratio: 143.44 / 298.22; }
+  .phone__frame { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .phone__screen { position: absolute; left: 3.36%; top: 1.38%; width: 93.9%; height: 97.24%; object-fit: cover; border-radius: 6% / 3%; }
+  .ale-hero__phone { left: 44.6%; top: 20.6%; height: 57.3%; animation: rise 1.2s var(--ease-out) .2s both; }
+  @keyframes rise { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  /* Challenge: questions pop in */
+  .questions { aspect-ratio: 540 / 363; border-radius: var(--radius-l); }
+  .questions > img { width: 100%; height: 100%; object-fit: cover; object-position: bottom; border-radius: var(--radius-l); }
+  .q {
+    position: absolute; white-space: nowrap;
+    background: #fff; border: 2.5px solid var(--line);
+    border-radius: 30px 2.5px 30px 30px; padding: 10px 24px 10px 20px;
+    font-size: clamp(14px, 1.2vw, 18px);
+    filter: drop-shadow(5px 5px 6px rgba(42,47,45,.1));
+    opacity: 0; transform: scale(.7) translateY(10px); transform-origin: 100% 0;
+    transition: opacity .3s ease, transform .6s var(--ease-spring);
+  }
+  .q--0 { left: -12%; top: 54%; }
+  .q--1 { left: 3%; top: 73%; }
+  .q--2 { right: -6%; top: 79%; border-radius: 2.5px 30px 30px 30px; transform-origin: 0 0; }
+  .reveal.is-in .q { opacity: 1; transform: none; }
+  .reveal.is-in .q--0 { transition-delay: .3s; }
+  .reveal.is-in .q--1 { transition-delay: .9s; }
+  .reveal.is-in .q--2 { transition-delay: 1.5s; }
+
+  /* Strategy: macOS-like dock on a rock, magnifies on hover */
+  .dock-scene { aspect-ratio: 640 / 416; }
+  .dock-scene__rock { position: absolute; left: 15%; top: 45%; width: 67%; }
+  .dock {
+    position: absolute; left: 13%; top: 49%; width: 74%; height: 23%;
+    display: flex; justify-content: center; align-items: flex-end; gap: 2%;
+    padding: 0 2% 3%;
+    background: rgba(255,255,255,.1);
+    border: 1.7px solid rgba(255,255,255,.54);
+    border-radius: 25px;
+    backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+  }
+  .dock__item { width: 16%; aspect-ratio: 1; transform-origin: 50% 100%; transition: transform .25s var(--ease-out); }
+  .dock__item img { width: 100%; height: 100%; }
+  .dock__users { position: relative; display: block; width: 100%; height: 100%; }
+  .dock__users img { position: absolute; inset: 0; }
+  .dock__users .dock__users-icon { inset: 22%; width: 56%; height: 56%; }
+
+  .float { animation: float 6s ease-in-out infinite; }
+  @keyframes float { 50% { transform: translateY(-10px); } }
+
+  .soon { color: var(--orange-text); text-align: center; }
+  .retro a { text-underline-offset: 3px; }
+
+  /* Founder diary: a light timeline with ticks */
+  .progress { display: flex; flex-direction: column; gap: 48px; }
+  .progress__updated { color: var(--ink-2); font-size: 16px; }
+  .tl { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+  .tl::before { content: ''; position: absolute; left: 0; right: 0; top: 7px; height: 1px; background: var(--line); }
+  .tl__item { position: relative; padding-top: 36px; display: flex; flex-direction: column; gap: 6px; }
+  .tl__tick { position: absolute; top: 0; left: 0; width: 15px; height: 15px; border-radius: 50%; background: var(--bg); box-shadow: inset 0 0 0 1.5px var(--ink-2); }
+  .tl__item--done .tl__tick { background: var(--sage-text); box-shadow: none; }
+  .tl__item--now .tl__tick { background: var(--orange); box-shadow: 0 0 0 5px color-mix(in srgb, var(--orange) 22%, transparent); animation: pulse-dot 2s ease-in-out infinite; }
+  .tl__when { font-size: 15px; letter-spacing: .04em; text-transform: uppercase; font-weight: 700; color: var(--sage-text); }
+  .tl__item--now .tl__when { color: var(--orange-text); }
+  .tl__title { font-size: 22px; font-weight: 500; }
+  .tl__text { color: var(--ink-2); font-size: 16px; }
+  @keyframes pulse-dot { 50% { transform: scale(1.25); } }
+  @media (prefers-reduced-motion: reduce) { .tl__item--now .tl__tick { animation: none; } }
+  @media (max-width: 900px) {
+    .tl { grid-template-columns: 1fr; gap: 28px; padding-left: 28px; }
+    .tl::before { left: 7px; right: auto; top: 0; bottom: 0; width: 1px; height: auto; }
+    .tl__item { padding-top: 0; }
+    .tl__tick { left: -28px; top: 3px; }
+  }
+
+  @media (max-width: 900px) {
+    .q--0 { left: 4%; }
+    .q--2 { right: 4%; }
+  }
+</style>
+
+<script>
+  // Dock magnification (mouse only; purely decorative)
+  const dock = document.querySelector('[data-dock]');
+  if (dock && matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches) {
+    const items = [...dock.children];
+    dock.addEventListener('mousemove', (e) => {
+      for (const it of items) {
+        const r = it.getBoundingClientRect();
+        const d = Math.abs(e.clientX - (r.left + r.width / 2));
+        const s = 1 + Math.max(0, 0.5 - d / 260);
+        it.style.transform = `scale(${s.toFixed(3)})`;
+      }
+    });
+    dock.addEventListener('mouseleave', () => items.forEach((it) => (it.style.transform = '')));
+  }
+</script>

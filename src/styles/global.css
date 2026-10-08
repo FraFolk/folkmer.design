@@ -1,0 +1,223 @@
+/* ------------------------------------------------------------
+   Tokens (from Figma file "2026", adjusted where contrast < 4.5:1)
+   ------------------------------------------------------------ */
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-Variable.ttf') format('truetype');
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/Satoshi-VariableItalic.ttf') format('truetype');
+  font-weight: 300 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --bg: #fcfcfa;
+  --ink: #2a2f2d;
+  --ink-2: #5c615f;
+  --surface: #f4f6f5;
+  --surface-2: #e9efec;
+  --line: #d9d9d9;
+
+  --sage: #748d7a;          /* large numbers, footer bar, graphics */
+  --sage-text: #5e7663;     /* eyebrow text: 4.8:1 on bg */
+  --sage-deep: #405e47;
+
+  --orange: #ff5c33;        /* graphics only */
+  --orange-text: #d4380f;   /* text / bubbles with white text: 4.8:1 */
+
+  --dark: #1b201e;
+  --btn: #373b3a;
+  --btn-hover: #09110d;
+  --btn2: #e9efec;
+  --btn2-hover: #d0d9d2;
+  --mint: #aee7ca;
+
+  --focus: #115aba;
+
+  --radius-card: 56px;
+  --radius-l: 24px;
+  --radius-pill: 100px;
+
+  --container: 1328px;
+  --gutter: clamp(16px, 5vw, 200px);
+
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+
+  --fs-body: clamp(16px, 1.05vw + 10px, 18px);
+  --fs-h1: clamp(36px, 3.2vw + 12px, 48px);
+  --fs-h2: clamp(26px, 2vw + 12px, 36px);
+  --fs-h3: clamp(22px, 1.4vw + 10px, 28px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Satoshi', system-ui, sans-serif;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+p { margin: 0; }
+h1, h2, h3 { margin: 0; font-weight: 500; line-height: 1.2; }
+ul { margin: 0; }
+b, strong { font-weight: 700; }
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute; left: 16px; top: -100px; z-index: 100;
+  background: var(--dark); color: #fff; padding: 12px 20px; border-radius: var(--radius-pill);
+  text-decoration: none; font-weight: 500;
+}
+.skip-link:focus { top: 16px; }
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ---------- Typography helpers ---------- */
+.eyebrow {
+  font-weight: 900;
+  color: var(--sage-text);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  font-size: var(--fs-body);
+}
+.tags { font-style: italic; }
+.h1 { font-size: var(--fs-h1); font-weight: 500; }
+.h2 { font-size: var(--fs-h2); font-weight: 500; }
+.h3 { font-size: var(--fs-h3); font-weight: 500; }
+.prose > * + * { margin-top: 1em; }
+.prose ul { padding-left: 1.4em; }
+.prose li + li { margin-top: .5em; }
+
+/* ---------- Buttons (Figma: Button / Button secondary) ---------- */
+.btn {
+  --btn-bg: var(--btn);
+  --btn-fg: #fff;
+  display: inline-flex; align-items: center; justify-content: space-between;
+  gap: 10px;
+  min-width: var(--btn-min, auto);
+  padding: 8px 8px 8px 20px;
+  border-radius: var(--radius-pill);
+  background: var(--btn-bg); color: var(--btn-fg);
+  font: 500 18px/1.2 'Satoshi', sans-serif;
+  text-decoration: none; border: 0; cursor: pointer;
+  transition: background-color .3s var(--ease-out), padding .45s var(--ease-spring);
+}
+.btn__icon {
+  display: grid; place-items: center;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: #fff; color: var(--ink);
+  transition: transform .45s var(--ease-spring);
+}
+.btn__icon img { width: 24px; height: 24px; }
+.btn:hover { --btn-bg: var(--btn-hover); padding-left: 32px; }
+.btn:hover .btn__icon { transform: rotate(-8deg) scale(1.04); }
+.btn--secondary { --btn-bg: var(--btn2); --btn-fg: var(--ink); }
+.btn--secondary:hover { --btn-bg: var(--btn2-hover); }
+.btn--secondary:hover .btn__icon { transform: translateY(3px); }
+.btn--small { font-size: 16px; padding: 6px 6px 6px 16px; }
+.btn--small .btn__icon { width: 36px; height: 36px; }
+.btn--small .btn__icon img { width: 20px; height: 20px; }
+
+/* ---------- Reveal on scroll ---------- */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s var(--ease-out), transform .8s var(--ease-out); }
+.reveal.is-in { opacity: 1; transform: none; }
+.no-js .reveal { opacity: 1; transform: none; }
+
+/* ---------- Case study layout (Figma: Credit Agricole page) ---------- */
+.case { display: flex; flex-direction: column; gap: clamp(80px, 10vw, 180px); padding-bottom: clamp(80px, 10vw, 180px); }
+.case-hero__media {
+  position: relative; overflow: hidden;
+  border-radius: var(--radius-l);
+  aspect-ratio: 1328 / 520;
+  background: var(--surface-2);
+}
+.case-hero__media > img { width: 100%; height: 100%; object-fit: cover; }
+.case-hero__intro {
+  display: grid; grid-template-columns: minmax(0, 766fr) minmax(0, 429fr);
+  gap: clamp(24px, 7vw, 133px); margin-top: 40px; align-items: start;
+}
+.case-hero__intro .tags { margin-bottom: 4px; }
+.case-hero__intro .h1 { font-size: var(--fs-h2); }
+.case-hero__intro .lead { margin-top: 16px; }
+.facts { display: grid; gap: 16px; margin: 0; }
+.facts div { display: flex; gap: .3em; }
+.facts dt { font-weight: 700; }
+.facts dt::after { content: ':'; }
+.facts dd { margin: 0; }
+
+.split {
+  display: grid; grid-template-columns: minmax(0, 654fr) minmax(0, 540fr);
+  gap: clamp(32px, 7vw, 134px); align-items: center;
+}
+.split--media-first { grid-template-columns: minmax(0, 540fr) minmax(0, 654fr); }
+.split__text { display: flex; flex-direction: column; gap: 16px; }
+.split__title { display: flex; flex-direction: column; gap: 8px; }
+.split__media { position: relative; }
+
+.results { display: flex; flex-direction: column; gap: 48px; }
+.results__intro { max-width: 654px; display: flex; flex-direction: column; gap: 16px; }
+.results__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.result {
+  background: var(--surface-2); border-radius: var(--radius-l);
+  padding: 24px 28px; display: flex; flex-direction: column; justify-content: center; gap: 10px;
+  min-height: 160px;
+}
+.result--stat { flex-direction: row; align-items: center; gap: 16px; }
+.result__num { font-size: clamp(44px, 4vw, 64px); font-weight: 700; color: var(--sage); line-height: 1; white-space: nowrap; }
+.result__label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--sage-text); display: block; margin-bottom: 4px; }
+
+.retro { text-align: center; max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+
+@media (max-width: 900px) {
+  .case-hero__intro, .split, .split--media-first { grid-template-columns: 1fr; }
+  .split--media-first .split__media { order: 2; }
+  .results__grid { grid-template-columns: 1fr; }
+  .case-hero__media { aspect-ratio: 4 / 3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* Figma screenshots exported with the page background: blend them into the page */
+.blend { mix-blend-mode: multiply; }
+
+/* Torch effect (Aon cover): animatable pointer position */
+@property --mx { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
+@property --my { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
+
+/* arrow-down icon reused as "go to" arrow */
+.rot-right { transform: rotate(-90deg); }
+.btn--secondary:hover .btn__icon:has(.rot-right) { transform: translateX(3px); }
+
+/* Handwriting, used once: the "co-founder" written by pen */
+@font-face { font-family: 'Caveat'; src: url('/fonts/Caveat-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }

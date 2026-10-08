@@ -1,0 +1,15 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import { projects } from '../lib/projects.js';
+const { current } = Astro.props;
+const i = projects.findIndex((p) => p.slug === current);
+const next = projects[(i + 1) % projects.length];
+---
+<section class="next" aria-labelledby="next-title">
+  <h2 id="next-title" class="eyebrow">Next project</h2>
+  <ProjectCard project={next} />
+</section>
+
+<style>
+  .next { display: flex; flex-direction: column; gap: 16px; }
+</style>

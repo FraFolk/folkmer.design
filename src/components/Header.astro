@@ -1,0 +1,172 @@
+---
+import { url } from '../lib/url.js';
+
+// Back link ("breadcrumb"): Lab sub-pages go back to the Lab, everything else to the homepage.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const path = (Astro.url.pathname.replace(base, '') || '/').replace(/\/$/, '') || '/';
+const isHome = path === '/';
+const parent = path.startsWith('/lab/')
+  ? { href: '/lab/', label: 'Back to Lab' }
+  : path.startsWith('/work/')
+    ? { href: '/#work', label: 'Back to all work' }
+    : { href: '/', label: 'Back to homepage' };
+---
+<header class="site-header">
+  <div class="site-header__inner">
+    <div class="site-header__side">
+      {!isHome && (
+        <a class="back-link" href={url(parent.href)}>
+          <img src={url('/img/arrow-left.svg')} alt="" width="24" height="24" />
+          <span>{parent.label}</span>
+        </a>
+      )}
+    </div>
+
+    <div class="profile" data-profile>
+      <button class="profile__pill" type="button" aria-expanded="false" aria-controls="profile-contacts" data-profile-toggle>
+        <img class="profile__avatar" src={url('/img/avatar.png')} alt="" width="56" height="56" />
+        <span class="profile__text">
+          <span class="profile__name">Francesca Folkmer</span>
+          <span class="profile__status">
+            <img src={url('/img/available.svg')} alt="" width="24" height="24" />
+            Available
+          </span>
+        </span>
+        <img class="profile__chevron" src={url('/img/chevron-down-white.svg')} alt="" width="24" height="24" />
+        <span class="sr-only">Show contacts</span>
+      </button>
+      <div class="profile__panel" id="profile-contacts">
+        <div class="profile__panel-inner">
+          <ul class="profile__links">
+            <li><a href="mailto:folkmer.design@gmail.com">folkmer.design@gmail.com</a></li>
+            <li><a href="https://www.linkedin.com/in/francescafolkmer/" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></li>
+            <li><a href="tel:+393470662369">+39 347 066 2369</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-header__side site-header__side--end">
+      <a class="btn btn--secondary btn--small" href={url('/Francesca-Folkmer-CV.pdf')} download>
+        <span>Download CV</span>
+        <span class="btn__icon"><img src={url('/img/arrow-down-dark.svg')} alt="" width="20" height="20" /></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    padding: 20px var(--gutter);
+  }
+  /* frosted glass: white, slightly see-through, blurred, with a soft bottom edge */
+  .site-header::before {
+    content: ''; position: absolute; inset: 0 0 -24px; z-index: -1; pointer-events: none;
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2);
+    -webkit-mask-image: linear-gradient(to bottom, #000 65%, transparent);
+            mask-image: linear-gradient(to bottom, #000 65%, transparent);
+  }
+  .site-header__inner {
+    max-width: var(--container); margin: 0 auto;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px;
+  }
+  .site-header__side--end { display: flex; justify-content: flex-end; }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 18px; text-decoration: none; padding: 8px 12px 8px 0;
+  }
+  .back-link img { transition: transform .35s var(--ease-spring); }
+  .back-link:hover img { transform: translateX(-6px); }
+
+  /* ---------- Profile pill (Figma: Profile Info Default -> Variant3) ---------- */
+  .profile { position: relative; width: 300px; }
+  .profile__pill {
+    position: relative; z-index: 2;
+    width: 100%; height: 72px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 16px 8px 8px;
+    background: var(--dark); color: #fff;
+    border: 0; border-radius: var(--radius-pill);
+    font: inherit; text-align: left; cursor: pointer;
+  }
+  .profile__avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+  .profile__text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+  .profile__name { font-weight: 500; font-size: 20px; line-height: 1.2; white-space: nowrap; }
+  .profile__status { display: inline-flex; align-items: center; gap: 6px; color: var(--mint); font-size: 14px; }
+  .profile__status img { width: 24px; height: 24px; animation: pulse 2.4s ease-in-out infinite; }
+  .profile__chevron { width: 24px; height: 24px; transition: transform .45s var(--ease-spring); }
+  .profile__pill[aria-expanded='true'] .profile__chevron { transform: rotate(180deg); }
+
+  .profile__panel {
+    position: absolute; left: 0; right: 0; top: 0; z-index: 1;
+    display: grid; grid-template-rows: 0fr;
+    padding-top: 72px;
+    background: var(--dark);
+    border-radius: 36px;
+    transition: grid-template-rows .5s var(--ease-out), visibility 0s linear .5s;
+    visibility: hidden;
+  }
+  .profile[data-open] .profile__panel {
+    grid-template-rows: 1fr; visibility: visible;
+    transition: grid-template-rows .5s var(--ease-out), visibility 0s;
+  }
+  .profile__panel-inner { overflow: hidden; }
+  .profile__links {
+    list-style: none; margin: 0; padding: 8px 24px 24px;
+    display: flex; flex-direction: column; gap: 6px;
+    color: #f4f6f5; font-size: 16px;
+  }
+  .profile__links li {
+    opacity: 0; transform: translateY(-6px);
+    transition: opacity .3s ease, transform .4s var(--ease-out);
+  }
+  .profile[data-open] .profile__links li { opacity: 1; transform: none; }
+  .profile[data-open] .profile__links li:nth-child(2) { transition-delay: .06s; }
+  .profile[data-open] .profile__links li:nth-child(3) { transition-delay: .12s; }
+  .profile__links a { text-underline-offset: 3px; display: inline-block; padding: 2px 0; }
+  .profile__links a:focus-visible { outline-color: var(--mint); }
+  .profile__links li:last-child a { text-decoration: none; }
+
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+
+  @media (max-width: 760px) {
+    .site-header { padding: 12px 16px; }
+    .site-header__inner { grid-template-columns: auto 1fr auto; }
+    .back-link span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .back-link { padding: 12px; }
+    .profile { width: auto; justify-self: center; }
+    .profile__pill { height: 56px; padding: 6px 12px 6px 6px; }
+    .profile__avatar { width: 44px; height: 44px; }
+    .profile__name { font-size: 16px; }
+    .profile__panel { padding-top: 56px; border-radius: 28px; }
+    .profile__links { padding: 6px 18px 18px; font-size: 15px; }
+    .site-header__side--end .btn span:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .site-header__side--end .btn { padding: 4px; }
+  }
+  @media (max-width: 400px) {
+    .profile__name { font-size: 15px; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector('[data-profile]');
+  const toggle = root?.querySelector('[data-profile-toggle]');
+  if (root && toggle) {
+    const set = (open) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      root.toggleAttribute('data-open', open);
+    };
+    toggle.addEventListener('click', () => set(toggle.getAttribute('aria-expanded') !== 'true'));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && root.hasAttribute('data-open')) { set(false); toggle.focus(); }
+    });
+    document.addEventListener('click', (e) => {
+      if (!root.contains(e.target)) set(false);
+    });
+    root.addEventListener('focusout', (e) => {
+      if (!root.contains(e.relatedTarget)) set(false);
+    });
+  }
+</script>

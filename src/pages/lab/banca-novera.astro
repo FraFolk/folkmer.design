@@ -1,0 +1,124 @@
+---
+import Base from '../../layouts/Base.astro';
+import CaseIntro from '../../components/CaseIntro.astro';
+import { url } from '../../lib/url.js';
+---
+<Base title="Banca Novera: a mortgage page that doesn't scare you · Francesca Folkmer"
+  description="A design exercise: homepage and first-home mortgage page for a fictional Italian bank, prototyped with AI and built for WCAG 2.2 AA.">
+  <article class="container case">
+    <CaseIntro
+      tags={['Design exercise', 'Banking', 'Accessibility', 'AI prototype']}
+      title="Banca Novera: a mortgage page that doesn't scare you"
+      facts={[['Timeline', 'September 2026'], ['Role', 'Product Designer (solo)'], ['Tools', 'Figma, Claude Code']]}
+    >
+      <Fragment slot="media">
+        <img class="novera-hero" src={url('/img/card-novera.png')} alt="Banca Novera homepage: 'Digitale quando vuoi, umana quando serve', with a bank building and a debit card." />
+      </Fragment>
+      <p>A design exercise for a fictional Italian bank: a homepage and a first-home mortgage page, desktop and mobile. From evidence to decisions, prototyped in real code with AI.</p>
+    </CaseIntro>
+
+    <section class="split" aria-labelledby="problem">
+      <div class="split__text reveal">
+        <div class="split__title">
+          <p class="eyebrow">The problem</p>
+          <h2 id="problem" class="h2">Too promotional, or too complicated</h2>
+        </div>
+        <div class="prose">
+          <p>Looking for a mortgage, people find sites that are either <b>all promises</b> or <b>all branch jargon</b>. A mortgage means big numbers and many years of commitment: the moment where uncertainty is highest.</p>
+          <p>The goal: let people take a <b>first step on their own</b>, with a real person always in sight. That's why I picked the mortgage over the current account: it's where "people included" can be shown, not just said.</p>
+        </div>
+      </div>
+      <div class="split__media reveal">
+        <ol class="flow" aria-label="From evidence to decision, one example">
+          <li><span>Evidence</span>People compare costs and want precise numbers. Talking to an advisor: yes, but never forced.</li>
+          <li><span>Benchmark</span>Most bank calculators ask for your contacts before showing the result.</li>
+          <li><span>Insight</span>People want to check before they commit.</li>
+          <li><span>Decision</span>A calculator with no contact details, assumptions and limits in view.</li>
+          <li><span>Watch</span>People complete it and understand it's an estimate, not an offer.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="split split--media-first" aria-labelledby="solution">
+      <div class="split__media reveal">
+        <img class="shot" src={url('/img/novera-calculator.png')} alt="Mortgage calculator result: fixed and variable rate side by side with monthly payment, rates and total interest, and two equal actions: request the mortgage or contact an advisor." />
+      </div>
+      <div class="split__text reveal">
+        <div class="split__title">
+          <p class="eyebrow">The solution</p>
+          <h2 id="solution" class="h2">Human when it matters</h2>
+        </div>
+        <div class="prose">
+          <ul>
+            <li><b>Two entry points:</b> "Have you already found a house?" separates people who need a number from those still exploring.</li>
+            <li><b>No "best" option:</b> fixed and variable side by side. The page helps you decide, it doesn't decide for you.</li>
+            <li><b>Support with a name:</b> phone, branch and chat, each with a purpose. "Talking to us doesn't commit you to anything."</li>
+            <li><b>WCAG 2.2 AA from day one:</b> error summary, focus management, live regions, no horizontal scroll at 320px, 0 axe violations.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="results" aria-labelledby="ai">
+      <div class="results__intro reveal">
+        <p class="eyebrow">AI in the process</p>
+        <h2 id="ai" class="h2">Built with Claude, decided by me</h2>
+        <p>The prototype is real, responsive React code. Here's who did what:</p>
+      </div>
+      <div class="results__grid">
+        <div class="result reveal">
+          <b>Me</b>
+          <p>Research, insights and decisions, information architecture, visual direction, and a review of every single step.</p>
+        </div>
+        <div class="result reveal">
+          <b>Claude</b>
+          <p>Accessible React code, automated checks and first-draft copy, working from documents I approved.</p>
+        </div>
+        <div class="result reveal">
+          <b>The honest part</b>
+          <p>The first version was off-direction and I threw it away. AI is fast, but it still needs someone who knows where to go.</p>
+        </div>
+      </div>
+      <p class="reveal">
+        <a class="btn" href="https://banca-novera.netlify.app/" target="_blank" rel="noopener">
+          <span>Try the prototype<span class="sr-only"> (opens in a new tab)</span></span>
+          <span class="btn__icon"><img src={url('/img/arrow-left.svg')} alt="" width="24" height="24" style="transform: rotate(135deg)" /></span>
+        </a>
+      </p>
+    </section>
+
+    <section class="retro reveal" aria-labelledby="differently">
+      <h2 id="differently" class="h2">What I'd do differently</h2>
+      <p>I presented this work to a design team and got sharp, fair feedback. Warmer images: a bank that wants to feel human should show people and real homes. A real story on the mortgage page: buying your first home is a journey, and the calculator and comparison should be steps inside it. And more depth on the AI chat: what it can do, what it can't, and when it hands over to a person.</p>
+    </section>
+
+    <section class="retro reveal" aria-labelledby="next">
+      <h2 id="next" class="h2">What I'd test next</h2>
+      <p>6 to 8 moderated usability sessions and a few five-second tests on the hero and the result. Success means: people pick the right path on their own, never mistake the estimate for an offer, and find a person knowing they don't have to talk to one.</p>
+    </section>
+
+  </article>
+</Base>
+
+<style>
+  .novera-hero { object-position: top; }
+  .shot { border-radius: var(--radius-l); box-shadow: 0 10px 40px rgba(42,47,45,.12); }
+  .flow { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; counter-reset: s; }
+  .flow li {
+    background: var(--surface); border-radius: 18px; padding: 14px 18px 14px 56px; position: relative;
+    opacity: 0; transform: translateX(24px); transition: opacity .5s ease, transform .7s var(--ease-out);
+  }
+  .flow li::before {
+    counter-increment: s; content: counter(s);
+    position: absolute; left: 16px; top: 14px; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--dark); color: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 700;
+  }
+  .flow li:nth-child(4) { background: var(--surface-2); box-shadow: inset 0 0 0 2px var(--sage); }
+  .flow span { display: block; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: .05em; color: var(--sage-text); }
+  .reveal.is-in .flow li { opacity: 1; transform: none; }
+  .reveal.is-in .flow li:nth-child(2) { transition-delay: .12s; }
+  .reveal.is-in .flow li:nth-child(3) { transition-delay: .24s; }
+  .reveal.is-in .flow li:nth-child(4) { transition-delay: .36s; }
+  .reveal.is-in .flow li:nth-child(5) { transition-delay: .48s; }
+  :global(.results .results__grid .result) { min-height: 0; }
+</style>

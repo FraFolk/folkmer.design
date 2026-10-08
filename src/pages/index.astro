@@ -1,0 +1,365 @@
+---
+import Base from '../layouts/Base.astro';
+import Cover from '../components/Cover.astro';
+import LabCarousel from '../components/LabCarousel.astro';
+import PhotoBooth from '../components/PhotoBooth.astro';
+import { projects, ale } from '../lib/projects.js';
+import { url } from '../lib/url.js';
+
+// Figma hero: three colleague comments that appear one at a time and "type" their text.
+const quotes = [
+  { name: 'Axel, Senior Digital Designer', text: 'A true reference point for the entire team.', tone: 'orange', cursor: 'cursor-orange.svg' },
+  { name: 'Bianca, Design Lead', text: 'Her proactivity and attention to detail are outstanding.', tone: 'green', cursor: 'cursor-green.svg' },
+  { name: 'Renato, Lead Designer', text: 'A proactive force who innovated our core design framework for the future.', tone: 'grey', cursor: 'cursor-grey.svg' },
+];
+---
+<Base>
+  <section class="hero container" aria-labelledby="hero-title">
+    <div class="hero__intro">
+      <div class="hero__text">
+        <h1 id="hero-title" class="hero__title">Product Designer</h1>
+        <p class="hero__sub">Accessibility &amp; AI · Co-founder of <a href={url('/ale/')}>Alé</a></p>
+        <p class="hero__body">I turn complex services into simple, accessible products. With a soft spot for AI and a hard rule on contrast.</p>
+      </div>
+      <div class="hero__actions">
+        <a class="btn" href={url('/about/')}>
+          <span>About me</span>
+          <span class="btn__icon"><img src={url('/img/personalcard.svg')} alt="" width="22" height="20" /></span>
+        </a>
+        <a class="btn btn--secondary" href="#work">
+          <span>See what I do</span>
+          <span class="btn__icon"><img src={url('/img/arrow-down-dark.svg')} alt="" width="24" height="24" /></span>
+        </a>
+      </div>
+    </div>
+
+    <figure class="quotes" aria-label="What colleagues say">
+      <ul class="sr-only">
+        {quotes.map((q) => <li><blockquote>{q.text}</blockquote> <cite>{q.name}</cite></li>)}
+      </ul>
+      <div class="quotes__stage" aria-hidden="true">
+        {quotes.map((q, i) => (
+          <div class={`bubble bubble--${q.tone} bubble--p${i}`} data-quote={q.text}>
+            <img class="bubble__cursor" src={url(`/img/${q.cursor}`)} alt="" width="29" height="30" />
+            <div class="bubble__box">
+              <span class="bubble__name">{q.name}</span>
+              <span class="bubble__text"><span class="bubble__typed"></span><span class="bubble__ghost">{q.text}</span></span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </figure>
+  </section>
+
+  <!-- 1. End to end: the story first, the (secret) project below -->
+  <section id="work" class="story container" aria-labelledby="e2e-title" tabindex="-1">
+    <p class="eyebrow reveal">End-to-end products</p>
+    <h2 id="e2e-title" class="h1 story__title reveal e2e">
+      From the first workshop<br />to the last handoff.
+      <span class="e2e__line" aria-hidden="true"><i></i></span>
+    </h2>
+    <p class="story__lead reveal">On big products I don't stop at the screens. I follow the whole thing: functional analysis, flows, UI, and the developers' questions on a Friday afternoon.</p>
+    <p class="story__more reveal" aria-hidden="true">Want to see one? <span class="story__arrow">↓</span></p>
+    <a class="secret-case reveal" href={url('/work/aon/')}>
+      <span class="secret-case__text">
+        <span class="secret-case__tags">Insurance · End-to-end · Ownership</span>
+        <span class="secret-case__title">Joined to execute. Ended up owning the design.</span>
+        <span class="secret-case__sub">An insurance platform where I became the only design reference. The details stay offline: move the torch around, or ask me in person.</span>
+        <span class="secret-case__cta">Open the case →</span>
+      </span>
+      <span class="secret-case__cover"><Cover kind="nda" /></span>
+    </a>
+  </section>
+
+  <!-- 2. Accessibility: starts from the certification -->
+  <section class="story container" aria-labelledby="a11y-title">
+    <p class="eyebrow reveal">Accessibility</p>
+    <h2 id="a11y-title" class="h1 story__title reveal cert">I'm <mark class="cert__mark">CPACC-certified</mark>.</h2>
+    <p class="story__lead reveal">Which mostly means I can't look at a low-contrast button without saying something. And on real projects, it means numbers like these.</p>
+    <a class="a11y reveal" href={url('/work/accessibility/')}>
+      <span class="a11y__stat" aria-hidden="true">
+        <span class="a11y__from">50%</span><span class="a11y__arrow">→</span><span class="a11y__to">85%</span>
+      </span>
+      <span class="a11y__text">
+        <span class="a11y__title">{projects[0].title}</span>
+        <span>300+ defects kept coming back, so we stopped chasing bugs and changed the process. Then we measured it: two touchpoints now pass every criterion.</span>
+        <span class="sr-only">Compliance went from 50% to 85%.</span>
+        <span class="a11y__cta">Read the case →</span>
+      </span>
+    </a>
+  </section>
+
+  <!-- 3. Plot twist: Alé -->
+  <section class="story container" aria-labelledby="ale-title">
+    <p class="eyebrow reveal">Alé</p>
+    <h2 id="ale-title" class="h1 story__title plot reveal">
+      <span class="sr-only">Plot twist: I'm also a climber, and a co-founder.</span>
+      <span aria-hidden="true">Plot twist: I'm also a <span class="plot__old">climber</span> <span class="plot__new">co-founder</span>.</span>
+    </h2>
+    <p class="story__lead reveal">I love climbing. I'm just not very good at it. So I took it to the one place where I know what I'm doing: design. Alé is an app for climbers, built by four of us in the evenings and at weekends. I lead the product design.</p>
+    <a class="ale-card reveal" href={url('/ale/')}>
+      <img src={url(ale.image)} alt="" width="662" height="395" loading="lazy" />
+      <span class="ale-card__body">
+        <span class="ale-card__title">The founder diary</span>
+        <span class="ale-card__facts" aria-hidden="true"><span><b>50+</b> climbers surveyed</span><span><b>5</b> interviews</span><span><b>4</b> people</span><span>Launch <b>Dec 2026</b></span></span>
+        <span class="ale-card__cta">Follow the journey →</span>
+      </span>
+    </a>
+  </section>
+
+  <!-- 4. Lab: the flask tips over, the spill becomes the stage for the cards -->
+  <section class="lab-section" aria-labelledby="lab-title" data-lab>
+    <div class="container lab-head">
+      <h2 id="lab-title" class="lab-head__title">
+        <span class="flask" aria-hidden="true">
+          <svg viewBox="0 0 48 48"><path class="flask__glass" d="M18 6h12M20 6v12L9 38a4 4 0 0 0 3.5 6h23A4 4 0 0 0 39 38L28 18V6" /><path class="flask__liquid" d="M14.6 30h18.8L37 37.5a3 3 0 0 1-2.7 4.5H13.7a3 3 0 0 1-2.7-4.5z" /></svg>
+          <span class="flask__drop"></span>
+        </span>
+        Lab
+      </h2>
+      <p>What I build and explore with AI.</p>
+    </div>
+    <div class="lab-stage">
+      <svg class="spill" viewBox="0 0 1400 620" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M700 18c160-30 330 10 470 70 150 64 230 170 222 290-8 128-118 214-290 236-170 22-262-26-430-14-150 11-250 60-404 36C110 612 18 520 8 402-3 276 74 170 220 104 360 40 540 48 700 18z" />
+      </svg>
+      <LabCarousel />
+    </div>
+  </section>
+
+  <!-- 5. The wall: photo booth -->
+  <PhotoBooth />
+</Base>
+
+<style>
+  /* ---------- Hero (Figma 182:3224) ---------- */
+  .hero {
+    position: relative;
+    min-height: calc(100svh - 120px);
+    display: grid; grid-template-columns: minmax(0, 654px) 1fr; align-items: center;
+    padding-top: clamp(40px, 5vw, 90px); padding-bottom: clamp(40px, 5vw, 90px);
+  }
+  .hero__intro { display: flex; flex-direction: column; gap: 32px; }
+  .hero__text { display: flex; flex-direction: column; gap: 8px; }
+  .hero__title { font-size: var(--fs-h1); font-weight: 500; }
+  .hero__sub { font-size: 18px; margin-top: -8px; }
+  .hero__body { max-width: 60ch; }
+  .hero__sub a { text-underline-offset: 3px; }
+  .section-head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 32px; }
+  .section-head__sub { color: var(--ink-2); max-width: 60ch; margin-top: 4px; }
+  .lab-section { overflow-x: clip; }
+  .lab-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; }
+  .hero__actions { display: flex; flex-wrap: wrap; gap: 16px; }
+
+  /* ---------- Colleague comments ---------- */
+  .quotes { margin: 0; position: relative; height: 100%; min-height: 300px; }
+  .quotes__stage { position: absolute; inset: 0; }
+  .bubble {
+    position: absolute; width: max-content; max-width: min(340px, 92%);
+    opacity: 0; transform: scale(.6); transform-origin: 0 0;
+    transition: opacity .35s ease, transform .6s var(--ease-spring);
+  }
+  .bubble.is-on { opacity: 1; transform: scale(1); }
+  .bubble.is-off { opacity: 0; transform: scale(.96) translateY(-6px); transition: opacity .4s ease, transform .4s ease; }
+  .bubble__cursor { width: 29px; height: 30px; }
+  .bubble.is-on .bubble__cursor { animation: nudge 1.6s var(--ease-out) both; }
+  .bubble__box {
+    display: flex; flex-direction: column; gap: 4px;
+    margin: -4px 0 0 18px;
+    padding: 12px 26px 12px 20px;
+    border: 2.5px solid; border-radius: 2.5px 30px 30px 30px;
+    color: #fff;
+    filter: drop-shadow(5px 5px 6px rgba(42, 47, 45, .16));
+  }
+  .bubble__name { font-weight: 500; font-size: 16px; opacity: .9; }
+  .bubble__text { position: relative; font-size: 18px; line-height: 1.35; display: grid; }
+  .bubble__typed, .bubble__ghost { grid-area: 1 / 1; }
+  .bubble__ghost { visibility: hidden; }
+  .bubble__typed::after { content: ''; display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; background: currentColor; vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+  .bubble--orange .bubble__box { background: var(--orange-text); border-color: #a82a08; }
+  .bubble--green .bubble__box { background: var(--sage-text); border-color: var(--sage-deep); }
+  .bubble--grey .bubble__box { background: var(--ink-2); border-color: var(--ink); }
+
+  /* positions from Figma (hero 1728 x 494) */
+  .bubble--p0 { left: 8%; top: 46%; }
+  .bubble--p1 { left: 22%; top: 2%; }
+  .bubble--p2 { left: 36%; top: 38%; }
+
+  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes nudge { 0% { transform: translate(-14px, -10px); } 100% { transform: none; } }
+
+  /* no JS / reduced motion: show all comments, stacked */
+  :global(.no-js) .bubble { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .bubble { opacity: 1; transform: none; }
+    .bubble__typed { display: none; }
+    .bubble__ghost { visibility: visible; }
+  }
+
+  /* ---------- Sections: story first, then the case ---------- */
+  /* (wall spacing lives in PhotoBooth) */
+  .story, .lab-section { margin-bottom: clamp(110px, 12vw, 200px); }
+  .story { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; scroll-margin-top: 120px; }
+  .story:focus { outline: none; }
+  .story__title { max-width: 18ch; }
+  .story__lead { max-width: 54ch; font-size: 20px; }
+  .story__more { color: var(--ink-2); font-weight: 500; }
+  .story__arrow { display: inline-block; animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(5px); } }
+
+  /* end to end: a line runs from start to finish */
+  .e2e__line { display: block; position: relative; height: 3px; margin: .35em auto 0; width: 70%; background: var(--surface-2); border-radius: 2px; }
+  .e2e__line::before, .e2e__line::after { content: ''; position: absolute; top: 50%; width: 11px; height: 11px; margin-top: -5.5px; border-radius: 50%; background: var(--ink); }
+  .e2e__line::before { left: -4px; } .e2e__line::after { right: -4px; background: var(--orange); transform: scale(0); transition: transform .5s var(--ease-spring) 1.5s; }
+  .e2e__line i { position: absolute; inset: 0; background: var(--ink); border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform 1.2s var(--ease-out) .4s; }
+  .e2e.is-in .e2e__line i { transform: scaleX(1); }
+  .e2e.is-in .e2e__line::after { transform: scale(1); }
+
+  /* accessibility: a highlighter pass on the certification */
+  .cert__mark { color: inherit; background: linear-gradient(transparent 58%, color-mix(in srgb, var(--sage) 32%, transparent) 58%, color-mix(in srgb, var(--sage) 32%, transparent) 92%, transparent 92%) no-repeat 0 0 / 0% 100%; transition: background-size 1s var(--ease-out) .5s; padding: 0 .05em; }
+  .cert.is-in .cert__mark { background-size: 100% 100%; }
+
+  /* plot twist: "climber" crossed out by pen, "co-founder" handwritten next to it */
+  .plot__old { position: relative; color: var(--ink-2); white-space: nowrap; }
+  .plot__old::after { content: ''; position: absolute; left: -4px; right: -4px; top: 52%; height: .08em; background: var(--orange-text); border-radius: 3px; transform: scaleX(0) rotate(-3deg); transform-origin: left; transition: transform .5s cubic-bezier(.6,.1,.3,1) .7s; }
+  .plot__new { display: inline-block; font-family: 'Caveat', cursive; font-weight: 500; font-size: 1.3em; line-height: .8; color: var(--orange-text); transform: rotate(-4deg) translateY(.04em); clip-path: inset(-20% 100% -20% 0); transition: clip-path 1.1s cubic-bezier(.45,.05,.4,1) 1.3s; white-space: nowrap; }
+  .plot.is-in .plot__old::after { transform: scaleX(1) rotate(-3deg); }
+  .plot.is-in .plot__new { clip-path: inset(-20% -5% -20% 0); }
+
+  /* cases */
+  .secret-case { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: #111513; color: #f4f6f5; border-radius: var(--radius-card); overflow: hidden; text-decoration: none; min-height: 380px; text-align: left; }
+  .secret-case__text { display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: clamp(28px, 4vw, 64px); }
+  .secret-case__tags { font-style: italic; color: #9aa29e; }
+  .secret-case__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.2; }
+  .secret-case__sub { color: #c4cac7; max-width: 44ch; }
+  .secret-case__cta, .a11y__cta, .ale-card__cta { font-weight: 700; }
+  .secret-case__cover { display: block; min-height: 300px; }
+  .secret-case:focus-visible, .a11y:focus-visible, .ale-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
+
+  .a11y { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; text-align: left; text-decoration: none; background: var(--surface); border-radius: var(--radius-card); padding: clamp(28px, 4vw, 64px); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow .35s var(--ease-out); }
+  .a11y:hover { box-shadow: inset 0 0 0 2px var(--line); }
+  .a11y__stat { display: flex; align-items: baseline; gap: .15em; font-weight: 700; letter-spacing: -.04em; line-height: .9; }
+  .a11y__from { font-size: clamp(48px, 6vw, 100px); color: var(--line); }
+  .a11y__arrow { font-size: clamp(36px, 3.5vw, 64px); color: var(--ink-2); font-weight: 400; }
+  .a11y__to { font-size: clamp(88px, 11vw, 190px); color: var(--sage-text); }
+  .a11y__text { display: flex; flex-direction: column; gap: 14px; }
+  .a11y__title { font-size: var(--fs-h3); font-weight: 500; }
+
+  .ale-card { position: relative; display: block; width: 100%; margin-top: 12px; border-radius: var(--radius-card); overflow: hidden; text-decoration: none; color: #fff; text-align: left; }
+  .ale-card img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; transition: transform .9s var(--ease-out); }
+  .ale-card:hover img { transform: scale(1.03); }
+  .ale-card__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 72px 32px 28px; display: flex; flex-direction: column; gap: 12px; background: linear-gradient(to top, rgba(18,22,20,.88), rgba(18,22,20,0)); }
+  .ale-card__title { font-size: var(--fs-h3); font-weight: 500; }
+  .ale-card__facts { display: flex; flex-wrap: wrap; gap: 8px; font-size: 15px; }
+  .ale-card__facts span { background: rgba(255,255,255,.16); backdrop-filter: blur(8px); border-radius: 99px; padding: 5px 12px; }
+
+  /* Lab: tip, pour, spill, cards */
+  .lab-section { position: relative; overflow-x: clip; }
+  .lab-head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; position: relative; z-index: 2; }
+  .lab-head__title { display: inline-flex; align-items: flex-end; gap: .55em; padding-left: .9em; font-size: var(--fs-h1); font-weight: 500; }
+  .flask { position: relative; width: .9em; height: .9em; display: inline-block; }
+  .flask svg { width: 100%; height: 100%; overflow: visible; transform-origin: 19% 92%; transition: transform .7s cubic-bezier(.5,-0.3,.4,1.4); }
+  .flask__glass { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .flask__liquid { fill: var(--sage); transition: opacity .3s ease .9s; }
+  .flask__drop { position: absolute; left: -62%; top: 58%; width: 10px; height: 10px; border-radius: 50% 50% 50% 0; background: var(--sage); opacity: 0; transform: rotate(-45deg); }
+  .lab-stage { position: relative; margin-top: 24px; }
+  .spill { position: absolute; left: 50%; top: -10px; width: min(1400px, 110vw); height: calc(100% + 30px); transform: translateX(-50%); z-index: 0; clip-path: circle(0% at 45% 0%); transition: clip-path 1.3s cubic-bezier(.3,.7,.2,1) 1.1s; }
+  .spill path { fill: color-mix(in srgb, var(--sage) 22%, var(--bg)); }
+  .lab-stage :global(.lc) { position: relative; z-index: 1; }
+  .lab-section :global(.lc__card) { opacity: 0; translate: 0 60px; transition: transform .9s cubic-bezier(.22,.8,.24,1), opacity .6s ease, translate .9s var(--ease-out); }
+  .lab-section.is-poured .flask svg { transform: rotate(-88deg); }
+  .lab-section.is-poured .flask__liquid { opacity: 0; }
+  .lab-section.is-poured .flask__drop { animation: drop .8s cubic-bezier(.5,0,.9,.5) .55s 1 both; }
+  .lab-section.is-poured .spill { clip-path: circle(150% at 45% 0%); }
+  .lab-section.is-poured :global(.lc__card) { opacity: 1; translate: 0 0; }
+  .lab-section.is-poured :global(.lc__card[data-far]) { opacity: 0; }
+  .lab-section.is-poured :global(.lc__card:nth-child(1)) { transition-delay: 0s, 1.9s, 1.9s; }
+  .lab-section.is-poured :global(.lc__card:nth-child(2)) { transition-delay: 0s, 2.0s, 2.0s; }
+  .lab-section.is-poured :global(.lc__card:nth-child(3)) { transition-delay: 0s, 1.8s, 1.8s; }
+  .lab-section.is-poured :global(.lc__card:nth-child(4)) { transition-delay: 0s, 2.0s, 2.0s; }
+  .lab-section.is-poured :global(.lc__card:nth-child(5)) { transition-delay: 0s, 2.1s, 2.1s; }
+  .lab-section.is-settled :global(.lc__card) { transition-delay: 0s !important; }
+  @keyframes drop { 0% { opacity: 1; transform: translate(0, 0) rotate(-45deg) scale(1); } 100% { opacity: 0; transform: translate(-4px, 150px) rotate(-45deg) scale(1.6); } }
+  :global(.no-js) .lab-section :global(.lc__card) { opacity: 1; translate: none; }
+  :global(.no-js) .spill { clip-path: none; }
+
+  @media (max-width: 900px) {
+    .secret-case, .a11y { grid-template-columns: 1fr; }
+    .ale-card img { aspect-ratio: 4 / 5; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .plot__old::after { transform: scaleX(1) rotate(-3deg); transition: none; }
+    .plot__new { clip-path: none; transition: none; }
+    .story__arrow { animation: none; }
+    .e2e__line i { transform: none; transition: none; } .e2e__line::after { transform: none; transition: none; }
+    .cert__mark { background-size: 100% 100%; transition: none; }
+    .flask svg, .spill, .lab-section :global(.lc__card) { transition: none !important; }
+    .spill { clip-path: none; }
+    .lab-section :global(.lc__card) { opacity: 1; translate: none; }
+  }
+
+  /* ---------- Work ---------- */
+  .work { padding-bottom: clamp(80px, 8vw, 180px); scroll-margin-top: 120px; }
+  .work:focus { outline: none; }
+
+
+  @media (max-width: 1150px) {
+    .hero { grid-template-columns: 1fr; gap: 32px; min-height: 0; }
+    .quotes { min-height: 190px; }
+    .bubble--p0, .bubble--p1, .bubble--p2 { left: 0; top: 0; max-width: min(340px, 88vw); }
+  }
+  @media (max-width: 1150px) and (prefers-reduced-motion: reduce) {
+    .quotes { min-height: 0; }
+    .quotes__stage { position: static; display: flex; flex-direction: column; gap: 8px; }
+    .bubble { position: static; }
+  }
+</style>
+
+<script>
+  const bubbles = [...document.querySelectorAll('.bubble')];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  async function type(el, text) {
+    el.textContent = '';
+    for (const ch of text) {
+      el.textContent += ch;
+      await wait(ch === ' ' ? 45 : 32 + Math.random() * 30);
+    }
+  }
+
+  async function loop() {
+    let i = 0;
+    let visible = true;
+    document.addEventListener('visibilitychange', () => { visible = !document.hidden; });
+    while (true) {
+      if (!visible) { await wait(500); continue; }
+      const b = bubbles[i];
+      const typed = b.querySelector('.bubble__typed');
+      typed.textContent = '';
+      b.classList.remove('is-off');
+      b.classList.add('is-on');
+      await wait(450);
+      await type(typed, b.dataset.quote);
+      await wait(2600);
+      b.classList.add('is-off');
+      await wait(450);
+      b.classList.remove('is-on', 'is-off');
+      i = (i + 1) % bubbles.length;
+    }
+  }
+
+  if (bubbles.length && !reduce) loop();
+
+  // Lab: pour once when the section comes into view
+  const lab = document.querySelector('[data-lab]');
+  if (lab) {
+    const pour = () => { lab.classList.add('is-poured'); setTimeout(() => lab.classList.add('is-settled'), 3200); };
+    if (reduce || !('IntersectionObserver' in window)) { lab.classList.add('is-poured', 'is-settled'); }
+    else {
+      const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); pour(); } }, { threshold: 0.25 });
+      io.observe(lab);
+    }
+  }
+
+</script>

@@ -1,0 +1,185 @@
+---
+// Lab carousel: cards fanned in an arc, the active one straight in the middle.
+// Inspired by Google Labs' "Be the first to experiment". Without JS it's a plain horizontal scroll list.
+import { url } from '../lib/url.js';
+import { lab } from '../lib/projects.js';
+const { headingLevel = 3, start = 2 } = Astro.props;
+const H = `h${headingLevel}`;
+---
+<div class="lc" data-lc data-start={start} role="region" aria-roledescription="carousel" aria-label="Lab projects">
+  <div class="lc__viewport">
+    <ul class="lc__track" data-lc-track>
+      {lab.map((item, i) => {
+        const href = item.href ? (item.external ? item.href : url(item.href)) : null;
+        return (
+          <li class={`lc__card${href ? '' : ' lc__card--soon'}`} data-lc-card aria-roledescription="slide" aria-label={`${i + 1} of ${lab.length}`}>
+            <div class={`lc__media lc__media--${item.visual || 'image'}`}>
+              {item.visual === 'agents' && (
+                <div class="v-agents" aria-hidden="true">
+                  <span class="v-agents__dots"><i></i><i></i></span>
+                  <p>Monday report is ready.</p>
+                  <ol>
+                    <li>Inbox sorted into 4 folders</li>
+                    <li>Weekly numbers compared</li>
+                    <li>5 things waiting for you</li>
+                  </ol>
+                  <span class="v-agents__chip">Nothing sent without your OK</span>
+                </div>
+              )}
+              {item.visual === 'pdf' && (
+                <div class="v-pdf" aria-hidden="true">
+                  <span class="v-pdf__chip v-pdf__chip--a">Heading 1</span>
+                  <span class="v-pdf__chip v-pdf__chip--b">Reading order</span>
+                  <p class="v-pdf__title">document.pdf<br /><b>accessible</b></p>
+                  <span class="v-pdf__chip v-pdf__chip--c">Alt text</span>
+                  <span class="v-pdf__chip v-pdf__chip--d">PDF/UA check ✓</span>
+                </div>
+              )}
+              {item.visual === 'soon' && (
+                <div class="v-soon" aria-hidden="true"><p>Coming<br />soon</p></div>
+              )}
+              {!item.visual && <img src={url(item.image)} alt={item.alt} loading="lazy" width="800" height="500" />}
+            </div>
+            <p class="lc__kind">{item.kind}</p>
+            <H class="lc__title">
+              {href
+                ? <a class="lc__link" href={href} {...(item.external ? { target: '_blank', rel: 'noopener' } : {})}>{item.title}{item.external && <span class="sr-only"> (opens in a new tab)</span>}</a>
+                : item.title}
+            </H>
+            <p class="lc__summary">{item.summary}</p>
+            {href && <span class="lc__cta" aria-hidden="true">{item.cta} <span class="lc__cta-arrow">→</span></span>}
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+  <div class="lc__controls">
+    <button class="lc__btn" type="button" data-lc-prev aria-label="Previous project">‹</button>
+    <button class="lc__btn" type="button" data-lc-next aria-label="Next project">›</button>
+  </div>
+  <p class="sr-only" aria-live="polite" data-lc-status></p>
+</div>
+
+<style>
+  .lc { --w: clamp(270px, 28vw, 400px); --gap: clamp(16px, 2vw, 32px); position: relative; }
+  .lc__viewport { position: relative; overflow-x: clip; overflow-y: visible; padding: 16px 0 40px; }
+  .lc__track { list-style: none; margin: 0; padding: 0; position: relative; height: var(--h, 600px); }
+
+  .lc__card {
+    position: absolute; left: 50%; top: 0; width: var(--w); margin-left: calc(var(--w) / -2);
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 10px 10px 24px;
+    background: #fff; border-radius: 36px;
+    box-shadow: 0 1px 0 rgba(0,0,0,.02), 0 18px 40px -24px rgba(27,32,30,.28);
+        transition: transform .9s cubic-bezier(.22,.8,.24,1), opacity .5s ease, box-shadow .35s var(--ease-out);
+  }
+  .lc__card:hover { box-shadow: inset 0 0 0 2px var(--line), 0 18px 40px -24px rgba(27,32,30,.28); }
+  .lc__card:has(.lc__link:focus-visible) { outline: 3px solid var(--focus); outline-offset: 4px; }
+  .lc__card[data-far] { opacity: 0; pointer-events: none; }
+
+  .lc__kind, .lc__title, .lc__summary, .lc__cta { padding-left: 14px; padding-right: 14px; }
+  .lc__media { aspect-ratio: 8 / 6; border-radius: 28px; overflow: hidden; background: var(--surface-2); margin-bottom: 12px; }
+  .lc__media img { width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform .8s var(--ease-out); }
+  .lc__card:hover .lc__media img { transform: scale(1.04); }
+  .lc__kind { font-style: italic; color: var(--ink-2); font-size: 15px; }
+  .lc__title { font-size: 24px; font-weight: 500; line-height: 1.2; }
+  .lc__link { text-decoration: none; }
+  .lc__link:focus-visible { outline: none; }
+  .lc__link::after { content: ''; position: absolute; inset: 0; border-radius: 36px; z-index: 1; }
+  .lc__summary { color: var(--ink-2); font-size: 16px; line-height: 1.45; }
+  .lc__cta { margin-top: auto; padding-top: 12px; font-weight: 500; font-size: 15px; }
+  .lc__cta-arrow { display: inline-block; transition: transform .4s var(--ease-spring); }
+  .lc__card:hover .lc__cta-arrow { transform: translateX(4px); }
+  .lc__card--soon { background: #fff; }
+
+  /* drawn visuals */
+  .v-agents { height: 100%; background: var(--dark); color: #f4f6f5; padding: 22px; display: flex; flex-direction: column; gap: 10px; font-size: 15px;
+    background-image: radial-gradient(rgba(255,255,255,.08) 1px, transparent 1px); background-size: 10px 10px; }
+  .v-agents__dots { display: inline-flex; gap: 4px; background: #fff; border-radius: 99px; padding: 5px 8px; width: max-content; }
+  .v-agents__dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--dark); }
+  .v-agents ol { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 4px; }
+  .v-agents__chip { margin-top: auto; align-self: flex-start; background: var(--mint, #9fe3c0); color: var(--dark); border-radius: 99px; padding: 4px 12px; font-size: 13px; font-weight: 700; }
+
+  .v-pdf { position: relative; height: 100%; display: grid; place-items: center;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--sage-text) 18%, var(--surface-2)), var(--surface-2) 60%, color-mix(in srgb, var(--orange) 14%, var(--surface-2))); }
+  .v-pdf__title { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.1; text-align: center; color: var(--ink); }
+  .v-pdf__title b { font-weight: 700; color: var(--sage-text); }
+  .v-pdf__chip { position: absolute; background: #fff; color: var(--ink); border-radius: 10px; padding: 4px 10px; font-size: 12px; box-shadow: 0 6px 14px -8px rgba(0,0,0,.3); }
+  .v-pdf__chip--a { left: 10%; top: 14%; transform: rotate(-4deg); }
+  .v-pdf__chip--b { right: 8%; top: 22%; transform: rotate(3deg); }
+  .v-pdf__chip--c { left: 14%; bottom: 18%; transform: rotate(3deg); }
+  .v-pdf__chip--d { right: 10%; bottom: 12%; transform: rotate(-3deg); }
+
+  .v-soon { height: 100%; display: grid; place-items: center; background: repeating-linear-gradient(-45deg, var(--surface-2) 0 14px, transparent 14px 28px); }
+  .v-soon p { font-size: 30px; font-weight: 500; text-align: center; line-height: 1.05; color: var(--ink-2); }
+
+  /* controls (Figma-like round buttons) */
+  .lc__controls { display: flex; justify-content: center; gap: 16px; }
+  .lc__btn {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 2px solid var(--line); background: transparent; color: var(--ink);
+    font: 500 28px/1 'Satoshi', sans-serif; cursor: pointer;
+    transition: background-color .3s var(--ease-out), transform .4s var(--ease-spring);
+  }
+  .lc__btn:hover { background: var(--surface-2); transform: scale(1.06); }
+
+  /* no JS: plain scroll list */
+  :global(.no-js) .lc__track { display: flex; gap: 24px; overflow-x: auto; height: auto; padding-bottom: 16px; }
+  :global(.no-js) .lc__card { position: relative; left: auto; margin: 0; flex: 0 0 var(--w); }
+  :global(.no-js) .lc__controls { display: none; }
+
+  @media (prefers-reduced-motion: reduce) { .lc__card { transition: none; } }
+  @media (max-width: 600px) { .lc { --w: min(78vw, 320px); } .lc__card { border-radius: 30px; } .lc__link::after { border-radius: 30px; } }
+</style>
+
+<script>
+  for (const root of document.querySelectorAll('[data-lc]')) {
+    const cards = [...root.querySelectorAll('[data-lc-card]')];
+    const track = root.querySelector('[data-lc-track]');
+    const status = root.querySelector('[data-lc-status]');
+    let active = Math.min(Number(root.dataset.start) || 0, cards.length - 1);
+
+    // Cards sit on a big wheel: each one rotates around the same point far below the track,
+    // so they travel along an arc (like labs.google) instead of sliding sideways.
+    const layout = (announce = false) => {
+      const w = cards[0].offsetWidth;
+      const gap = parseFloat(getComputedStyle(root).getPropertyValue('--gap')) || 24;
+      const R = Math.max(1400, w * 4.5);                 // wheel radius, from the card's top
+      const step = ((w + gap) / R) * (180 / Math.PI);    // degrees between two cards
+      let h = 0;
+      cards.forEach((c, i) => {
+        const o = i - active;
+        const a = Math.abs(o);
+        c.style.transformOrigin = `50% ${R}px`;
+        c.style.transform = `rotate(${o * step}deg)`;
+        c.style.zIndex = String(10 - a);
+        c.toggleAttribute('data-far', a > 2);
+        c.inert = a > 2;
+        if (a <= 1) h = Math.max(h, c.offsetHeight + R * (1 - Math.cos((a * step * Math.PI) / 180)));
+      });
+      track.style.setProperty('--h', `${h + 20}px`);
+      if (announce) status.textContent = `${cards[active].querySelector('.lc__title').textContent.trim()}, ${active + 1} of ${cards.length}`;
+    };
+    const go = (i) => { active = (i + cards.length) % cards.length; layout(true); };
+
+    root.querySelector('[data-lc-prev]').addEventListener('click', () => go(active - 1));
+    root.querySelector('[data-lc-next]').addEventListener('click', () => go(active + 1));
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(active - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(active + 1); }
+    });
+    // keyboard users: a focused card comes to the middle
+    cards.forEach((c, i) => c.addEventListener('focusin', () => { if (i !== active) go(i); }));
+    // swipe
+    let sx = null;
+    track.addEventListener('pointerdown', (e) => { sx = e.clientX; });
+    track.addEventListener('pointerup', (e) => {
+      if (sx === null) return;
+      const dx = e.clientX - sx; sx = null;
+      if (Math.abs(dx) > 50) go(active + (dx < 0 ? 1 : -1));
+    });
+    addEventListener('resize', () => layout());
+    document.fonts?.ready.then(() => layout());
+    layout();
+  }
+</script>

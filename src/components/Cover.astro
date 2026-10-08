@@ -1,0 +1,97 @@
+---
+// Typographic covers for projects without shareable screenshots.
+// "aon": black-on-black text revealed by a torch that follows the pointer.
+const { kind, size = 'card' } = Astro.props;
+---
+{kind === 'sky' && (
+  <div class={`cover cover--sky cover--${size}`} aria-hidden="true">
+    <span class="cover__eyebrow">UNI EN 301 549 · 7 touchpoints</span>
+    <span class="cover__big"><span class="cover__from">50%</span><span class="cover__arrow">→</span><span class="cover__to">85%</span></span>
+    <span class="cover__caption">accessibility compliance</span>
+  </div>
+)}
+{kind === 'aon' && (
+  <div class={`cover cover--aon cover--${size}`} data-torch aria-hidden="true">
+    <div class="torch__layer torch__layer--dark">
+      <span class="cover__big">Coming soon</span>
+      <span class="cover__caption">Let's talk about it in person</span>
+    </div>
+    <div class="torch__layer torch__layer--lit">
+      <span class="cover__big">Coming soon</span>
+      <span class="cover__caption">Let's talk about it in person</span>
+    </div>
+  </div>
+)}
+
+{kind === 'nda' && (
+  <div class={`cover cover--aon cover--nda cover--${size}`} data-torch aria-hidden="true">
+    {['dark', 'lit'].map((l) => (
+      <div class={`torch__layer torch__layer--${l} nda`}>
+        <div class="nda__ui">
+          <span class="nda__bar"></span>
+          <span class="nda__side"><i></i><i></i><i></i><i></i></span>
+          <span class="nda__main"><b></b><b class="w60"></b><span class="nda__cards"><em></em><em></em><em></em></span><b class="w80"></b><b class="w40"></b></span>
+        </div>
+        <span class="nda__stamp">NDA</span>
+      </div>
+    ))}
+  </div>
+)}
+
+<style>
+  .cover {
+    position: relative; width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .3em;
+    text-align: center; overflow: hidden;
+    font-size: clamp(12px, 1.4vw, 20px);
+  }
+  .cover--hero { font-size: clamp(14px, 2.2vw, 30px); }
+  .cover__big { font-weight: 700; font-size: 3.4em; line-height: 1; letter-spacing: -.02em; }
+  .cover__eyebrow, .cover__caption { font-size: 1em; letter-spacing: .04em; }
+  .cover__eyebrow { text-transform: uppercase; font-weight: 700; opacity: .8; }
+
+  /* Sky */
+  .cover--sky {
+    color: #fff;
+    background: radial-gradient(120% 120% at 20% 10%, #2f5d8a 0%, #13233a 55%, #0b1220 100%);
+  }
+  .cover--sky .cover__big { display: inline-flex; gap: .25em; align-items: baseline; }
+  .cover__from { opacity: .55; font-size: .6em; }
+  .cover__arrow { font-weight: 400; opacity: .7; font-size: .6em; }
+  .cover__to { background: linear-gradient(90deg, #aee7ca, #7cecfc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  /* Aon: torch */
+  .cover--aon { background: #111513; color: #1f2523; --mx: 50%; --my: 50%; }
+  .torch__layer { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .3em; }
+  .torch__layer--lit {
+    color: #f4f6f5;
+    -webkit-mask-image: radial-gradient(circle 9em at var(--mx) var(--my), #000 0%, rgba(0,0,0,.35) 45%, transparent 75%);
+            mask-image: radial-gradient(circle 9em at var(--mx) var(--my), #000 0%, rgba(0,0,0,.35) 45%, transparent 75%);
+    background: radial-gradient(circle 11em at var(--mx) var(--my), rgba(255, 245, 220, .10), transparent 70%);
+  }
+  /* no pointer: the torch wanders on its own */
+  @media (hover: none) {
+    .cover--aon .torch__layer--lit { animation: wander 7s ease-in-out infinite alternate; }
+  }
+  @keyframes wander {
+    0% { --mx: 25%; --my: 40%; } 50% { --mx: 70%; --my: 60%; } 100% { --mx: 45%; --my: 35%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cover--aon .torch__layer--lit { -webkit-mask-image: none; mask-image: none; animation: none; }
+  }
+
+  /* NDA cover: a blurred, generic product UI that only the torch can light up */
+  .nda { padding: 8%; }
+  .nda__ui { width: 100%; height: 100%; display: grid; grid-template-columns: 22% 1fr; grid-template-rows: 12% 1fr; gap: 6%; filter: blur(1.2px); }
+  .nda__bar { grid-column: 1 / -1; border-radius: 8px; background: currentColor; opacity: .5; }
+  .nda__side { display: flex; flex-direction: column; gap: 12%; }
+  .nda__side i, .nda__main b, .nda__cards em { display: block; background: currentColor; border-radius: 6px; }
+  .nda__side i { height: 9%; opacity: .45; }
+  .nda__main { display: flex; flex-direction: column; gap: 7%; }
+  .nda__main b { height: 7%; width: 90%; opacity: .55; }
+  .nda__main .w60 { width: 60%; } .nda__main .w80 { width: 80%; } .nda__main .w40 { width: 40%; }
+  .nda__cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6%; height: 34%; }
+  .nda__cards em { height: 100%; opacity: .35; border-radius: 12px; }
+  .nda__stamp { position: absolute; right: 7%; bottom: 8%; border: 2px solid currentColor; border-radius: 8px; padding: .15em .5em; font-weight: 900; letter-spacing: .12em; transform: rotate(-8deg); opacity: .8; }
+  .torch__layer--lit .nda__stamp { color: var(--orange); }
+</style>

@@ -1,0 +1,19 @@
+---
+// Figma: case study header (image block 1328x520 + intro + role facts)
+const { tags = [], title, facts = [] } = Astro.props;
+---
+<header class="case-hero">
+  <div class="case-hero__media reveal">
+    <slot name="media" />
+  </div>
+  <div class="case-hero__intro">
+    <div>
+      <p class="tags">{tags.join(' • ')}</p>
+      <h1 class="h1">{title}</h1>
+      <div class="lead"><slot /></div>
+    </div>
+    <dl class="facts">
+      {facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+    </dl>
+  </div>
+</header>

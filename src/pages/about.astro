@@ -1,0 +1,213 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/url.js';
+import MySetup from '../components/MySetup.astro';
+
+const jobs = [
+  { years: '2025 - Now', role: 'Co-founder & Product Design Lead', company: 'Alé', text: 'Co-founded an app for climbers with Marta. I lead <b>product design</b> in a team of four, from discovery to the MVP launching in December 2026.' },
+  { years: '2024 - Now', role: 'UX/UI Designer', company: 'Capgemini MADE', text: '<b>Accessibility</b> for banks and media brands, from audits to developer training. <b>End-to-end product design</b> as sole designer, and a <b>multi-brand design system</b>.' },
+  { years: '2023 - 2024', role: 'UX/UI Designer', company: 'Frog, part of Capgemini', text: 'Journeys and data-heavy interfaces for <b>banking platforms</b> like Intesa Sanpaolo, user interviews for Fideuram and <b>WCAG audits</b>.' },
+  { years: '2018 - 2022', role: 'Art Director & Set Designer', company: 'Freelance', text: 'Sets and <b>visual storytelling</b> for ads and music videos (Nivea, Bosch, Vodafone). Excellent training in handling chaos with a smile.' },
+];
+
+const tools = [
+  ['Figma', 'tool-figma.png'], ['Adobe Suite', 'tool-adobe.png'], ['Notion', 'tool-notion.png'], ['Perplexity', 'tool-perplexity.png'],
+  ['Google AI Studio', 'tool-aistudio.png'], ['Stark', 'tool-stark.png'], ['Siteimprove', 'tool-siteimprove.png'],
+];
+---
+<Base title="About · Francesca Folkmer" description="From set design to design systems: who I am and how I work.">
+  <div class="container about">
+    <section class="intro" aria-labelledby="about-title">
+      <div class="intro__text reveal">
+        <h1 id="about-title" class="h2">Product Designer</h1>
+        <p class="intro__sub">From set design to design systems: same obsession with details, fewer power cables.</p>
+        <div class="prose">
+          <p><b>My journey didn't start with pixels, but with spaces.</b> As a set designer and art director I learned that every detail has to serve the story, and every structure has to actually stand up.</p>
+          <p>Then I moved to digital product design and brought <b>the same rigour</b> with me. Today I work on accessibility, design systems and AI-assisted workflows. I'm CPACC-certified, so for me accessibility isn't the final check: it's where I start.</p>
+        </div>
+      </div>
+      <div class="call" data-call aria-hidden="true">
+        <div class="call__tile">
+          <img class="call__photo" src={url('/img/video-still.png')} alt="" />
+          <span class="call__initials">FF</span>
+          <span class="call__controls">
+            <span class="call__btn"><img src={url('/img/mic-slash.svg')} alt="" /></span>
+            <span class="call__btn call__btn--cam"><img src={url('/img/camera.svg')} alt="" /></span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="jobs" aria-labelledby="jobs-title">
+      <h2 id="jobs-title" class="sr-only">Experience</h2>
+      <ol class="jobs__list">
+        {jobs.map((j) => (
+          <li class="job reveal">
+            <p class="job__years">{j.years}</p>
+            <div class="job__body">
+              <h3 class="job__head"><span class="job__role">{j.role}</span> <span class="job__company">{j.company}</span></h3>
+              <p set:html={j.text} />
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="why reveal" aria-labelledby="why-title">
+      <h2 id="why-title" class="h2">Why me?</h2>
+      <div class="why__card">
+        <p>I sit where big systems meet real people. My work is a balance of <b>accessibility</b>, <b>systems that scale</b> and <b>AI used where it actually saves time</b>.</p>
+        <p>I don't just deliver screens: I help teams build <b>the way they work</b>, so the product can keep growing without falling apart.</p>
+      </div>
+    </section>
+
+    <section class="skills" aria-labelledby="skills-title">
+      <h2 id="skills-title" class="h2 reveal">What I bring</h2>
+      <div class="skills__grid">
+        <div class="skill reveal">
+          <h3>Accessibility</h3>
+          <p><b>CPACC-certified</b>, WCAG 2.2 and the European Accessibility Act in daily practice. Audits, annotations, focus order and training, so accessibility is part of the process, not a final check.</p>
+        </div>
+        <div class="skill reveal">
+          <h3>AI in my workflow</h3>
+          <p>Research synthesis, benchmarking and prototyping <b>up to working code</b>. Not to replace thinking: to have more time for it.</p>
+        </div>
+        <div class="skill reveal">
+          <h3>Design systems</h3>
+          <p>Tokens, variables and multi-brand libraries, with the <b>documentation and governance</b> that keep them alive after launch.</p>
+        </div>
+      </div>
+    </section>
+
+    <MySetup />
+
+    <section class="outdoor" aria-labelledby="outdoor-title">
+      <div class="stack reveal" aria-hidden="true" data-stack>
+        <img class="stack__p stack__p--0" src={url('/img/hiker-1.png')} alt="" />
+        <img class="stack__p stack__p--1" src={url('/img/climbing.png')} alt="" />
+        <img class="stack__p stack__p--2" src={url('/img/alpinist.png')} alt="" />
+        <img class="stack__p stack__p--3" src={url('/img/hiker-2.png')} alt="" />
+      </div>
+      <div class="reveal">
+        <h2 id="outdoor-title" class="h2">Beyond the screen</h2>
+        <p>When I'm not fixing auto-layouts or checking contrast ratios, you'll probably find me in the mountains: climbing, trekking or just walking in the woods. <b>The outdoors is where I recharge.</b> It's also why I ended up building an app for climbers.</p>
+      </div>
+    </section>
+
+  </div>
+</Base>
+
+<style>
+  .about { display: flex; flex-direction: column; gap: clamp(80px, 10vw, 200px); padding: clamp(24px, 4vw, 53px) var(--gutter) clamp(80px, 10vw, 200px); }
+
+  .intro { display: grid; grid-template-columns: minmax(0, 653fr) minmax(0, 567fr); gap: clamp(32px, 6vw, 108px); align-items: center; }
+  .intro__text { display: flex; flex-direction: column; gap: 22px; }
+  .intro__sub { font-style: italic; }
+
+  /* Figma "Foto camera": a video call tile that grows from the initials to the full picture */
+  .call { display: grid; place-items: center; }
+  .call__tile {
+    position: relative; overflow: hidden;
+    width: 48%; aspect-ratio: 475 / 264; border-radius: 12px;
+    background: var(--ink);
+    opacity: 0;
+    transition: width 1s var(--ease-spring), opacity .4s ease, box-shadow .4s ease;
+  }
+  .call__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.08); transition: opacity .6s ease .7s, transform 1.2s var(--ease-out) .7s; }
+  .call__tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 80%, rgba(0,0,0,.5)); }
+  .call__initials {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 22%; aspect-ratio: 1; border-radius: 50%; border: 2px solid #f4f6f5;
+    display: grid; place-items: center; color: #f4f6f5; font-weight: 700; font-size: clamp(14px, 1.4vw, 22px);
+    transition: opacity .4s ease .6s;
+  }
+  .call__controls { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; z-index: 1; }
+  .call__btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid #fff; display: grid; place-items: center; font-size: 14px; color: #fff; transition: background-color .3s ease, transform .3s var(--ease-spring); }
+  .call__btn img { height: 16px; width: auto; }
+  .call__btn--cam { background: var(--orange-text); border-color: var(--orange-text); }
+  .call.is-live .call__tile { width: 100%; opacity: 1; box-shadow: 0 20px 50px rgba(42,47,45,.18); }
+  .call.is-live .call__photo { opacity: 1; transform: none; }
+  .call.is-live .call__initials { opacity: 0; }
+  .call.is-live .call__btn--cam { background: transparent; border-color: #fff; }
+  .call:hover .call__btn { transform: translateY(-3px); }
+  :global(.no-js) .call__tile { width: 100%; opacity: 1; }
+  :global(.no-js) .call__photo { opacity: 1; }
+
+  /* Experience list */
+  .jobs__list { list-style: none; padding: 0 clamp(0px, 9vw, 164px); }
+  .job { display: grid; grid-template-columns: 180px 1fr; gap: clamp(16px, 5vw, 80px); align-items: center; padding: 20px 0; }
+  .job + .job { border-top: 1px solid var(--line); }
+  .job__years { font-size: 24px; font-weight: 500; }
+  .job__head { display: flex; flex-wrap: wrap; column-gap: 32px; row-gap: 4px; font-size: 24px; margin-bottom: 8px; }
+  .job__role { font-weight: 500; }
+  .job__company { font-weight: 400; color: var(--ink-2); }
+  .job__body p { line-height: 1.5; }
+
+  .why { max-width: 707px; display: flex; flex-direction: column; gap: 10px; }
+  .why__card { background: var(--surface-2); border-radius: var(--radius-l); padding: 32px; display: flex; flex-direction: column; gap: 1em; }
+
+  .skills { display: flex; flex-direction: column; gap: 32px; }
+  .skills__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .skill { background: var(--surface); border-radius: var(--radius-l); padding: 24px; display: flex; flex-direction: column; gap: 10px; transition: transform .5s var(--ease-spring), background-color .3s ease; }
+  .skill:hover { transform: translateY(-4px); background: var(--surface-2); }
+  .skill h3 { font-size: 20px; font-weight: 700; }
+  .tools { list-style: none; padding: 0; display: flex; flex-wrap: wrap; row-gap: 12px; }
+  .tools li { display: flex; align-items: center; gap: 16px; font-size: 20px; padding: 12px 20px; }
+  .tools li + li { border-left: 1px solid var(--ink); }
+  .tools img { width: 24px; height: 24px; object-fit: contain; }
+
+  /* Figma "Pics hiker": stacked photos that fan out */
+  .outdoor { display: grid; grid-template-columns: minmax(0, 578fr) minmax(0, 616fr); gap: clamp(32px, 7vw, 134px); align-items: center; }
+  .outdoor h2 { margin-bottom: 16px; }
+  .stack { position: relative; aspect-ratio: 578 / 305; }
+  .stack__p {
+    position: absolute; left: 22%; top: 18%; width: 52%; aspect-ratio: 4 / 3; object-fit: cover;
+    border-radius: 11px; box-shadow: 0 6px 24px rgba(42,47,45,.18);
+    transition: transform .9s var(--ease-spring);
+  }
+  .stack__p--0 { transform: rotate(3.7deg); }
+  .stack__p--1 { transform: rotate(-1deg); }
+  .stack__p--2 { transform: rotate(5.7deg); }
+  .stack__p--3 { transform: rotate(-7.9deg); object-position: bottom; }
+  .stack.is-in .stack__p--0, .stack:hover .stack__p--0 { transform: translate(-44%, -8%) rotate(3.7deg); }
+  .stack.is-in .stack__p--1, .stack:hover .stack__p--1 { transform: translate(-2%, -30%) rotate(-3deg); }
+  .stack.is-in .stack__p--2, .stack:hover .stack__p--2 { transform: translate(46%, -12%) rotate(5.7deg); }
+  .stack.is-in .stack__p--3, .stack:hover .stack__p--3 { transform: translate(0, 20%) rotate(-7.9deg); }
+  .stack.is-in.is-rest .stack__p { transition-duration: 1.2s; }
+  .stack.is-in.is-rest:not(:hover) .stack__p--0 { transform: rotate(3.7deg); }
+  .stack.is-in.is-rest:not(:hover) .stack__p--1 { transform: rotate(-1deg); }
+  .stack.is-in.is-rest:not(:hover) .stack__p--2 { transform: rotate(5.7deg); }
+  .stack.is-in.is-rest:not(:hover) .stack__p--3 { transform: rotate(-7.9deg); }
+
+  .cv { text-align: center; }
+
+  @media (max-width: 900px) {
+    .intro, .outdoor { grid-template-columns: 1fr; }
+    .jobs__list { padding: 0; }
+    .job { grid-template-columns: 1fr; gap: 4px; }
+    .job__years { font-size: 18px; color: var(--ink-2); }
+    .job__head { font-size: 20px; column-gap: 12px; }
+    .skills__grid { grid-template-columns: 1fr; }
+    .tools li { font-size: 16px; padding: 8px 12px; }
+    .stack { margin: 40px 10% 20px; }
+  }
+</style>
+
+<script>
+  // Video call tile: goes "live" when it scrolls into view
+  const call = document.querySelector('[data-call]');
+  if (call) {
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setTimeout(() => call.classList.add('is-live'), 300); io.disconnect(); }
+    }, { threshold: 0.4 });
+    io.observe(call);
+  }
+  // Photo stack: fans out once on scroll, then settles back (hover fans it out again)
+  const stack = document.querySelector('[data-stack]');
+  if (stack) {
+    const io2 = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setTimeout(() => stack.classList.add('is-rest'), 1800); io2.disconnect(); }
+    }, { threshold: 0.5 });
+    io2.observe(stack);
+  }
+</script>
