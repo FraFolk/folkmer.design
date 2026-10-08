@@ -4,21 +4,25 @@
 // For now strokes live in this browser; `store` is the single place to plug in a shared backend later.
 import Icon from './Icon.astro';
 const brushes = [
-  { id: 'pen', label: 'Pen', size: 3, alpha: 1 },
-  { id: 'marker', label: 'Marker', size: 9, alpha: 1 },
-  { id: 'highlighter', label: 'Highlighter', size: 22, alpha: .35 },
+  { id: 'pencil', label: 'Pencil', size: 3, alpha: 1 },
+  { id: 'marker', label: 'Marker', size: 10, alpha: 1 },
+  { id: 'highlighter', label: 'Highlighter', size: 24, alpha: .35 },
+  { id: 'eraser', label: 'Eraser (only your own lines)', size: 24, alpha: 1 },
 ];
 const colours = [
-  { id: 'ink', label: 'Ink', value: '#2a2f2d' },
-  { id: 'orange', label: 'Orange', value: '#d4380f' },
-  { id: 'sage', label: 'Sage', value: '#5e7663' },
-  { id: 'forest', label: 'Forest', value: '#405e47' },
-  { id: 'sky', label: 'Blue', value: '#2f5d8a' },
+  { id: 'black', label: 'Black', value: '#1f1f1f' },
+  { id: 'red', label: 'Red', value: '#e5533a' },
+  { id: 'orange', label: 'Orange', value: '#f2a45a' },
+  { id: 'yellow', label: 'Yellow', value: '#fccc5a' },
+  { id: 'green', label: 'Green', value: '#7dcf78' },
+  { id: 'blue', label: 'Blue', value: '#5aa9f5' },
+  { id: 'purple', label: 'Purple', value: '#8452f0' },
+  { id: 'white', label: 'White', value: '#ffffff' },
 ];
 ---
 <section class="wall container" aria-labelledby="wall-title">
   <h2 id="wall-title" class="h2 wall__title">You scrolled all the way down.<br />Most people don't.</h2>
-  <p class="wall__sub">So leave your mark: draw something on the wall. Nobody can erase what you draw, and you can't erase theirs.</p>
+  <p class="wall__sub">So leave your mark: draw something on the wall.</p>
 
   <div class="board" data-board>
     <canvas class="board__canvas" data-board-canvas role="img" aria-label="A shared drawing wall. Visitors' doodles appear here."></canvas>
@@ -27,8 +31,13 @@ const colours = [
     <div class="board__tools" role="toolbar" aria-label="Drawing tools">
       <div class="board__group" role="radiogroup" aria-label="Brush">
         {brushes.map((b, i) => (
-          <button type="button" class="tool" role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-brush={b.id} data-size={b.size} data-alpha={b.alpha}>
-            <span class="tool__dot" style={`--d:${Math.min(b.size + 4, 20)}px; opacity:${b.alpha === 1 ? 1 : .55}`} aria-hidden="true"></span>
+          <button type="button" class={`tool tool--${b.id}`} role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-brush={b.id} data-size={b.size} data-alpha={b.alpha}>
+            <svg viewBox="0 0 24 56" width="24" height="56" aria-hidden="true">
+              {b.id === 'pencil' && <g><path d="M7 56V20l5-14 5 14v36z" fill="#fff" stroke="#2a2f2d" stroke-width="1.5"/><path d="M9.4 13.2 12 6l2.6 7.2z" class="tip"/><path d="M7 20h10" stroke="#2a2f2d" stroke-width="1.2"/></g>}
+              {b.id === 'marker' && <g><path d="M6 56V22h12v34z" fill="#fff" stroke="#2a2f2d" stroke-width="1.5"/><path d="M8 22v-8h8v8" fill="#fff" stroke="#2a2f2d" stroke-width="1.5"/><path d="M9.5 14l1-6h3l1 6z" class="tip"/></g>}
+              {b.id === 'highlighter' && <g><path d="M5 56V24h14v32z" fill="#fff" stroke="#2a2f2d" stroke-width="1.5"/><path d="M7 24v-9h10v9" fill="#fff" stroke="#2a2f2d" stroke-width="1.5"/><path d="M8 15V8l8-3v10z" class="tip" opacity=".7"/></g>}
+              {b.id === 'eraser' && <g><path d="M6 56V18h12v38z" fill="#fff" stroke="#2a2f2d" stroke-width="1.5"/><path d="M6 18v-8a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v8z" fill="#f2b6c4" stroke="#2a2f2d" stroke-width="1.5"/><path d="M6 26h12M6 30h12" stroke="#2a2f2d" stroke-width="1.2"/></g>}
+            </svg>
             <span class="sr-only">{b.label}</span>
           </button>
         ))}
@@ -48,7 +57,6 @@ const colours = [
       </button>
     </div>
   </div>
-  <p class="board__note">Coming soon: the wall goes live and you'll see everyone's doodles. For now, what you draw stays on your screen.</p>
 </section>
 
 <style>
@@ -57,7 +65,7 @@ const colours = [
 
   .board {
     position: relative; width: 100%; margin-top: 32px; aspect-ratio: 16 / 9; min-height: 380px;
-    border-radius: var(--radius-card); overflow: hidden;
+    border-radius: 10px; overflow: hidden;
     background-color: #fff;
     background-image: radial-gradient(circle, #cfd5d2 1px, transparent 1.2px);
     background-size: 22px 22px; background-position: 11px 11px;
@@ -70,19 +78,27 @@ const colours = [
   .board__tools {
     position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%);
     display: flex; align-items: center; gap: 6px; padding: 6px 8px;
-    background: #fff; border-radius: 16px;
+    background: #fff; border-radius: 12px; padding-top: 0; padding-bottom: 0; height: 68px;
     box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 12px 28px -12px rgba(27,32,30,.35);
   }
   .board__group { display: flex; align-items: center; gap: 4px; }
   .board__sep { width: 1px; height: 24px; background: var(--line); margin: 0 4px; }
   .tool { width: 40px; height: 40px; border: 0; border-radius: 10px; background: transparent; color: var(--ink); display: grid; place-items: center; cursor: pointer; }
+  .tool[data-brush] { height: 64px; width: 38px; align-items: end; padding: 0; border-radius: 6px; overflow: hidden; }
+  .tool[data-brush] svg { transform: translateY(18px); transition: transform .3s var(--ease-spring); }
+  .tool[data-brush]:hover { background: transparent; }
+  .tool[data-brush]:hover svg { transform: translateY(13px); }
+  .tool[data-brush][aria-checked='true'] { background: transparent; }
+  .tool[data-brush][aria-checked="true"] svg { transform: translateY(6px); }
+  .tool .tip { fill: var(--pen, #1f1f1f); }
   .tool:hover { background: var(--surface); }
   .tool[aria-checked='true'] { background: var(--surface-2); }
   .tool:disabled { opacity: .35; cursor: default; background: transparent; }
-  .tool__dot { width: var(--d); height: var(--d); border-radius: 50%; background: var(--ink); }
   .swatch { width: 28px; height: 28px; border-radius: 50%; border: 0; background: var(--c); cursor: pointer; box-shadow: 0 0 0 2px #fff, 0 0 0 3px transparent; transition: box-shadow .2s, transform .3s var(--ease-spring); }
   .swatch:hover { transform: scale(1.1); }
-  .swatch[aria-checked='true'] { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--c); }
+  .swatch[aria-checked='true'] { box-shadow: 0 0 0 2px #fff, 0 0 0 4.5px #8452f0; }
+  .swatch[data-colour='#ffffff'] { box-shadow: inset 0 0 0 1px #d8dcda, 0 0 0 2px #fff; }
+  .swatch[data-colour='#ffffff'][aria-checked='true'] { box-shadow: inset 0 0 0 1px #d8dcda, 0 0 0 2px #fff, 0 0 0 4.5px #8452f0; }
   .tool:focus-visible, .swatch:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
   .board__note { color: var(--ink-2); font-size: 15px; max-width: 60ch; margin-top: 8px; }
 
@@ -107,13 +123,16 @@ const colours = [
       mine: [],
       save() { /* later: send the new stroke to the shared wall */ },
     };
-    let brush = { size: 3, alpha: 1 };
-    let colour = '#2a2f2d';
+    let brush = { id: 'pencil', size: 3, alpha: 1 };
+    let colour = '#1f1f1f';
+    const tools = root.querySelector('.board__tools');
+    const setTip = () => tools.style.setProperty('--pen', colour);
+    setTip();
     let current = null;
 
     const radio = (group, btn) => group.querySelectorAll('[role="radio"]').forEach((b) => b.setAttribute('aria-checked', String(b === btn)));
-    root.querySelectorAll('[data-brush]').forEach((b) => b.addEventListener('click', () => { brush = { size: +b.dataset.size, alpha: +b.dataset.alpha }; radio(b.parentElement, b); }));
-    root.querySelectorAll('[data-colour]').forEach((b) => b.addEventListener('click', () => { colour = b.dataset.colour; radio(b.parentElement, b); }));
+    root.querySelectorAll('[data-brush]').forEach((b) => b.addEventListener('click', () => { brush = { id: b.dataset.brush, size: +b.dataset.size, alpha: +b.dataset.alpha }; radio(b.parentElement, b); canvas.style.cursor = brush.id === 'eraser' ? 'cell' : 'crosshair'; }));
+    root.querySelectorAll('[data-colour]').forEach((b) => b.addEventListener('click', () => { colour = b.dataset.colour; radio(b.parentElement, b); setTip(); }));
     // arrow keys inside a radio group
     root.querySelectorAll('[role="radiogroup"]').forEach((g) => g.addEventListener('keydown', (e) => {
       if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
@@ -146,12 +165,22 @@ const colours = [
     };
     const pt = (e) => { const r = canvas.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; };
 
+    // the eraser removes whole strokes, and only the ones you drew
+    let erasing = false;
+    const erase = (e) => {
+      const [x, y] = pt(e); const { w, h } = scale(); const r = 14;
+      const before = store.mine.length;
+      store.mine = store.mine.filter((st) => !st.pts.some(([px, py]) => Math.hypot((px - x) * w, (py - y) * h) < r + st.size));
+      if (store.mine.length !== before) draw();
+    };
     canvas.addEventListener('pointerdown', (e) => {
       canvas.setPointerCapture(e.pointerId);
+      if (brush.id === 'eraser') { erasing = true; erase(e); return; }
       current = { pts: [pt(e)], colour, size: brush.size, alpha: brush.alpha, mine: true };
       draw();
     });
-    canvas.addEventListener('pointermove', (e) => { if (!current) return; current.pts.push(pt(e)); draw(); });
+    canvas.addEventListener('pointermove', (e) => { if (erasing) { erase(e); return; } if (!current) return; current.pts.push(pt(e)); draw(); });
+    canvas.addEventListener('pointerup', () => { erasing = false; });
     const end = () => { if (!current) return; store.mine.push(current); store.save(current); current = null; draw(); };
     canvas.addEventListener('pointerup', end);
     canvas.addEventListener('pointercancel', end);

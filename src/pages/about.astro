@@ -161,14 +161,14 @@ const tools = [
   .outdoor h2 { margin-bottom: 16px; }
   .stack { position: relative; aspect-ratio: 578 / 305; }
   .stack__p {
-    position: absolute; left: 22%; top: 18%; width: 52%; aspect-ratio: 4 / 3; object-fit: cover;
+    position: absolute; left: 22%; top: 18%; width: 52%; height: auto;
     border-radius: 11px; box-shadow: 0 6px 24px rgba(42,47,45,.18);
     transition: transform .9s var(--ease-spring);
   }
   .stack__p--0 { transform: rotate(3.7deg); }
   .stack__p--1 { transform: rotate(-1deg); }
   .stack__p--2 { transform: rotate(5.7deg); }
-  .stack__p--3 { transform: rotate(-7.9deg); object-position: bottom; }
+  .stack__p--3 { transform: rotate(-7.9deg); width: 40%; left: 28%; }
   .stack.is-in .stack__p--0, .stack:hover .stack__p--0 { transform: translate(-44%, -8%) rotate(3.7deg); }
   .stack.is-in .stack__p--1, .stack:hover .stack__p--1 { transform: translate(-2%, -30%) rotate(-3deg); }
   .stack.is-in .stack__p--2, .stack:hover .stack__p--2 { transform: translate(46%, -12%) rotate(5.7deg); }

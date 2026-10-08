@@ -52,6 +52,8 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
 
       <p class="talk__error" role="alert" data-talk-error></p>
 
+      <p class="talk__privacy" data-talk-privacy hidden>Your message reaches my inbox through FormSubmit. I only use your details to reply.</p>
+
       <div class="talk__actions">
         <button type="button" class="talk__btn talk__btn--ghost" data-talk-back hidden>← Back</button>
         <button type="submit" class="talk__btn talk__btn--primary" data-talk-next>Continue</button>
@@ -60,10 +62,15 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
     </form>
 
     <div class="talk__done" data-talk-done hidden tabindex="-1">
-      <p class="talk__q talk__q--summary">Lovely, <b data-talk-who></b>. Thanks for reaching out!</p>
-      <p class="talk__done-sub">Your email app should be opening with the message ready: hit send and I'll get back to you soon.</p>
-      <p class="talk__done-sub">Nothing opened? <button type="button" class="talk__copy" data-talk-copy>Copy the message</button> and send it to <a href="mailto:folkmer.design@gmail.com">folkmer.design@gmail.com</a>.</p>
-      <p class="talk__copied" data-talk-copied aria-live="polite"></p>
+      <div data-talk-ok>
+        <p class="talk__q talk__q--summary">Message sent. Thanks, <b data-talk-who></b>!</p>
+        <p class="talk__done-sub">So nice that you got in touch. I'll reply as soon as I can.</p>
+      </div>
+      <div data-talk-fail hidden>
+        <p class="talk__q talk__q--summary">Hmm, that didn't go through.</p>
+        <p class="talk__done-sub">The internet had other plans. <button type="button" class="talk__copy" data-talk-copy>Copy your message</button> and send it to <a href="mailto:folkmer.design@gmail.com" data-talk-mailto>folkmer.design@gmail.com</a>: I'll reply as soon as I can.</p>
+        <p class="talk__copied" data-talk-copied aria-live="polite"></p>
+      </div>
     </div>
   </div>
   <div class="site-footer__bar">
@@ -135,6 +142,7 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
   .talk__copy:focus-visible { outline: 3px solid #f4f6f5; outline-offset: 3px; }
   .talk__copied { color: #9aa29e; font-size: 15px; }
   .talk__done :global(b) { color: var(--orange); font-weight: 500; }
+  .talk__privacy { color: #9aa29e; font-size: 14px; }
   .talk__nojs { display: none; margin-top: 48px; font-size: 22px; }
   .talk__nojs a { color: var(--orange); }
   :global(.no-js) .talk__nojs { display: block; }
@@ -221,6 +229,7 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       next.textContent = last ? 'Send it' : 'Continue';
       next.classList.toggle('talk__btn--send', last);
       enter.hidden = last;
+      root.querySelector('[data-talk-privacy]').hidden = !last;
       if (last) {
         const c = company.value.trim();
         summary.innerHTML = `Hi Francesca, I'm <b>${esc(name.value.trim())}</b>${c ? ` from <b>${esc(c)}</b>` : ''}. I'd love to talk about <b>${esc(topic.value.trim() || 'anything')}</b>. You can reach me at <b>${esc(email.value.trim())}</b>.`;
@@ -236,20 +245,36 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       return true;
     };
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!valid()) return;
       if (cur < steps.length - 1) { show(cur + 1); return; }
       const c = company.value.trim();
       const body = `Hi Francesca, I'm ${name.value.trim()}${c ? ` from ${c}` : ''}. I'd love to talk about ${topic.value.trim() || 'anything'}. You can reach me at ${email.value.trim()}.`;
-      location.href = `mailto:folkmer.design@gmail.com?subject=${encodeURIComponent(`Hi from ${name.value.trim()}`)}&body=${encodeURIComponent(body)}`;
-      // feedback: the sentence is done
+      next.disabled = true; next.textContent = 'Sending…';
+      let ok = false;
+      try {
+        // FormSubmit forwards the message to Francesca's inbox (no account, no database here)
+        const res = await fetch('https://formsubmit.co/ajax/folkmer.design@gmail.com', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            _subject: `Portfolio: hi from ${name.value.trim()}`, _template: 'box', _captcha: 'false',
+            name: name.value.trim(), company: c, topic: topic.value.trim(), email: email.value.trim(), message: body,
+          }),
+        });
+        ok = res.ok;
+      } catch { ok = false; }
+      next.disabled = false;
       const done = root.querySelector('[data-talk-done]');
       root.querySelector('[data-talk-who]').textContent = name.value.trim();
+      root.querySelector('[data-talk-ok]').hidden = !ok;
+      root.querySelector('[data-talk-fail]').hidden = ok;
+      root.querySelector('[data-talk-mailto]').href = `mailto:folkmer.design@gmail.com?subject=${encodeURIComponent(`Hi from ${name.value.trim()}`)}&body=${encodeURIComponent(body)}`;
       form.hidden = true; done.hidden = false;
       dots.forEach((d) => { d.classList.add('is-done'); d.classList.remove('is-current'); });
       root.querySelector('.talk__progress').style.setProperty('--p', '100%');
-      count.textContent = 'Sent to your email app';
+      count.textContent = ok ? 'Sent' : 'Not sent';
       done.focus({ preventScroll: true });
       root.querySelector('[data-talk-copy]').onclick = async () => {
         try { await navigator.clipboard.writeText(body); root.querySelector('[data-talk-copied]').textContent = 'Copied. Paste it in an email to me.'; }

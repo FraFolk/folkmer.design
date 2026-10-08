@@ -37,7 +37,8 @@ export const lab = [
     summary: 'Three small agents do my weekly admin every Monday. They never send or publish anything without my OK.',
     href: '/lab/agents/',
     cta: 'Read more',
-    visual: 'agents',
+    image: '/img/lab-agents.webp',
+    alt: 'News, the Monday paper an agent prepares for me: masthead, an October calendar and a half-solved sudoku, on dark green leaves. The articles are blurred.',
   },
   {
     slug: 'accessible-pdf',
@@ -47,16 +48,6 @@ export const lab = [
     href: '/lab/accessible-pdf/',
     cta: 'Read more',
     visual: 'pdf',
-  },
-  {
-    slug: 'banca-novera',
-    kind: 'Prototype',
-    title: 'Banca Novera',
-    summary: 'A mortgage page that doesn’t scare you. From evidence to decisions, prototyped in code with AI, built for WCAG 2.2 AA.',
-    href: '/lab/banca-novera/',
-    cta: 'See the case',
-    image: '/img/card-novera.png',
-    alt: 'The Banca Novera homepage prototype on desktop.',
   },
   {
     slug: 'studio-pieri',
@@ -73,7 +64,8 @@ export const lab = [
     slug: 'clothing-shop',
     kind: 'Website · In progress',
     title: 'A clothing shop',
-    summary: 'A showcase website for an independent clothing shop. Work in progress: stay tuned.',
+    summary: 'A showcase website for an independent clothing shop.',
     visual: 'soon',
+    soon: 'Coming soon',
   },
 ];

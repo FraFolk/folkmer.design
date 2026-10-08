@@ -69,8 +69,8 @@ const quotes = [
 
   <!-- 2. Accessibility: starts from the certification -->
   <section class="story container" aria-labelledby="a11y-title">
-    <h2 id="a11y-title" class="h1 story__title reveal cert">I make accessibility the <mark class="cert__mark">first step</mark>, not the last fix.</h2>
-    <p class="story__lead reveal">I'm CPACC-certified. I review the accessibility strategy, build it into the components and explain the why to the people who write the code. On real projects, it looks like this.</p>
+    <h2 id="a11y-title" class="h1 story__title reveal cert">I make <mark class="cert__mark">accessibility</mark> the first step, not the last fix.</h2>
+    <p class="story__lead reveal">I'm <b>CPACC-certified</b>. I review the accessibility strategy, build it into the components and explain the why to the people who write the code. On real projects, it looks like this.</p>
     <a class="a11y reveal" href={url('/work/accessibility/')}>
       <span class="a11y__stat" aria-hidden="true">
         <span class="a11y__from">50%</span><span class="a11y__arrow">→</span><span class="a11y__to">85%</span>
@@ -92,10 +92,12 @@ const quotes = [
     </h2>
     <p class="story__lead reveal">I love climbing. I'm just not very good at it. So I took it to the one place where I know what I'm doing: design. Alé is an app for climbers, built by four of us in the evenings and at weekends. I lead the product design.</p>
     <a class="ale-card reveal" href={url('/ale/')}>
-      <img src={url(ale.image)} alt="" width="662" height="395" loading="lazy" />
+      <span class="ale-card__media"><img src={url(ale.image)} alt="" width="662" height="395" loading="lazy" /></span>
       <span class="ale-card__body">
-        <span class="ale-card__title">The founder diary</span>
-        <span class="ale-card__facts" aria-hidden="true"><span><b>50+</b> climbers surveyed</span><span><b>5</b> interviews</span><span><b>4</b> people</span><span>Launch <b>Dec 2026</b></span></span>
+        <span class="ale-card__tags">Co-founder · Product design · Launch Dec 2026</span>
+        <span class="ale-card__title">Alé, from the inside</span>
+        <span class="ale-card__text">How a side project for climbers turned into a real product: the research, the decisions, the team, and where we are today.</span>
+        <span class="ale-card__facts" aria-hidden="true"><span><b>50+</b> climbers surveyed</span><span><b>5</b> interviews</span><span><b>4</b> people</span></span>
         <span class="ale-card__cta">Follow the journey <Icon name="arrow-right" size={18} /></span>
       </span>
     </a>
@@ -232,13 +234,17 @@ const quotes = [
   .a11y__text { display: flex; flex-direction: column; gap: 14px; }
   .a11y__title { font-size: var(--fs-h3); font-weight: 500; }
 
-  .ale-card { position: relative; display: block; width: 100%; margin-top: 12px; border-radius: var(--radius-card); overflow: hidden; text-decoration: none; color: #fff; text-align: left; }
-  .ale-card img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; transition: transform .9s var(--ease-out); }
-  .ale-card:hover img { transform: scale(1.03); }
-  .ale-card__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 72px 32px 28px; display: flex; flex-direction: column; gap: 12px; background: linear-gradient(to top, rgba(18,22,20,.88), rgba(18,22,20,0)); }
+  .ale-card { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: stretch; background: var(--surface); border-radius: var(--radius-card); overflow: hidden; text-decoration: none; color: var(--ink); text-align: left; box-shadow: inset 0 0 0 2px transparent; transition: box-shadow .35s var(--ease-out); }
+  .ale-card:hover { box-shadow: inset 0 0 0 2px var(--line); }
+  .ale-card__media { display: block; overflow: hidden; }
+  .ale-card__media img { width: 100%; height: 100%; min-height: 320px; object-fit: cover; transition: transform .9s var(--ease-out); }
+  .ale-card:hover .ale-card__media img { transform: scale(1.03); }
+  .ale-card__body { display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: clamp(24px, 4vw, 56px); }
+  .ale-card__tags { font-style: italic; color: var(--ink-2); }
   .ale-card__title { font-size: var(--fs-h3); font-weight: 500; }
+  .ale-card__text { color: var(--ink-2); }
   .ale-card__facts { display: flex; flex-wrap: wrap; gap: 8px; font-size: 15px; }
-  .ale-card__facts span { background: rgba(255,255,255,.16); backdrop-filter: blur(8px); border-radius: 99px; padding: 5px 12px; }
+  .ale-card__facts span { background: var(--bg); color: var(--ink); border-radius: 99px; padding: 6px 12px; }
 
   /* Lab: tip, pour, spill, cards */
   .lab-section { position: relative; overflow-x: clip; }
@@ -273,7 +279,7 @@ const quotes = [
 
   @media (max-width: 900px) {
     .secret-case, .a11y { grid-template-columns: 1fr; }
-    .ale-card img { aspect-ratio: 4 / 5; }
+    .ale-card { grid-template-columns: 1fr; } .ale-card__media img { min-height: 0; aspect-ratio: 16 / 10; }
   }
   @media (prefers-reduced-motion: reduce) {
     .plot__old::after { transform: scaleX(1) rotate(-3deg); transition: none; }

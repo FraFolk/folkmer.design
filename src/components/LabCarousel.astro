@@ -4,7 +4,7 @@
 import { url } from '../lib/url.js';
 import { lab } from '../lib/projects.js';
 import Icon from './Icon.astro';
-const { headingLevel = 3, start = 2 } = Astro.props;
+const { headingLevel = 3, start = 1 } = Astro.props;
 const H = `h${headingLevel}`;
 ---
 <div class="lc" data-lc data-start={start} role="region" aria-roledescription="carousel" aria-label="Lab projects">
@@ -48,6 +48,7 @@ const H = `h${headingLevel}`;
                 : item.title}
             </H>
             <p class="lc__summary">{item.summary}</p>
+            {item.soon && <span class="lc__cta lc__cta--soon">{item.soon}</span>}
             {href && <span class="lc__cta" aria-hidden="true">{item.cta} <Icon name={item.external ? "arrow-up-right" : "arrow-right"} size={16} class="lc__cta-arrow" /></span>}
           </li>
         );
@@ -92,6 +93,7 @@ const H = `h${headingLevel}`;
   .lc__cta :global(.lc__cta-arrow) { transition: transform .4s var(--ease-spring); }
   .lc__card:hover :global(.lc__cta-arrow) { transform: translateX(4px); }
   .lc__card--soon { background: #fff; }
+  .lc__cta--soon { color: var(--ink-2); font-style: italic; font-weight: 400; }
 
   /* drawn visuals */
   .v-agents { height: 100%; background: var(--dark); color: #f4f6f5; padding: 22px; display: flex; flex-direction: column; gap: 10px; font-size: 15px;
