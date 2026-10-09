@@ -104,13 +104,13 @@ const quotes = [
   <!-- 4. Lab: the flask tips over, the spill becomes the stage for the cards -->
   <section class="lab-section" aria-labelledby="lab-title" data-lab>
     <div class="container lab-head">
-      <h2 id="lab-title" class="lab-head__title">
-        <span class="flask" aria-hidden="true">
+      <div class="lab-head__title">
+        <button type="button" class="flask" data-flask aria-label="Tip over the flask">
           <svg viewBox="7.75 4.75 32.5 40.5"><path class="flask__glass" d="M18 6h12M20 6v12L9 38a4 4 0 0 0 3.5 6h23A4 4 0 0 0 39 38L28 18V6" /><path class="flask__liquid" d="M14.6 30h18.8L37 37.5a3 3 0 0 1-2.7 4.5H13.7a3 3 0 0 1-2.7-4.5z" /></svg>
           <span class="flask__drop"></span>
-        </span>
-        Lab
-      </h2>
+        </button>
+        <h2 id="lab-title">Lab</h2>
+      </div>
       <p>What I build and explore with AI.</p>
     </div>
     <div class="lab-stage">
@@ -254,7 +254,11 @@ const quotes = [
   .lab-head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; position: relative; z-index: 2; }
   .lab-head__title { display: inline-flex; align-items: baseline; gap: 8px; font-size: var(--fs-h2); font-weight: 500; padding-left: .8em; }
   /* the flask stands on the same "floor" as the word Lab and tips over to the left, never below it */
-  .flask { position: relative; display: inline-block; height: .78em; aspect-ratio: 32.5 / 40.5; }
+  .lab-head__title h2 { font: inherit; }
+  .flask { position: relative; display: inline-block; height: .78em; aspect-ratio: 32.5 / 40.5; padding: 0; border: 0; background: none; cursor: pointer; font: inherit; }
+  .flask:focus-visible { outline: 3px solid var(--focus); outline-offset: 6px; border-radius: 6px; }
+  .flask.is-wobbling svg { animation: wobble 300ms ease-in-out; }
+  @keyframes wobble { 25% { transform: rotate(-12deg); } 75% { transform: rotate(8deg); } }
   .flask svg { display: block; width: 100%; height: 100%; overflow: visible; transform-origin: 0% 100%; transition: transform 300ms cubic-bezier(.16,1,.3,1); }
   .flask__glass { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
   .flask__liquid { fill: var(--sage); transition: opacity 150ms ease-out 150ms; }
@@ -340,15 +344,27 @@ const quotes = [
 
   document.querySelector('[data-slide-to-about]')?.addEventListener('click', () => { try { sessionStorage.setItem('slide', 'left'); } catch {} });
 
-  // Lab: pour once when the section comes into view
+  // Lab: the cards come in softly when the section is visible.
+  // Easter egg: click the flask (or browse the cards until it wobbles too much) and it tips over.
   const lab = document.querySelector('[data-lab]');
   if (lab) {
-    const pour = () => { lab.classList.add('is-poured'); setTimeout(() => lab.querySelector('[data-lc]')?.dispatchEvent(new CustomEvent('lc:enter')), 250); };
-    if (reduce || !('IntersectionObserver' in window)) { lab.classList.add('is-poured'); lab.querySelector('[data-lc]')?.dispatchEvent(new CustomEvent('lc:enter')); }
+    const lc = lab.querySelector('[data-lc]');
+    const enter = () => lc?.dispatchEvent(new CustomEvent('lc:enter'));
+    if (reduce || !('IntersectionObserver' in window)) enter();
     else {
-      const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); pour(); } }, { threshold: 0.25 });
+      const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); enter(); } }, { threshold: 0.25 });
       io.observe(lab);
     }
+    const flask = lab.querySelector('[data-flask]');
+    const tip = () => { lab.classList.add('is-poured'); flask.setAttribute('aria-label', 'The flask has tipped over'); flask.disabled = true; };
+    flask.addEventListener('click', tip);
+    let wobbles = 0;
+    lab.addEventListener('lc:move', () => {
+      if (lab.classList.contains('is-poured')) return;
+      wobbles += 1;
+      if (wobbles >= 3 || reduce) { tip(); return; }
+      flask.classList.remove('is-wobbling'); void flask.offsetWidth; flask.classList.add('is-wobbling');
+    });
   }
 
 </script>
