@@ -42,6 +42,7 @@ const parent = path.startsWith('/lab/')
             <li><a href="mailto:folkmer.design@gmail.com">folkmer.design@gmail.com</a></li>
             <li><a href="https://www.linkedin.com/in/francescafolkmer/" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></li>
             <li><a href="tel:+393470662369">+39 347 066 2369</a></li>
+            <li class="profile__cv"><a href={url('/Francesca-Folkmer-CV.pdf')} download>Download CV</a></li>
           </ul>
         </div>
       </div>
@@ -71,7 +72,7 @@ const parent = path.startsWith('/lab/')
   }
   .site-header__inner {
     max-width: var(--container); margin: 0 auto;
-    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px;
+    display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px;
   }
   .site-header__side--end { display: flex; justify-content: flex-end; }
   .back-link {
@@ -133,12 +134,15 @@ const parent = path.startsWith('/lab/')
   .profile__links a { text-decoration: none; text-underline-offset: 3px; display: inline-block; padding: 2px 0; }
   .profile__links a:hover, .profile__links a:focus-visible { text-decoration: underline; }
   .profile__links a:focus-visible { outline-color: var(--mint); }
+  .profile__cv { display: none; }
 
   @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
 
   @media (max-width: 760px) {
     .site-header { padding: 12px 16px; }
-    .site-header__inner { grid-template-columns: auto 1fr auto; }
+    .site-header__inner { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+    .site-header__side--end { display: none; }
+    .profile__cv { display: list-item !important; }
     .back-link span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
     .back-link { padding: 12px; }
     .profile { width: auto; justify-self: center; }

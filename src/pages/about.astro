@@ -174,8 +174,12 @@ const tools = [
   .tools img { width: 24px; height: 24px; object-fit: contain; }
 
   /* Figma "Pics hiker": stacked photos that fan out */
+  .beyond { display: flex; flex-direction: column; gap: clamp(64px, 8vw, 128px); }
+  .beyond__q { width: 100%; max-width: 24ch; margin: 0 auto; text-align: center; }
+  .outdoor h3 { margin-bottom: 16px; }
   .outdoor { display: grid; grid-template-columns: minmax(0, 578fr) minmax(0, 616fr); gap: clamp(32px, 7vw, 134px); align-items: center; }
   .outdoor h2 { margin: 8px 0 16px; }
+  .outdoor.outdoor--flip { grid-template-columns: minmax(0, 616fr) minmax(0, 578fr); }
   .outdoor p + p { margin-top: 12px; }
   .stack { position: relative; aspect-ratio: 578 / 305; margin: 12% 0 14%; }
   .stack__p {
@@ -204,7 +208,8 @@ const tools = [
   @media (max-width: 900px) {
     .intro, .outdoor { grid-template-columns: 1fr; }
     .outdoor .stack { order: 2; }
-    .outdoor { gap: 16px; }
+    .outdoor, .outdoor.outdoor--flip { gap: 16px; grid-template-columns: 1fr; }
+    .beyond__q { margin-bottom: 8px; }
     .jobs__list { padding: 0; }
     .job { grid-template-columns: 1fr; gap: 4px; }
     .job__years { font-size: 18px; color: var(--ink-2); }
