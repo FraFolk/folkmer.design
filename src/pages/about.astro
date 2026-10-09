@@ -103,9 +103,9 @@ const tools = [
           <p>A dog, two cats and a turtle. Between the four of them, I never take myself too seriously.</p>
         </div>
         <div class="stack stack--pets reveal" aria-hidden="true">
-          <img class="stack__p stack__p--0" src={url('/img/pet-cat-1.jpg')} alt="" />
+          <img class="stack__p stack__p--0" src={url('/img/pet-cat-2.jpg')} alt="" />
           <img class="stack__p stack__p--1" src={url('/img/pet-turtle.jpg')} alt="" />
-          <img class="stack__p stack__p--2" src={url('/img/pet-cat-2.jpg')} alt="" />
+          <img class="stack__p stack__p--2" src={url('/img/pet-cat-1.jpg')} alt="" />
           <img class="stack__p stack__p--3" src={url('/img/pet-dog.jpg')} alt="" />
         </div>
       </div>
@@ -177,7 +177,7 @@ const tools = [
   .outdoor { display: grid; grid-template-columns: minmax(0, 578fr) minmax(0, 616fr); gap: clamp(32px, 7vw, 134px); align-items: center; }
   .outdoor h2 { margin: 8px 0 16px; }
   .outdoor p + p { margin-top: 12px; }
-  .stack { position: relative; aspect-ratio: 578 / 305; margin: 10% 0 12%; }
+  .stack { position: relative; aspect-ratio: 578 / 305; margin: 12% 0 14%; }
   .stack__p {
     position: absolute; left: 22%; top: 18%; width: 52%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: center;
     border-radius: 11px; box-shadow: 0 6px 24px rgba(42,47,45,.18);
@@ -187,23 +187,31 @@ const tools = [
   .stack__p--1 { transform: rotate(-1deg); }
   .stack__p--2 { transform: rotate(5.7deg); }
   .stack__p--3 { transform: rotate(-7.9deg); }
-  .stack.is-in .stack__p--0 { transform: translate(-44%, -8%) rotate(3.7deg); }
-  .stack.is-in .stack__p--1 { transform: translate(-2%, -30%) rotate(-3deg); }
-  .stack.is-in .stack__p--2 { transform: translate(46%, -12%) rotate(5.7deg); }
-  .stack.is-in .stack__p--3 { transform: translate(0, 20%) rotate(-7.9deg); }
+  /* closed at rest; fans out wide on hover (on touch screens: when in view) */
+  .stack:hover .stack__p--0 { transform: translate(-62%, -10%) rotate(-6deg); }
+  .stack:hover .stack__p--1 { transform: translate(-4%, -42%) rotate(-3deg); }
+  .stack:hover .stack__p--2 { transform: translate(62%, -12%) rotate(6deg); }
+  .stack:hover .stack__p--3 { transform: translate(0, 30%) rotate(-4deg); }
+  @media (hover: none) {
+    .stack.is-in .stack__p--0 { transform: translate(-40%, -8%) rotate(-5deg); }
+    .stack.is-in .stack__p--1 { transform: translate(-2%, -28%) rotate(-3deg); }
+    .stack.is-in .stack__p--2 { transform: translate(40%, -10%) rotate(5deg); }
+    .stack.is-in .stack__p--3 { transform: translate(0, 20%) rotate(-4deg); }
+  }
 
   .cv { text-align: center; }
 
   @media (max-width: 900px) {
     .intro, .outdoor { grid-template-columns: 1fr; }
     .outdoor .stack { order: 2; }
+    .outdoor { gap: 16px; }
     .jobs__list { padding: 0; }
     .job { grid-template-columns: 1fr; gap: 4px; }
     .job__years { font-size: 18px; color: var(--ink-2); }
     .job__head { font-size: 20px; column-gap: 12px; }
     .skills__grid { grid-template-columns: 1fr; }
     .tools li { font-size: 16px; padding: 8px 12px; }
-    .stack { margin: 16% 10% 24%; }
+    .stack { margin: 8% 10% 16%; }
   }
 </style>
 
