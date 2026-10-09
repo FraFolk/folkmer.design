@@ -221,3 +221,12 @@ b, strong { font-weight: 700; }
 
 /* Handwriting, used once: the "co-founder" written by pen */
 @font-face { font-family: 'Caveat'; src: url('../fonts/Caveat-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+
+/* page transitions: a soft cross-fade, and a slide from the right when going to About */
+@view-transition { navigation: auto; }
+::view-transition-group(root) { animation-duration: .3s; }
+html:active-view-transition-type(slide-left)::view-transition-old(root) { animation: vt-out-left .55s cubic-bezier(.4, 0, .2, 1) both; }
+html:active-view-transition-type(slide-left)::view-transition-new(root) { animation: vt-in-right .55s cubic-bezier(.4, 0, .2, 1) both; }
+@keyframes vt-out-left { to { transform: translateX(-30%); opacity: 0; } }
+@keyframes vt-in-right { from { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }

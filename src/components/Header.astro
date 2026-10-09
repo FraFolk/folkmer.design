@@ -129,9 +129,9 @@ const parent = path.startsWith('/lab/')
   .profile[data-open] .profile__links li { opacity: 1; transform: none; }
   .profile[data-open] .profile__links li:nth-child(2) { transition-delay: .06s; }
   .profile[data-open] .profile__links li:nth-child(3) { transition-delay: .12s; }
-  .profile__links a { text-underline-offset: 3px; display: inline-block; padding: 2px 0; }
+  .profile__links a { text-decoration: none; text-underline-offset: 3px; display: inline-block; padding: 2px 0; }
+  .profile__links a:hover, .profile__links a:focus-visible { text-decoration: underline; }
   .profile__links a:focus-visible { outline-color: var(--mint); }
-  .profile__links li:last-child a { text-decoration: none; }
 
   @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
 

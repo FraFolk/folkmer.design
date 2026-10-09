@@ -89,8 +89,10 @@ const tools = [
         <img class="stack__p stack__p--3" src={url('/img/hiker-dog.jpg')} alt="" />
       </div>
       <div class="reveal">
-        <h2 id="outdoor-title" class="h2">Beyond the screen</h2>
-        <p>When I'm not fixing auto-layouts or checking contrast ratios, you'll probably find me in the mountains: climbing, trekking or just walking in the woods. <b>The outdoors is where I recharge.</b> It's also why I ended up building an app for climbers.</p>
+        <p class="eyebrow">Beyond the screen</p>
+        <h2 id="outdoor-title" class="h2">Off screen, I'm usually halfway up a mountain.</h2>
+        <p>Climbing, trekking or just walking in the woods: <b>the outdoors is where I recharge</b>. It's also why I ended up building an app for climbers.</p>
+        <p>Back home there's a full house waiting: a dog, two cats and a turtle. Between the four of them, I never take myself too seriously.</p>
       </div>
     </section>
 
@@ -160,7 +162,8 @@ const tools = [
 
   /* Figma "Pics hiker": stacked photos that fan out */
   .outdoor { display: grid; grid-template-columns: minmax(0, 578fr) minmax(0, 616fr); gap: clamp(32px, 7vw, 134px); align-items: center; }
-  .outdoor h2 { margin-bottom: 16px; }
+  .outdoor h2 { margin: 6px 0 16px; }
+  .outdoor p + p { margin-top: 12px; }
   .stack { position: relative; aspect-ratio: 578 / 305; }
   .stack__p {
     position: absolute; left: 22%; top: 18%; width: 52%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: center;

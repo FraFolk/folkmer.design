@@ -4,10 +4,10 @@
 import { url } from '../lib/url.js';
 import { lab } from '../lib/projects.js';
 import Icon from './Icon.astro';
-const { headingLevel = 3, start = 1 } = Astro.props;
+const { headingLevel = 3, start = 1, intro = false } = Astro.props;
 const H = `h${headingLevel}`;
 ---
-<div class="lc" data-lc data-start={start} role="region" aria-roledescription="carousel" aria-label="Lab projects">
+<div class="lc" data-lc data-start={start} data-intro={intro ? "pending" : undefined} role="region" aria-roledescription="carousel" aria-label="Lab projects">
   <div class="lc__viewport">
     <ul class="lc__track" data-lc-track>
       {lab.map((item, i) => {
@@ -157,7 +157,9 @@ const H = `h${headingLevel}`;
         const o = i - active;
         const a = Math.abs(o);
         c.style.transformOrigin = `50% ${R}px`;
-        c.style.transform = `rotate(${o * step}deg)`;
+        const off = root.dataset.intro === 'pending' ? 3.5 : 0;
+        c.style.transform = `rotate(${(o + off) * step}deg)`;
+        if (root.dataset.intro === 'pending') c.style.opacity = '0';
         c.style.zIndex = String(10 - a);
         c.toggleAttribute('data-far', a > 2);
         c.inert = a > 2;
@@ -183,6 +185,14 @@ const H = `h${headingLevel}`;
       if (sx === null) return;
       const dx = e.clientX - sx; sx = null;
       if (Math.abs(dx) > 50) go(active + (dx < 0 ? 1 : -1));
+    });
+    // entrance: cards glide in from the right along the arc, one after another
+    root.addEventListener('lc:enter', () => {
+      if (root.dataset.intro !== 'pending') return;
+      root.dataset.intro = 'done';
+      cards.forEach((c, i) => { c.style.transition = `transform 1.4s cubic-bezier(.22,.8,.24,1) ${i * 0.09}s, opacity .9s ease ${i * 0.09}s`; c.style.opacity = ''; });
+      layout();
+      setTimeout(() => cards.forEach((c) => { c.style.transition = ''; }), 2200);
     });
     addEventListener('resize', () => layout());
     document.fonts?.ready.then(() => layout());
