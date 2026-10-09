@@ -99,13 +99,13 @@ const steps = [
 
     <header class="chapter reveal" aria-labelledby="ch-sky">
       <h2 id="ch-sky" class="h2 chapter__title">Sky</h2>
-      <p class="chapter__lead">Seven touchpoints, the same approach, and this time a number to prove it worked.</p>
+      <p class="chapter__lead">The same approach on a media brand, and this time we measured everything.</p>
     </header>
 
     <section class="measure reveal" aria-labelledby="measure">
       <div class="measure__text">
         <p class="eyebrow">The starting point</p>
-        <h3 id="measure" class="h2">Same approach, now with a number</h3>
+        <h3 id="measure" class="h2">Half accessible isn't accessible</h3>
         <p>Seven Sky touchpoints met about half of the applicable criteria of UNI EN 301 549, the European standard that includes WCAG. We measured one simple thing: criteria passed ÷ applicable criteria. Easy to repeat, easy to explain to people who have never heard of WCAG.</p>
       </div>
       <div class="gauge" data-gauge aria-hidden="true">
@@ -141,12 +141,12 @@ const steps = [
     <section class="results" aria-labelledby="results">
       <div class="results__intro reveal">
         <p class="eyebrow">What changed</p>
-        <h3 id="results" class="h2">From 50% to 85%</h3>
+        <h3 id="results" class="h2">Seven touchpoints later</h3>
       </div>
       <div class="results__grid">
         <div class="result result--stat reveal">
           <p class="result__num">85%</p>
-          <p><span class="result__label">Measured</span>UNI EN 301 549 compliance across seven touchpoints, up from 50%.</p>
+          <p><span class="result__label">Measured</span>UNI EN 301 549 compliance across the seven touchpoints.</p>
         </div>
         <div class="result result--stat reveal">
           <p class="result__num">2</p>
@@ -191,8 +191,8 @@ const steps = [
   .gauge__num { position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(44px, 5vw, 72px); font-weight: 600; color: var(--ink); }
 
   .steps { display: flex; flex-direction: column; gap: 32px; }
-  .steps__list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
-  .step { background: var(--surface); border-radius: var(--radius-l); padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .steps__list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .step { background: var(--surface); border-radius: var(--radius-l); padding: 24px; display: flex; flex-direction: column; gap: 8px; }
   .step h3 { font-size: 20px; font-weight: 600; }
   .step__n { font-size: 14px; font-weight: 600; color: var(--sage-text); letter-spacing: .06em; }
   .steps__list .step:nth-child(2) { transition-delay: .1s; }
@@ -244,7 +244,7 @@ const steps = [
   .defects__notes { position: absolute; left: 50%; top: 47%; width: 34.2%; }
   .note {
     position: absolute; inset: 0 auto auto 0; width: 100%;
-    background: #fff; border-radius: 12px; padding: 10px;
+    background: #fff; border-radius: 12px; padding: 8px;
     box-shadow: 0 1px 1px rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.15);
     display: flex; flex-direction: column; gap: 8px;
     font-family: Inter, system-ui, sans-serif; font-size: 11px; line-height: 1.5; color: #2c2c2c;

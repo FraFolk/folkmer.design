@@ -16,7 +16,7 @@ const parent = path.startsWith('/lab/')
   <div class="site-header__inner">
     <div class="site-header__side">
       {!isHome && (
-        <a class="back-link" href={url(parent.href)}>
+        <a class="back-link" href={url(parent.href)} data-back-from-about={path.startsWith('/about') ? '' : undefined}>
           <img src={url('/img/arrow-left.svg')} alt="" width="24" height="24" />
           <span>{parent.label}</span>
         </a>
@@ -155,6 +155,7 @@ const parent = path.startsWith('/lab/')
 </style>
 
 <script>
+  document.querySelector('[data-back-from-about]')?.addEventListener('click', () => { try { sessionStorage.setItem('slide', 'right'); } catch {} });
   const root = document.querySelector('[data-profile]');
   const toggle = root?.querySelector('[data-profile-toggle]');
   if (root && toggle) {

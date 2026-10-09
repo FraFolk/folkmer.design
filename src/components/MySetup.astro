@@ -51,7 +51,7 @@ const apps = [
 
 <style>
   .setup { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
-  .setup__head { display: flex; flex-direction: column; gap: 10px; }
+  .setup__head { display: flex; flex-direction: column; gap: 8px; }
   .setup__head p { color: var(--ink-2); }
   .setup__mac { position: relative; }
   .setup__laptop { width: 100%; height: auto; display: block; }
@@ -62,15 +62,15 @@ const apps = [
 
   /* the note: a scrap of paper in the middle of the desktop */
   .setup__note {
-    position: relative; margin-top: 18px; max-width: 380px;
+    position: relative; margin-top: 16px; max-width: 380px;
     transform: rotate(-1.5deg);
     background: #fbf8f0; color: #2a2f2d;
-    padding: 22px 24px 24px; border-radius: 3px; font-size: 17px; line-height: 1.5;
+    padding: 24px 24px 24px; border-radius: 3px; font-size: 17px; line-height: 1.5;
     box-shadow: 0 2px 4px rgba(0,0,0,.12), 0 22px 40px -22px rgba(0,0,0,.45);
     animation: note-in .45s var(--ease-out);
   }
   .setup__note::before { content: ''; position: absolute; top: -12px; left: 50%; width: 90px; height: 24px; margin-left: -45px; background: rgba(233,239,236,.9); transform: rotate(3deg); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
-  .setup__note-app { font: 500 28px/1 'Caveat', cursive; color: var(--orange-text); margin-bottom: 6px; }
+  .setup__note-app { font: 500 28px/1 'Caveat', cursive; color: var(--orange-text); margin-bottom: 8px; }
   @keyframes note-in { from { opacity: 0; transform: translateY(6px) rotate(-3deg); } }
 
   .setup__dock {
@@ -113,6 +113,16 @@ const apps = [
     const note = root.querySelector('[data-setup-note]');
     const name = root.querySelector('[data-setup-name]');
     const text = root.querySelector('[data-setup-text]');
+    // the note always has the height of the longest text, so the title never moves
+    const fitNote = () => {
+      const cur = text.textContent, curName = name.textContent;
+      note.style.minHeight = '';
+      let max = 0;
+      btns.forEach((b) => { name.textContent = b.dataset.name; text.textContent = b.dataset.note; max = Math.max(max, note.offsetHeight); });
+      name.textContent = curName; text.textContent = cur;
+      note.style.minHeight = `${max}px`;
+    };
+    document.fonts?.ready.then(fitNote); addEventListener('resize', fitNote); fitNote();
     const pick = (b) => {
       if (b.getAttribute('aria-pressed') === 'true') return;
       btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));

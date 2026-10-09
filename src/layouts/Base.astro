@@ -26,10 +26,11 @@ const {
     <link rel="preload" href={satoshi} as="font" type="font/ttf" crossorigin />
     <script is:inline>document.documentElement.classList.replace('no-js', 'js');
       // "About me" from the homepage: the About page slides in from the right
-      const slideType = () => { try { return sessionStorage.getItem('slide') === 'left'; } catch { return false; } };
-      addEventListener('pageswap', (e) => { if (e.viewTransition && slideType()) e.viewTransition.types.add('slide-left'); });
+      // and slides back out to the right when you return to the homepage
+      const slideType = () => { try { const v = sessionStorage.getItem('slide'); return v ? `slide-${v}` : null; } catch { return null; } };
+      addEventListener('pageswap', (e) => { const t = slideType(); if (e.viewTransition && t) e.viewTransition.types.add(t); });
       addEventListener('pagereveal', (e) => {
-        if (e.viewTransition && slideType()) e.viewTransition.types.add('slide-left');
+        const t = slideType(); if (e.viewTransition && t) e.viewTransition.types.add(t);
         try { sessionStorage.removeItem('slide'); } catch {}
       });
     </script>
