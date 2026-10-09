@@ -23,13 +23,13 @@ const quotes = [
         <p class="hero__body">I turn complex services into simple, accessible products. With a soft spot for AI and a hard rule on contrast.</p>
       </div>
       <div class="hero__actions">
-        <a class="cta" href={url('/about/')} data-slide-to-about>
+        <a class="roll" href={url('/about/')} data-slide-to-about>
           <span>About me</span>
-          <span class="cta__arrow"><Icon name="arrow-right" size={20} /></span>
+          <span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span>
         </a>
-        <a class="cta cta--ghost" href="#work">
+        <a class="roll roll--ghost" href="#work" data-dir="down">
           <span>See what I do</span>
-          <span class="cta__arrow"><Icon name="arrow-down" size={20} /></span>
+          <span class="roll__ball" aria-hidden="true"><Icon name="arrow-down" size={22} /></span>
         </a>
       </div>
     </div>
@@ -54,7 +54,7 @@ const quotes = [
 
   <!-- 1. End to end: the story first, the (secret) project below -->
   <section id="work" class="story container" aria-labelledby="e2e-title" tabindex="-1">
-    <h2 id="e2e-title" class="h1 story__title reveal">I follow products from the first workshop to the last handoff.</h2>
+    <h2 id="e2e-title" class="h2 story__title reveal">I follow products from the first workshop to the last handoff.</h2>
     <p class="story__lead reveal">On big products I don't stop at the screens: functional analysis, flows, UI, and the developers' questions on a Friday afternoon.</p>
     <a class="secret-case reveal" href={url('/work/aon/')}>
       <span class="secret-case__text">
@@ -69,7 +69,7 @@ const quotes = [
 
   <!-- 2. Accessibility: starts from the certification -->
   <section class="story container" aria-labelledby="a11y-title">
-    <h2 id="a11y-title" class="h1 story__title reveal cert">I make <mark class="cert__mark">accessibility</mark> the first step, not the last fix.</h2>
+    <h2 id="a11y-title" class="h2 story__title reveal cert">I make <mark class="cert__mark">accessibility</mark> the first step, not the last fix.</h2>
     <p class="story__lead reveal">I'm <b>CPACC-certified</b>. I review the accessibility strategy, build it into the components and explain the why to the people who write the code. On real projects, it looks like this.</p>
     <a class="a11y reveal" href={url('/work/accessibility/')}>
       <span class="a11y__stat" aria-hidden="true">
@@ -86,7 +86,7 @@ const quotes = [
 
   <!-- 3. Plot twist: Alé -->
   <section class="story container" aria-labelledby="ale-title">
-    <h2 id="ale-title" class="h1 story__title plot reveal">
+    <h2 id="ale-title" class="h2 story__title plot reveal">
       <span class="sr-only">Plot twist: I'm also a climber, and a co-founder.</span>
       <span aria-hidden="true">Plot twist: I'm also a <span class="plot__old">climber</span> <span class="plot__new">co-founder</span>.</span>
     </h2>
@@ -144,16 +144,6 @@ const quotes = [
   .lab-section { overflow-x: clip; }
   .lab-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; }
   .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; }
-  /* text buttons: the arrow slides in on hover, pointing where you'll go */
-  .cta { display: inline-flex; align-items: center; gap: 0; height: 52px; padding: 0 24px; border-radius: 99px; background: var(--btn); color: #fff; font-weight: 500; font-size: 18px; text-decoration: none; transition: gap .4s var(--ease-spring), padding .4s var(--ease-spring), background-color .3s; }
-  .cta--ghost { background: var(--btn2); color: var(--ink); }
-  .cta__arrow { display: inline-grid; width: 0; overflow: hidden; opacity: 0; transition: width .4s var(--ease-spring), opacity .25s, transform .4s var(--ease-spring); }
-  .cta[data-slide-to-about] .cta__arrow { transform: translateX(-8px); }
-  .cta--ghost .cta__arrow { transform: translateY(-8px); }
-  .cta:is(:hover, :focus-visible) { gap: 10px; padding-right: 18px; }
-  .cta:is(:hover, :focus-visible) .cta__arrow { width: 20px; opacity: 1; transform: none; }
-  .cta:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
-  @media (prefers-reduced-motion: reduce) { .cta, .cta__arrow { transition: none; } }
 
   /* ---------- Colleague comments ---------- */
   .quotes { margin: 0; position: relative; height: 100%; min-height: 300px; }
@@ -229,7 +219,7 @@ const quotes = [
   .secret-case__tags { font-style: italic; color: #9aa29e; }
   .secret-case__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.2; }
   .secret-case__sub { color: #c4cac7; max-width: 44ch; }
-  .secret-case__cta, .a11y__cta, .ale-card__cta { font-weight: 700; display: inline-flex; align-items: center; gap: 8px; transition: color .3s var(--ease-out); }
+  .secret-case__cta, .a11y__cta, .ale-card__cta { font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: color .3s var(--ease-out); }
   .secret-case__cta :global(.icon), .a11y__cta :global(.icon), .ale-card__cta :global(.icon) { transition: transform .45s var(--ease-spring); }
   /* hover/focus on the whole card: the arrow moves ahead, text and icon change colour */
   .a11y:is(:hover, :focus-visible) .a11y__cta { color: var(--orange-text); }
@@ -239,7 +229,7 @@ const quotes = [
   .secret-case:focus-visible, .a11y:focus-visible, .ale-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
 
   .a11y { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; text-align: left; text-decoration: none; background: var(--surface); border-radius: var(--radius-card); padding: clamp(28px, 4vw, 64px); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow .35s var(--ease-out); }
-  .a11y__stat { display: flex; align-items: baseline; gap: .15em; font-weight: 700; letter-spacing: -.04em; line-height: .9; }
+  .a11y__stat { display: flex; align-items: baseline; gap: .15em; font-weight: 600; letter-spacing: -.04em; line-height: .9; }
   .a11y__from { font-size: clamp(48px, 6vw, 100px); color: var(--line); }
   .a11y__arrow { font-size: clamp(36px, 3.5vw, 64px); color: var(--ink-2); font-weight: 400; }
   .a11y__to { font-size: clamp(88px, 11vw, 190px); color: var(--sage-text); }
@@ -262,7 +252,7 @@ const quotes = [
   /* Lab: tip, pour, spill, cards */
   .lab-section { position: relative; overflow-x: clip; }
   .lab-head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; position: relative; z-index: 2; }
-  .lab-head__title { display: inline-flex; align-items: baseline; gap: 8px; font-size: var(--fs-h1); font-weight: 500; padding-left: .8em; }
+  .lab-head__title { display: inline-flex; align-items: baseline; gap: 8px; font-size: var(--fs-h2); font-weight: 500; padding-left: .8em; }
   /* the flask stands on the same "floor" as the word Lab and tips over to the left, never below it */
   .flask { position: relative; display: inline-block; height: .78em; aspect-ratio: 32.5 / 40.5; }
   .flask svg { display: block; width: 100%; height: 100%; overflow: visible; transform-origin: 0% 100%; transition: transform 1.1s cubic-bezier(.45,0,.25,1); }

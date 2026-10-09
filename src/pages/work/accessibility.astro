@@ -26,7 +26,7 @@ const steps = [
     </CaseIntro>
 
     <header class="chapter reveal" aria-labelledby="ch-ca">
-      <h2 id="ch-ca" class="h1 chapter__title">Crédit Agricole</h2>
+      <h2 id="ch-ca" class="h2 chapter__title">Crédit Agricole</h2>
       <p class="chapter__lead">A banking app with 300+ accessibility defects, and the decision to stop fixing them one by one.</p>
     </header>
 
@@ -98,7 +98,7 @@ const steps = [
     </section>
 
     <header class="chapter reveal" aria-labelledby="ch-sky">
-      <h2 id="ch-sky" class="h1 chapter__title">Sky</h2>
+      <h2 id="ch-sky" class="h2 chapter__title">Sky</h2>
       <p class="chapter__lead">Seven touchpoints, the same approach, and this time a number to prove it worked.</p>
     </header>
 
@@ -188,13 +188,13 @@ const steps = [
   .gauge__before { stroke: var(--line); stroke-dasharray: 50 100; }
   .gauge__after { stroke: var(--sage-text); stroke-dasharray: 0 100; transition: stroke-dasharray 1.8s var(--ease-out) .3s; }
   .measure.is-in .gauge__after { stroke-dasharray: 85 100; }
-  .gauge__num { position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(44px, 5vw, 72px); font-weight: 700; color: var(--ink); }
+  .gauge__num { position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(44px, 5vw, 72px); font-weight: 600; color: var(--ink); }
 
   .steps { display: flex; flex-direction: column; gap: 32px; }
   .steps__list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
   .step { background: var(--surface); border-radius: var(--radius-l); padding: 24px; display: flex; flex-direction: column; gap: 10px; }
-  .step h3 { font-size: 20px; font-weight: 700; }
-  .step__n { font-size: 14px; font-weight: 900; color: var(--sage-text); letter-spacing: .06em; }
+  .step h3 { font-size: 20px; font-weight: 600; }
+  .step__n { font-size: 14px; font-weight: 600; color: var(--sage-text); letter-spacing: .06em; }
   .steps__list .step:nth-child(2) { transition-delay: .1s; }
   .steps__list .step:nth-child(3) { transition-delay: .2s; }
   .steps__list .step:nth-child(4) { transition-delay: .3s; }
@@ -234,7 +234,7 @@ const steps = [
   .ca-hero__phones { position: absolute; top: 4.6%; left: 50%; height: 91%; width: auto !important; object-fit: contain !important; transform: translateX(-2%); }
   .ca-hero__title {
     position: absolute; left: 3%; top: 33%; width: 42%;
-    color: #fff; font-weight: 700; font-size: clamp(24px, 4.7vw, 62px); line-height: 1.2; text-align: center;
+    color: #fff; font-weight: 600; font-size: clamp(24px, 4.7vw, 62px); line-height: 1.2; text-align: center;
   }
 
   /* 300+ defects: notes fan out when the section enters */

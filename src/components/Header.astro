@@ -1,5 +1,6 @@
 ---
 import { url } from '../lib/url.js';
+import Icon from './Icon.astro';
 
 // Back link ("breadcrumb"): Lab sub-pages go back to the Lab, everything else to the homepage.
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -47,9 +48,9 @@ const parent = path.startsWith('/lab/')
     </div>
 
     <div class="site-header__side site-header__side--end">
-      <a class="btn btn--secondary btn--small" href={url('/Francesca-Folkmer-CV.pdf')} download>
+      <a class="roll roll--ghost roll--small" href={url('/Francesca-Folkmer-CV.pdf')} download data-dir="down">
         <span>Download CV</span>
-        <span class="btn__icon"><img src={url('/img/arrow-down-dark.svg')} alt="" width="20" height="20" /></span>
+        <span class="roll__ball" aria-hidden="true"><Icon name="arrow-down" size={18} /></span>
       </a>
     </div>
   </div>
@@ -75,7 +76,7 @@ const parent = path.startsWith('/lab/')
   .site-header__side--end { display: flex; justify-content: flex-end; }
   .back-link {
     display: inline-flex; align-items: center; gap: 10px;
-    font-weight: 700; font-size: 18px; text-decoration: none; padding: 8px 12px 8px 0;
+    font-weight: 600; font-size: 18px; text-decoration: none; padding: 8px 12px 8px 0;
   }
   .back-link img { transition: transform .35s var(--ease-spring); }
   .back-link:hover img { transform: translateX(-6px); }
@@ -146,8 +147,7 @@ const parent = path.startsWith('/lab/')
     .profile__name { font-size: 16px; }
     .profile__panel { padding-top: 56px; border-radius: 28px; }
     .profile__links { padding: 6px 18px 18px; font-size: 15px; }
-    .site-header__side--end .btn span:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-    .site-header__side--end .btn { padding: 4px; }
+    .site-header__side--end .roll { padding: 0 14px; font-size: 14px; }
   }
   @media (max-width: 400px) {
     .profile__name { font-size: 15px; }

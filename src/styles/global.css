@@ -73,7 +73,7 @@ a { color: inherit; }
 p { margin: 0; }
 h1, h2, h3 { margin: 0; font-weight: 500; line-height: 1.2; }
 ul { margin: 0; }
-b, strong { font-weight: 700; }
+b, strong { font-weight: 600; }
 
 :focus-visible {
   outline: 3px solid var(--focus);
@@ -102,7 +102,7 @@ b, strong { font-weight: 700; }
 
 /* ---------- Typography helpers ---------- */
 .eyebrow {
-  font-weight: 900;
+  font-weight: 600;
   color: var(--sage-text);
   text-transform: uppercase;
   letter-spacing: .02em;
@@ -169,7 +169,7 @@ b, strong { font-weight: 700; }
 .case-hero__intro .lead { margin-top: 16px; }
 .facts { display: grid; gap: 16px; margin: 0; }
 .facts div { display: flex; gap: .3em; }
-.facts dt { font-weight: 700; }
+.facts dt { font-weight: 600; }
 .facts dt::after { content: ':'; }
 .facts dd { margin: 0; }
 
@@ -191,8 +191,8 @@ b, strong { font-weight: 700; }
   min-height: 160px;
 }
 .result--stat { flex-direction: row; align-items: center; gap: 16px; }
-.result__num { font-size: clamp(44px, 4vw, 64px); font-weight: 700; color: var(--sage); line-height: 1; white-space: nowrap; }
-.result__label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--sage-text); display: block; margin-bottom: 4px; }
+.result__num { font-size: clamp(44px, 4vw, 64px); font-weight: 600; color: var(--sage); line-height: 1; white-space: nowrap; }
+.result__label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--sage-text); display: block; margin-bottom: 4px; }
 
 .retro { text-align: center; max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
 
@@ -230,3 +230,16 @@ html:active-view-transition-type(slide-left)::view-transition-new(root) { animat
 @keyframes vt-out-left { to { transform: translateX(-30%); opacity: 0; } }
 @keyframes vt-in-right { from { transform: translateX(100%); } }
 @media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+
+/* Pill button: on hover a circle with the arrow rolls in from the right edge */
+.roll { display: inline-flex; position: relative; align-items: center; height: 52px; padding: 0 26px; border-radius: 99px; overflow: hidden; background: var(--btn); color: #fff; font-weight: 500; font-size: 18px; text-decoration: none; white-space: nowrap; transition: padding .5s cubic-bezier(.22,1,.36,1); }
+.roll--ghost { background: var(--btn2); color: var(--ink); }
+.roll--small { height: 44px; padding: 0 18px; font-size: 16px; }
+.roll__ball { position: absolute; right: 0; top: 0; height: 100%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--ink); transform: translateX(100%) rotate(90deg); transition: transform .5s cubic-bezier(.22,1,.36,1); }
+.roll--ghost .roll__ball { background: var(--ink); color: #fff; }
+.roll[data-dir="down"] .roll__ball { transform: translateX(100%) rotate(-90deg); }
+.roll:is(:hover, :focus-visible) { padding-right: 70px; }
+.roll--small:is(:hover, :focus-visible) { padding-right: 58px; }
+.roll:is(:hover, :focus-visible) .roll__ball { transform: none; }
+.roll:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .roll, .roll__ball { transition: none; } }
