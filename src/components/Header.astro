@@ -17,7 +17,7 @@ const parent = path.startsWith('/lab/')
     <div class="site-header__side">
       {!isHome && (
         <a class="back-link" href={url(parent.href)} data-back-from-about={path.startsWith('/about') ? '' : undefined}>
-          <img src={url('/img/arrow-left.svg')} alt="" width="24" height="24" />
+          <Icon name="arrow-left" size={24} />
           <span>{parent.label}</span>
         </a>
       )}
@@ -78,8 +78,8 @@ const parent = path.startsWith('/lab/')
     display: inline-flex; align-items: center; gap: 10px;
     font-weight: 600; font-size: 18px; text-decoration: none; padding: 8px 12px 8px 0;
   }
-  .back-link img { transition: transform .35s var(--ease-spring); }
-  .back-link:hover img { transform: translateX(-6px); }
+  .back-link :global(.icon) { transition: transform .35s var(--ease-spring); }
+  .back-link:hover :global(.icon) { transform: translateX(-6px); }
 
   /* ---------- Profile pill (Figma: Profile Info Default -> Variant3) ---------- */
   .profile { position: relative; width: 300px; }
