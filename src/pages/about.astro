@@ -85,7 +85,7 @@ const tools = [
       <h2 id="beyond-title" class="h2 beyond__q reveal">Okay, but what do I do when I'm not designing?</h2>
 
       <div class="outdoor">
-      <div class="stack reveal" aria-hidden="true" data-stack>
+      <div class="stack reveal" aria-hidden="true">
         <img class="stack__p stack__p--0" src={url('/img/hiker-1.png')} alt="" />
         <img class="stack__p stack__p--1" src={url('/img/climbing.png')} alt="" />
         <img class="stack__p stack__p--2" src={url('/img/alpinist.png')} alt="" />
@@ -102,8 +102,11 @@ const tools = [
           <h3 class="h3">Back home, a full house is waiting.</h3>
           <p>A dog, two cats and a turtle. Between the four of them, I never take myself too seriously.</p>
         </div>
-        <div class="pets reveal" role="img" aria-label="Photos of my dog, my two cats and my turtle (coming soon)">
-          <span>Pet photos coming soon</span>
+        <div class="stack stack--pets reveal" aria-hidden="true">
+          <img class="stack__p stack__p--0" src={url('/img/pet-cat-1.jpg')} alt="" />
+          <img class="stack__p stack__p--1" src={url('/img/pet-turtle.jpg')} alt="" />
+          <img class="stack__p stack__p--2" src={url('/img/pet-cat-2.jpg')} alt="" />
+          <img class="stack__p stack__p--3" src={url('/img/pet-dog.jpg')} alt="" />
         </div>
       </div>
     </section>
@@ -174,7 +177,7 @@ const tools = [
   .outdoor { display: grid; grid-template-columns: minmax(0, 578fr) minmax(0, 616fr); gap: clamp(32px, 7vw, 134px); align-items: center; }
   .outdoor h2 { margin: 8px 0 16px; }
   .outdoor p + p { margin-top: 12px; }
-  .stack { position: relative; aspect-ratio: 578 / 305; }
+  .stack { position: relative; aspect-ratio: 578 / 305; margin: 10% 0 12%; }
   .stack__p {
     position: absolute; left: 22%; top: 18%; width: 52%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: center;
     border-radius: 11px; box-shadow: 0 6px 24px rgba(42,47,45,.18);
@@ -188,24 +191,19 @@ const tools = [
   .stack.is-in .stack__p--1 { transform: translate(-2%, -30%) rotate(-3deg); }
   .stack.is-in .stack__p--2 { transform: translate(46%, -12%) rotate(5.7deg); }
   .stack.is-in .stack__p--3 { transform: translate(0, 20%) rotate(-7.9deg); }
-  .stack.is-in.is-rest .stack__p { transition-duration: 1.2s; }
-  .stack.is-in.is-rest .stack__p--0 { transform: rotate(3.7deg); }
-  .stack.is-in.is-rest .stack__p--1 { transform: rotate(-1deg); }
-  .stack.is-in.is-rest .stack__p--2 { transform: rotate(5.7deg); }
-  .stack.is-in.is-rest .stack__p--3 { transform: rotate(-7.9deg); }
 
   .cv { text-align: center; }
 
   @media (max-width: 900px) {
     .intro, .outdoor { grid-template-columns: 1fr; }
-    .outdoor .stack, .outdoor .pets { order: 2; margin-top: 24px; }
+    .outdoor .stack { order: 2; }
     .jobs__list { padding: 0; }
     .job { grid-template-columns: 1fr; gap: 4px; }
     .job__years { font-size: 18px; color: var(--ink-2); }
     .job__head { font-size: 20px; column-gap: 12px; }
     .skills__grid { grid-template-columns: 1fr; }
     .tools li { font-size: 16px; padding: 8px 12px; }
-    .stack { margin: 40px 10% 20px; }
+    .stack { margin: 16% 10% 24%; }
   }
 </style>
 
@@ -218,12 +216,5 @@ const tools = [
     }, { threshold: 0.4 });
     io.observe(call);
   }
-  // Photo stack: fans out once on scroll, then settles back (hover fans it out again)
-  const stack = document.querySelector('[data-stack]');
-  if (stack) {
-    const io2 = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setTimeout(() => stack.classList.add('is-rest'), 1800); io2.disconnect(); }
-    }, { threshold: 0.5 });
-    io2.observe(stack);
-  }
+  // Photo stacks fan out when they enter the screen (handled by the global .reveal → .is-in)
 </script>
