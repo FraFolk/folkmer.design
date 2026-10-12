@@ -1,7 +1,7 @@
 ---
 // "Let's connect": a step-by-step sentence. Each answer shrinks into a small recap line and the
 // next blank appears. At the end: the whole sentence and a Send button (opens the email app,
-// nothing is stored). Layout inspired by a conversational form (progress, Back/Continue, Enter).
+// nothing is stored). Layout inspired by a conversational form (step tag, Back/Continue, Enter).
 const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', 'just saying hi'];
 ---
 <footer class="site-footer">
@@ -10,9 +10,6 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       <h2 class="talk__label">Let's connect</h2>
       <p class="talk__count" data-talk-count aria-hidden="true">1 of 5</p>
     </div>
-    <ol class="talk__progress" aria-hidden="true">
-      {[0, 1, 2, 3, 4].map((i) => <li data-talk-dot={i}></li>)}
-    </ol>
 
     <!-- Without JavaScript: a plain way to get in touch -->
     <p class="talk__nojs">Write to me at <a href="mailto:folkmer.design@gmail.com">folkmer.design@gmail.com</a>. I promise to keep the jargon to a minimum.</p>
@@ -35,8 +32,8 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
         <label class="talk__q" for="t-topic">I'd love to talk about</label>
         <input id="t-topic" class="talk__blank talk__blank--wide" name="topic" type="text" placeholder="pick below or write anything" />
         <ul class="talk__pills" aria-label="Suggestions">
-          {topics.map((t, i) => (
-            <li><button type="button" class="pill" data-pill={t} aria-pressed="false">{t} <kbd aria-hidden="true">{i + 1}</kbd></button></li>
+          {topics.map((t) => (
+            <li><button type="button" class="pill" data-pill={t} aria-pressed="false">{t}</button></li>
           ))}
         </ul>
       </div>
@@ -57,7 +54,7 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       <div class="talk__actions">
         <button type="button" class="talk__btn talk__btn--ghost" data-talk-back hidden>← Back</button>
         <button type="submit" class="roll roll--light" data-talk-next><span data-talk-next-label>Continue</span><span class="roll__ball" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></span></button>
-        <p class="talk__enter" data-talk-enter aria-hidden="true">or press <kbd>Enter</kbd> ↵</p>
+        <p class="talk__enter" data-talk-enter aria-hidden="true">or press <kbd>Enter ↵</kbd></p>
       </div>
     </form>
 
@@ -84,13 +81,8 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
   .talk__top { display: flex; justify-content: space-between; align-items: baseline; }
   /* same style as the section eyebrows (e.g. OVERVIEW), in soft white */
   .talk__label { font-size: var(--fs-body); font-weight: 600; text-transform: uppercase; letter-spacing: .02em; color: rgba(255,255,255,.7); }
-  .talk__count { color: var(--night-muted); }
-  .talk__progress { list-style: none; margin: 24px 0 0; padding: 0; display: flex; justify-content: space-between; position: relative; }
-  .talk__progress::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--night-line); }
-  .talk__progress::after { content: ''; position: absolute; left: 0; top: 50%; height: 2px; margin-top: -.5px; width: var(--p, 0%); background: var(--on-night); transition: width .6s var(--ease-out); }
-  .talk__progress li { position: relative; z-index: 1; width: 9px; height: 9px; border-radius: 50%; background: var(--night); box-shadow: inset 0 0 0 1px #4a524e; transition: background-color .3s, box-shadow .3s, transform .4s var(--ease-spring); }
-  .talk__progress li.is-done { background: var(--on-night); box-shadow: none; }
-  .talk__progress li.is-current { background: var(--orange); box-shadow: 0 0 0 4px rgba(255,92,51,.25); transform: scale(1.3); }
+  /* step counter: a small orange tag instead of the progress bar */
+  .talk__count { align-self: center; padding: 4px 12px; border-radius: 8px; background: var(--orange); color: var(--night); font-size: var(--fs-caption); font-weight: 600; }
 
   .talk__form { padding-top: clamp(40px, 5vw, 72px); display: flex; flex-direction: column; gap: 24px; }
   .talk__recap { color: var(--night-muted); font-size: clamp(16px, 1vw + 10px, 22px); min-height: 1.5em; }
@@ -102,7 +94,7 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
   .talk__q--summary :global(b) { color: var(--orange); font-weight: 500; }
   .talk__blank {
     font: 500 var(--fs-h1)/1.1 'Satoshi', sans-serif; letter-spacing: -.02em;
-    color: var(--orange); background: transparent; border: 0; border-bottom: 2px solid var(--night-edge); border-radius: 0;
+    color: var(--on-night); background: transparent; border: 0; border-bottom: 2px solid var(--night-edge); border-radius: 0;
     padding: 0 .05em; width: 7ch; min-width: 3ch; max-width: 100%;
     caret-color: var(--orange);
   }
@@ -120,15 +112,17 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
     transition: border-color .25s, background-color .25s, transform .4s var(--ease-spring);
   }
   .pill:hover { border-color: var(--night-muted); }
-  .pill[aria-pressed='true'] { border-color: var(--orange); background: rgba(255,92,51,.12); box-shadow: 0 0 0 3px rgba(255,92,51,.25); }
+  .pill[aria-pressed='true'] { border-color: var(--orange); background: rgba(255,92,51,.12); }
   .pill:active { transform: scale(.96); }
   .pill:focus-visible, .talk__btn:focus-visible { outline: 3px solid var(--on-night); outline-offset: 3px; }
-  .pill kbd, .talk__enter kbd { font: 12px/1 ui-monospace, monospace; border: 1px solid var(--night-edge); border-radius: 6px; padding: 3px 8px; color: var(--night-muted); }
+  .talk__enter kbd { font: 12px/1 ui-monospace, monospace; border: 1px solid var(--night-edge); border-radius: 6px; padding: 3px 8px; color: var(--night-muted); }
 
   .talk__error { color: var(--orange); font-weight: 500; min-height: 1.5em; }
   .talk__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
   .talk__btn { font: 500 var(--fs-body)/1 'Satoshi', sans-serif; border-radius: 99px; padding: 16px 32px; cursor: pointer; border: 1.5px solid var(--night-edge); transition: transform .4s var(--ease-spring), background-color .25s; }
-  .talk__btn--ghost { background: transparent; color: var(--on-night); padding: 16px 24px; }
+  /* Back and Continue: same height */
+  .talk__btn--ghost { background: transparent; color: var(--on-night); height: 48px; padding: 0 24px; display: inline-flex; align-items: center; }
+  .talk .roll { --h: 48px; --ball: 36px; padding: 0 24px; font-size: var(--fs-body); }
   .talk__btn--ghost:hover { border-color: var(--night-muted); }
   .talk__btn--primary { background: var(--on-night); color: var(--night); border-color: var(--on-night); }
   .talk__btn--primary:hover { transform: scale(1.04); }
@@ -146,13 +140,13 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
   .talk__nojs { display: none; margin-top: 48px; font-size: var(--fs-h4); }
   .talk__nojs a { color: var(--orange); }
   :global(.no-js) .talk__nojs { display: block; }
-  :global(.no-js) .talk__form, :global(.no-js) .talk__progress, :global(.no-js) .talk__count { display: none; }
+  :global(.no-js) .talk__form, :global(.no-js) .talk__count { display: none; }
 
   .site-footer__bar { background: var(--night); color: rgba(255,255,255,.7); border-top: 1px solid var(--night-line); min-height: 78px; display: grid; place-items: center; padding: 8px 16px; font-size: var(--fs-caption); }
   .site-footer__bar span { font-weight: 500; }
 
-  @media (hover: none) { .talk__enter, .pill kbd { display: none; } }
-  @media (prefers-reduced-motion: reduce) { .talk__step { animation: none; } .talk__progress::after { transition: none; } }
+  @media (hover: none) { .talk__enter { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .talk__step { animation: none; } }
 </style>
 
 <script>
@@ -160,7 +154,6 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
   if (root) {
     const form = root.querySelector('[data-talk-form]');
     const steps = [...root.querySelectorAll('[data-step]')];
-    const dots = [...root.querySelectorAll('[data-talk-dot]')];
     const count = root.querySelector('[data-talk-count]');
     const recap = root.querySelector('[data-talk-recap]');
     const err = root.querySelector('[data-talk-error]');
@@ -223,9 +216,6 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
     const show = (i, focus = true) => {
       cur = i;
       steps.forEach((s, k) => { s.hidden = k !== i; });
-      dots.forEach((d, k) => { d.classList.toggle('is-done', k < i); d.classList.toggle('is-current', k === i); });
-      root.style.setProperty('--p', `${(i / (steps.length - 1)) * 100}%`);
-      root.querySelector('.talk__progress').style.setProperty('--p', `${(i / (steps.length - 1)) * 100}%`);
       count.textContent = `${i + 1} of ${steps.length}`;
       back.hidden = i === 0;
       const last = i === steps.length - 1;
@@ -273,8 +263,6 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       root.querySelector('[data-talk-fail]').hidden = ok;
       root.querySelector('[data-talk-mailto]').href = `mailto:folkmer.design@gmail.com?subject=${encodeURIComponent(`Hi from ${name.value.trim()}`)}&body=${encodeURIComponent(body)}`;
       form.hidden = true; done.hidden = false;
-      dots.forEach((d) => { d.classList.add('is-done'); d.classList.remove('is-current'); });
-      root.querySelector('.talk__progress').style.setProperty('--p', '100%');
       count.textContent = ok ? 'Sent' : 'Not sent';
       done.focus({ preventScroll: true });
       root.querySelector('[data-talk-copy]').onclick = async () => {
@@ -283,13 +271,6 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       };
     });
     back.addEventListener('click', () => { err.textContent = ''; show(Math.max(0, cur - 1)); });
-
-    // number keys pick a suggestion (only when not typing in a field)
-    root.addEventListener('keydown', (e) => {
-      if (cur !== 2 || e.target.matches('input')) return;
-      const n = Number(e.key);
-      if (n >= 1 && n <= pills.length) { e.preventDefault(); togglePill(pills[n - 1]); }
-    });
 
     show(0, false);
   }

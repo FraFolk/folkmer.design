@@ -70,7 +70,7 @@ const code = [
           {s.visual === 'empty' && <p class="atl__big">?</p>}
           {s.visual === 'code' && (
             <div class="atl__mac">
-              <img src={url('/img/macbook.webp')} alt="" width="1600" height="950" loading="lazy" />
+              <img src={url('/img/macbook-13.webp')} alt="" width="1974" height="1167" loading="lazy" />
               <div class="atl__screen">
                 <pre class="atl__code">{code.map(([k, line]) => <span class={k === 'c' ? 'cm' : ''} set:html={line} />)}</pre>
               </div>
@@ -138,7 +138,7 @@ const code = [
   .atl__visual { display: flex; align-items: center; justify-content: center; min-height: 0; }
 
   /* The idea: the first chat, glass card over the photo */
-  .atl__chat { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; width: min(280px, 100%); }
+  .atl__chat { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; width: min(220px, 100%); }
   .msg { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
   .msg--me { align-items: flex-end; }
   .msg__who { font-size: var(--fs-meta); font-weight: 600; opacity: .8; }
@@ -154,15 +154,17 @@ const code = [
   .atl__logo { width: clamp(200px, 28vw, 380px); height: auto; }
 
   /* Build: a desktop with code, dark mode */
-  .atl__flow { width: 100%; max-width: 560px; height: auto; border-radius: 12px; background: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+  .atl__flow { width: 100%; height: auto; filter: drop-shadow(0 12px 28px rgba(0,0,0,.4)); }
+  /* Design: the flow runs almost to the frame edge */
+  .atl__scene--design { grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); padding-right: 24px; }
   .atl__mac { position: relative; width: min(460px, 100%); }
   .atl__mac img { width: 100%; height: auto; display: block; }
-  .atl__mac .atl__screen { position: absolute; left: 34.1%; top: 2.32%; width: 56.9%; height: 62.2%; padding: 6% 6%; border: 0; border-radius: 4px 4px 0 0; box-shadow: none; overflow: hidden; }
+  .atl__mac .atl__screen { position: absolute; left: 11.6%; top: 5.9%; width: 76.8%; height: 79%; padding: 5% 6%; border: 0; border-radius: 0; box-shadow: none; overflow: hidden; }
   .atl__monitor { display: flex; flex-direction: column; align-items: center; width: min(420px, 100%); }
   .atl__screen { width: 100%; padding: 12px 16px 16px; border-radius: 12px; background: #16181a; border: 6px solid #2b2e30; box-shadow: 0 16px 40px rgba(0,0,0,.45); }
   .atl__dots { display: flex; gap: 6px; margin-bottom: 12px; }
   .atl__dots i { width: 8px; height: 8px; border-radius: 50%; background: #4a4f52; }
-  .atl__code { margin: 0; display: flex; flex-direction: column; font: 500 clamp(5px, .62vw, 9px)/1.6 ui-monospace, 'SF Mono', Menlo, monospace; color: #d6dbd8; white-space: pre; overflow: hidden; }
+  .atl__code { margin: 0; display: flex; flex-direction: column; font: 500 clamp(6px, .75vw, 11px)/1.6 ui-monospace, 'SF Mono', Menlo, monospace; color: #d6dbd8; white-space: pre; overflow: hidden; }
   .atl__code .cm { color: #7d8581; }
   .atl__code :global(.k) { color: #ff8a6b; } .atl__code :global(.f) { color: #aee7ca; } .atl__code :global(.t) { color: #8cc3ff; } .atl__code :global(.a) { color: #f3d58a; }
   .atl__stand { width: 64px; height: 28px; background: linear-gradient(#2b2e30, #1c1e20); clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%); }
@@ -196,7 +198,7 @@ const code = [
     .atl__ruler { height: 150px; }
     .atl__ring { bottom: 32px; }
     .atl__needle { bottom: 24px; }
-    .atl__scene { grid-template-columns: 1fr; align-content: start; padding: 24px 24px 160px; gap: 16px; }
+    .atl__scene, .atl__scene--design { grid-template-columns: 1fr; align-content: center; padding: 24px 24px 160px; gap: 16px; }
     .atl__scene:has(.atl__bg)::before { background: linear-gradient(180deg, rgba(10,12,11,.88) 40%, rgba(10,12,11,.35)); }
     .atl__phones img { height: 170px; }
     .atl__visual { justify-content: flex-start; }
