@@ -21,6 +21,12 @@ const {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content={new URL(url('/og-image.jpg'), Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Francesca Folkmer, Product Designer: Accessibility and AI, co-founder of Alé. folkmerdesign.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
     <meta name="theme-color" content="#fcfcfa" />
     <link rel="icon" href={url('/img/avatar.webp')} />
     <link rel="preload" href={satoshi} as="font" type="font/ttf" crossorigin />
