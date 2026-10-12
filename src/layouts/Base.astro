@@ -3,13 +3,37 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { url } from '../lib/url.js';
-import satoshi from '../fonts/Satoshi-Variable.ttf?url';
+import satoshi from '../fonts/Satoshi-Variable.woff2?url';
 
 const {
-  title = 'Francesca Folkmer · Product Designer',
-  description = 'Product Designer focused on accessibility and AI. I turn complex services into simple, accessible products.',
+  title = 'Francesca Folkmer · Product Designer, Accessibility & AI',
+  description = 'Francesca Folkmer, Product Designer in Milan. CPACC-certified in accessibility, I use AI in my design workflow and turn complex services into simple, accessible products.',
   back = false,
+  noindex = false,
 } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(url('/og-image.jpg'), Astro.site).href;
+const home = new URL(url('/'), Astro.site).href;
+// Structured data: who Francesca is, for search engines and AI answers
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${home}#francesca`,
+      name: 'Francesca Folkmer',
+      jobTitle: 'Product Designer',
+      description: 'Product Designer focused on accessibility and AI. CPACC-certified. Co-founder of Alé, a community app for climbers.',
+      url: home,
+      image: ogImage,
+      sameAs: ['https://www.linkedin.com/in/francescafolkmer/'],
+      address: { '@type': 'PostalAddress', addressLocality: 'Milan', addressCountry: 'IT' },
+      knowsAbout: ['Product design', 'Digital accessibility', 'WCAG 2.2', 'European Accessibility Act', 'Design systems', 'AI in design', 'UX research'],
+      hasCredential: { '@type': 'EducationalOccupationalCredential', name: 'CPACC: Certified Professional in Accessibility Core Competencies', recognizedBy: { '@type': 'Organization', name: 'IAAP' } },
+    },
+    { '@type': 'WebSite', '@id': `${home}#site`, url: home, name: 'Francesca Folkmer', inLanguage: 'en', publisher: { '@id': `${home}#francesca` } },
+  ],
+};
 ---
 <!doctype html>
 <html lang="en" class="no-js">
@@ -18,19 +42,29 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="author" content="Francesca Folkmer" />
+    <meta property="og:site_name" content="Francesca Folkmer" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content={new URL(url('/og-image.jpg'), Astro.site).href} />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Francesca Folkmer, Product Designer: Accessibility and AI, co-founder of Alé. folkmerdesign.com" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" type="application/xml" href={url('/sitemap.xml')} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <meta name="theme-color" content="#fcfcfa" />
     <link rel="icon" type="image/png" sizes="32x32" href={url('/favicon-32.png')} />
     <link rel="apple-touch-icon" href={url('/favicon-180.png')} />
-    <link rel="preload" href={satoshi} as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href={satoshi} as="font" type="font/woff2" crossorigin />
     <script is:inline>document.documentElement.classList.replace('no-js', 'js');
       // "About me" from the homepage: the About page slides in from the right
       // and slides back out to the right when you return to the homepage
