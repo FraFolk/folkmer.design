@@ -92,18 +92,17 @@ const quotes = [
   <!-- 3. Plot twist: Alé -->
   <section class="story container" aria-labelledby="ale-title">
     <h2 id="ale-title" class="h2 story__title plot reveal">
-      <span class="sr-only">Plot twist: I'm also a climber, and a co-founder.</span>
-      <span aria-hidden="true">Plot twist: I'm also a <span class="plot__old">climber</span> <span class="plot__new">co-founder</span>.</span>
+      <span class="sr-only">Plot twist: I'm also a climber, and a co-founder</span>
+      <span aria-hidden="true">Plot twist: I'm also a <span class="plot__old">climber</span> <span class="plot__new">co-founder</span></span>
     </h2>
     <p class="story__lead reveal">I love climbing. I'm just not very good at it. So I took it to the one place where I know what I'm doing: design. Alé is an app for climbers, built by four of us in the evenings and at weekends. I lead the product design.</p>
     <a class="ale-card reveal" href={url('/ale/')}>
       <img src={url(ale.image)} alt="" width="662" height="395" loading="lazy" />
       <span class="ale-card__body">
         <span class="ale-card__title">Alé, from the inside</span>
-        <span class="ale-card__facts" aria-hidden="true"><span><b>50+</b> climbers surveyed</span><span><b>5</b> interviews</span><span><b>4</b> people</span><span>Launch <b>Dec 2026</b></span></span>
-        <span class="ale-card__cta">Follow the journey <Icon name="arrow-right" size={18} /></span>
-        <span class="ale-card__ball" aria-hidden="true"><Icon name="arrow-up-right" size={20} /></span>
+        <span class="ale-card__sub">Follow the journey</span>
       </span>
+      <span class="ale-card__ball" aria-hidden="true"><Icon name="arrow-up-right" size={20} /></span>
     </a>
   </section>
 
@@ -226,13 +225,12 @@ const quotes = [
   .secret-case__tags { font-style: italic; color: var(--ink-2); }
   .secret-case__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.2; }
   .secret-case__sub { color: var(--ink-2); max-width: 44ch; }
-  .secret-case__cta, .a11y__cta, .ale-card__cta { font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: color .3s var(--ease-out); }
-  .secret-case__cta :global(.icon), .a11y__cta :global(.icon), .ale-card__cta :global(.icon) { transition: transform .45s var(--ease-spring); }
+  .secret-case__cta, .a11y__cta { font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: color .3s var(--ease-out); }
+  .secret-case__cta :global(.icon), .a11y__cta :global(.icon) { transition: transform .45s var(--ease-spring); }
   /* hover/focus on the whole card: the arrow moves ahead, text and icon change colour */
   .a11y:is(:hover, :focus-visible) .a11y__cta { color: var(--orange-text); }
   .secret-case:is(:hover, :focus-visible) .secret-case__cta { color: var(--orange-text); }
-  .ale-card:is(:hover, :focus-visible) .ale-card__cta { color: var(--orange); }
-  :is(.a11y, .secret-case, .ale-card):is(:hover, :focus-visible) :global(.icon) { transform: translateX(6px); }
+  :is(.a11y, .secret-case):is(:hover, :focus-visible) :global(.icon) { transform: translateX(6px); }
   .secret-case__cover { position: relative; display: block; padding: 24px 24px 24px 0; }
   .mac__body { width: 100%; height: auto; display: block; }
   .mac { position: relative; display: block; }
@@ -255,17 +253,13 @@ const quotes = [
   .ale-card__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 144px 32px 32px; display: flex; flex-direction: column; gap: 12px;
     background: linear-gradient(to top, rgba(12,15,14,.92) 0%, rgba(12,15,14,.78) 40%, rgba(12,15,14,0) 100%); }
   .ale-card__title { font-size: var(--fs-h3); font-weight: 500; }
-  .ale-card__body .ale-card__cta { position: absolute; right: 32px; bottom: 28px; }
-  .ale-card__body { padding-right: 230px; }
-  .ale-card__ball { display: none; }
+  .ale-card__sub { font-size: var(--fs-small); color: rgba(255,255,255,.85); }
+  .ale-card__ball { position: absolute; top: 32px; right: 32px; width: 48px; height: 48px; border-radius: 50%; background: #fff; color: var(--ink); display: grid; place-items: center; transition: background-color 200ms, transform 300ms var(--ease-out); }
+  .ale-card:is(:hover, :focus-visible) .ale-card__ball { background: var(--orange); transform: scale(1.06); }
   @media (max-width: 700px) {
-    .ale-card__body { padding: 72px 16px 16px; }
-    .ale-card .ale-card__facts, .ale-card .ale-card__body .ale-card__cta { display: none; }
-    .ale-card__ball { display: grid; place-items: center; position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; background: #fff; color: var(--ink); }
-    .ale-card { position: relative; }
+    .ale-card__body { padding: 72px 16px 16px; gap: 4px; }
+    .ale-card__ball { top: 16px; right: 16px; width: 44px; height: 44px; }
   }
-  .ale-card__facts { display: flex; flex-wrap: wrap; gap: 8px; font-size: var(--fs-caption); }
-  .ale-card__facts span { background: rgba(12,15,14,.7); border: 1px solid rgba(255,255,255,.35); color: #fff; border-radius: 99px; padding: 4px 12px; }
 
   /* Lab: tip, pour, spill, cards */
   .lab-section { position: relative; overflow-x: clip; }
@@ -296,9 +290,7 @@ const quotes = [
 
   @media (max-width: 900px) {
     .secret-case, .a11y { grid-template-columns: 1fr; }
-    .ale-card img { aspect-ratio: 4 / 3; }
-    .ale-card__body { padding: 72px 16px 64px; gap: 8px; }
-    .ale-card__body .ale-card__cta { right: 16px; bottom: 16px; }
+    .ale-card img { aspect-ratio: 4 / 3; object-position: 50% 50%; }
   }
   @media (prefers-reduced-motion: reduce) {
     .plot__old::after { transform: scaleX(1) rotate(-3deg); transition: none; }
@@ -363,7 +355,14 @@ const quotes = [
 
   if (bubbles.length && !reduce) loop();
 
-  document.querySelector('[data-slide-to-about]')?.addEventListener('click', () => { try { sessionStorage.setItem('slide', 'left'); } catch {} });
+  document.querySelector('[data-slide-to-about]')?.addEventListener('click', (e) => {
+    try { sessionStorage.setItem('slide', 'left'); } catch {}
+    if (reduce || e.metaKey || e.ctrlKey) return;
+    // on touch there is no hover: show the rolling ball first, then change page
+    const a = e.currentTarget; e.preventDefault();
+    a.classList.add('is-rolling');
+    setTimeout(() => { location.href = a.href; }, 320);
+  });
 
   // Lab: the cards come in softly when the section is visible.
   // Easter egg: click the flask (or browse the cards until it wobbles too much) and it tips over.

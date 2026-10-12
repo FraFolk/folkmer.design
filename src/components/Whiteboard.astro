@@ -27,7 +27,7 @@ const colours = [
       <div class="board__group" role="radiogroup" aria-label="Brush">
         {brushes.map((b, i) => (
           <button type="button" class={`tool tool--${b.id}`} role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-brush={b.id} data-size={b.size} data-alpha={b.alpha}>
-            <svg viewBox="0 0 28 72" width="28" height="72" aria-hidden="true">
+            <svg viewBox="0 0 28 72" width="22" height="57" aria-hidden="true">
               <defs>
                 <linearGradient id={`sh-${b.id}`} x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".18"/><stop offset=".35" stop-color="#fff" stop-opacity=".35"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/></linearGradient>
               </defs>
@@ -93,27 +93,27 @@ const colours = [
   .board.has-ink .board__empty { opacity: 0; }
 
   .board__tools {
-    position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%) scale(.82); transform-origin: 50% 100%;
+    position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%);
     display: flex; align-items: center; gap: 6px; padding: 6px 8px;
-    background: #fff; border-radius: 12px; padding-top: 0; padding-bottom: 0; height: 72px;
+    background: #fff; border-radius: 12px; padding-top: 0; padding-bottom: 0; height: 56px;
     box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 12px 28px -12px rgba(27,32,30,.35);
   }
   .board__group { display: flex; align-items: center; gap: 4px; }
-  .board__group:has(.swatch) { gap: 12px; padding: 0 6px; }
+  .board__group:has(.swatch) { gap: 16px; padding: 0 8px; }
   .board__sep { width: 1px; height: 24px; background: var(--line); margin: 0 4px; }
   .tool { width: 40px; height: 40px; border: 0; border-radius: 10px; background: transparent; color: var(--ink); display: grid; place-items: center; cursor: pointer; }
-  .tool[data-brush] { height: 72px; width: 36px; align-items: end; padding: 0; border-radius: 6px; overflow: hidden; }
-  .tool[data-brush] svg { transform: translateY(24px); transition: transform .3s var(--ease-spring); }
+  .tool[data-brush] { height: 56px; width: 28px; align-items: end; padding: 0; border-radius: 6px; overflow: hidden; }
+  .tool[data-brush] svg { transform: translateY(18px); transition: transform .3s var(--ease-spring); }
   .tool[data-brush]:hover { background: transparent; }
-  .tool[data-brush]:hover svg { transform: translateY(18px); }
+  .tool[data-brush]:hover svg { transform: translateY(13px); }
   .tool[data-brush][aria-checked='true'] { background: transparent; }
-  .tool[data-brush][aria-checked="true"] svg { transform: translateY(8px); }
+  .tool[data-brush][aria-checked="true"] svg { transform: translateY(5px); }
   .tool .tip { fill: var(--pen, #1f1f1f); }
   .tool .tip.ink { filter: brightness(.82); }
   .tool:hover { background: var(--surface); }
   .tool[aria-checked='true'] { background: var(--surface-2); }
   .tool:disabled { opacity: .35; cursor: default; background: transparent; }
-  .swatch { width: 22px; height: 22px; border-radius: 50%; border: 0; background: var(--c); cursor: pointer; box-shadow: 0 0 0 2px #fff, 0 0 0 3px transparent; transition: box-shadow .2s, transform .3s var(--ease-spring); }
+  .swatch { width: 24px; height: 24px; flex: none; border-radius: 50%; border: 0; background: var(--c); cursor: pointer; box-shadow: 0 0 0 2px #fff, 0 0 0 3px transparent; transition: box-shadow .2s, transform .3s var(--ease-spring); }
   .swatch:hover { transform: scale(1.1); }
   .swatch[aria-checked='true'] { box-shadow: 0 0 0 2px #fff, 0 0 0 4.5px #8452f0; }
   .swatch[data-colour='#ffffff'] { box-shadow: inset 0 0 0 1px #d8dcda, 0 0 0 2px #fff; }
@@ -124,11 +124,11 @@ const colours = [
 
   @media (max-width: 600px) {
     .board { height: clamp(300px, 52svh, 440px); }
-    .board__tools { transform: translateX(-50%) scale(.72); bottom: 8px; }
+    .board__tools { bottom: 8px; }
     .board__tools { gap: 2px; padding: 4px; }
-    .tool { width: 34px; height: 34px; }
-    .swatch { width: 18px; height: 18px; }
-    .board__group:has(.swatch) { gap: 8px; }
+    .tool { width: 32px; height: 32px; }
+    .swatch { width: 24px; height: 24px; }
+    .board__group:has(.swatch) { gap: 14px; }
   }
 </style>
 

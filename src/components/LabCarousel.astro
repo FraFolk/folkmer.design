@@ -87,7 +87,7 @@ const H = `h${headingLevel}`;
   .lc__link { text-decoration: none; }
   .lc__link:focus-visible { outline: none; }
   .lc__link::after { content: ''; position: absolute; inset: 0; border-radius: 36px; z-index: 1; }
-  .lc__summary { color: var(--ink-2); font-size: var(--fs-small); line-height: 1.45; }
+  .lc__summary { color: var(--ink-2); font-size: var(--fs-small); line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .lc__cta { margin-top: auto; padding-top: 12px; font-weight: 500; font-size: var(--fs-caption); display: inline-flex; align-items: center; gap: 8px; }
   .lc__cta :global(.lc__cta-arrow) { transition: transform .4s var(--ease-spring); }
   .lc__cta { transition: color 200ms ease-out; }

@@ -261,7 +261,8 @@ html:active-view-transition-type(slide-right)::view-transition-new(root) { anima
 .roll__ball { position: absolute; right: var(--inset); top: var(--inset); width: var(--ball); height: var(--ball); border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--ink); transform: translateX(calc(100% + 16px)) rotate(180deg); transition: transform 300ms cubic-bezier(.16,1,.3,1); }
 .roll:is(:hover, :focus-visible) { padding-right: calc(var(--inset) + var(--ball) + 12px); }
 @media (max-width: 760px) { .roll { --h: 48px; --ball: 36px; padding: 0 20px; font-size: var(--fs-small); } .roll--small { --h: 40px; --ball: 28px; } }
-.roll:is(:hover, :focus-visible) .roll__ball { transform: none; }
+.roll:is(:hover, :focus-visible, .is-rolling) .roll__ball { transform: none; }
+.roll.is-rolling { padding-right: calc(var(--inset) + var(--ball) + 12px); }
 .roll:hover { background: var(--btn-hover); }
 .roll--ghost:hover { background: var(--btn2-hover); }
 .roll:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
@@ -273,3 +274,14 @@ html:active-view-transition-type(slide-right)::view-transition-new(root) { anima
 html.is-paused *, html.is-paused *::before, html.is-paused *::after { animation-play-state: paused !important; }
 
 @media (max-width: 760px) { :root { --radius-card: 32px; } }
+
+/* roll button on dark backgrounds (footer) */
+.roll--light { background: var(--on-night); color: var(--night); border: 0; cursor: pointer; font-family: inherit; }
+.roll--light:hover { background: #fff; }
+.roll--light .roll__ball { background: var(--night); color: #fff; }
+.roll--send { background: var(--orange); color: var(--night); }
+.roll--send:hover { background: var(--orange); }
+
+/* Alé: the hero holds the interactive timeline instead of a picture */
+.case-hero__media:has(.atl) { aspect-ratio: auto; height: clamp(440px, 38vw, 540px); }
+@media (max-width: 760px) { .case-hero__media:has(.atl) { height: 560px; } }

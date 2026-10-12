@@ -56,7 +56,7 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
 
       <div class="talk__actions">
         <button type="button" class="talk__btn talk__btn--ghost" data-talk-back hidden>← Back</button>
-        <button type="submit" class="talk__btn talk__btn--primary" data-talk-next>Continue</button>
+        <button type="submit" class="roll roll--light" data-talk-next><span data-talk-next-label>Continue</span><span class="roll__ball" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></span></button>
         <p class="talk__enter" data-talk-enter aria-hidden="true">or press <kbd>Enter</kbd> ↵</p>
       </div>
     </form>
@@ -82,7 +82,8 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
   .talk [hidden] { display: none !important; }
   .talk { padding-top: clamp(56px, 7vw, 112px); padding-bottom: clamp(56px, 6vw, 96px); display: flex; flex-direction: column; }
   .talk__top { display: flex; justify-content: space-between; align-items: baseline; }
-  .talk__label { font-size: clamp(28px, 1.6vw + 16px, 40px); font-weight: 500; }
+  /* same style as the section eyebrows (e.g. OVERVIEW), in soft white */
+  .talk__label { font-size: var(--fs-body); font-weight: 600; text-transform: uppercase; letter-spacing: .02em; color: rgba(255,255,255,.7); }
   .talk__count { color: var(--night-muted); }
   .talk__progress { list-style: none; margin: 24px 0 0; padding: 0; display: flex; justify-content: space-between; position: relative; }
   .talk__progress::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--night-line); }
@@ -96,12 +97,12 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
   .talk__recap :global(b) { color: var(--on-night); font-weight: 500; }
   .talk__step { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .35em; animation: step-in .55s var(--ease-out); }
   @keyframes step-in { from { opacity: 0; transform: translateY(14px); } }
-  .talk__q { font-size: clamp(36px, 4.6vw + 8px, 88px); font-weight: 500; line-height: 1.05; letter-spacing: -.02em; color: var(--night-muted); }
-  .talk__q--summary { color: var(--on-night); font-size: clamp(30px, 3.4vw + 8px, 64px); max-width: 22ch; outline: none; }
+  .talk__q { font-size: var(--fs-h1); font-weight: 500; line-height: 1.05; letter-spacing: -.02em; color: var(--night-muted); }
+  .talk__q--summary { color: var(--on-night); font-size: var(--fs-h1); max-width: 22ch; outline: none; }
   .talk__q--summary :global(b) { color: var(--orange); font-weight: 500; }
   .talk__blank {
-    font: 500 clamp(36px, 4.6vw + 8px, 88px)/1.05 'Satoshi', sans-serif; letter-spacing: -.02em;
-    color: var(--orange); background: transparent; border: 0; border-bottom: 3px solid var(--night-edge); border-radius: 0;
+    font: 500 var(--fs-h1)/1.1 'Satoshi', sans-serif; letter-spacing: -.02em;
+    color: var(--orange); background: transparent; border: 0; border-bottom: 2px solid rgba(255,255,255,.85); border-radius: 0;
     padding: 0 .05em; width: 7ch; min-width: 3ch; max-width: 100%;
     caret-color: var(--orange);
   }
@@ -229,8 +230,8 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       back.hidden = i === 0;
       const last = i === steps.length - 1;
       recap.innerHTML = last ? '' : recapHtml(i);
-      next.textContent = last ? 'Send it' : 'Continue';
-      next.classList.toggle('talk__btn--send', last);
+      root.querySelector('[data-talk-next-label]').textContent = last ? 'Send it' : 'Continue';
+      next.classList.toggle('roll--send', last);
       enter.hidden = last;
       root.querySelector('[data-talk-privacy]').hidden = !last;
       if (last) {
@@ -254,7 +255,7 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       if (cur < steps.length - 1) { show(cur + 1); return; }
       const c = company.value.trim();
       const body = `Hi Francesca, I'm ${name.value.trim()}${c ? ` from ${c}` : ''}. I'd love to talk about ${topic.value.trim() || 'anything'}. You can reach me at ${email.value.trim()}.`;
-      next.disabled = true; next.textContent = 'Sending…';
+      next.disabled = true; root.querySelector('[data-talk-next-label]').textContent = 'Sending…';
       let ok = false;
       try {
         // Our own Cloudflare Worker saves the message and forwards it to Francesca's inbox

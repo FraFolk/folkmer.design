@@ -1,8 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
 import CaseIntro from '../components/CaseIntro.astro';
+import AleTimeline from '../components/AleTimeline.astro';
 import { url } from '../lib/url.js';
 
+const screens = [
+  ['ale-s-home', 'Home: search for a spot and your next adventure'],
+  ['ale-s-map', 'Map with a selected spot'],
+  ['ale-s-search', 'Search with recent places'],
+  ['ale-s-filters', 'Filters: type, grade, rock, holds'],
+  ['ale-s-spot', 'Boulder spot: blocks and grade distribution'],
+  ['ale-s-event', 'Official event page: Melloblocco 2026'],
+  ['ale-s-profile', 'Climber profile with grades and stats'],
+  ['ale-s-settings', 'Settings, with a "buy us a beer" card'],
+];
 const dock = [
   { name: 'Perplexity', img: 'dock-perplexity.png' },
   { name: 'Gemini', img: 'dock-gemini.png' },
@@ -27,13 +38,7 @@ const steps = [
       title="Alé: an app for climbers, by climbers"
       facts={[['Timeline', 'Jul 2025 - Now'], ['Role', 'Co-founder & Product Design Lead'], ['Team', '2 founders, 1 developer, 1 designer']]}
     >
-      <Fragment slot="media">
-        <img src={url('/img/ale-hero-bg.webp')} alt="" />
-        <div class="phone ale-hero__phone">
-          <img class="phone__screen" src={url('/img/ale-hero-screen.webp')} alt="Alé home screen: search for a spot and your next adventure." />
-          <img class="phone__frame" src={url('/img/phone-frame-2.svg')} alt="" />
-        </div>
-      </Fragment>
+      <Fragment slot="media"><AleTimeline /></Fragment>
       <p>I co-founded Alé with Marta. We make the business decisions together, and I lead the product design: from the first survey to the MVP.</p>
     </CaseIntro>
 
@@ -106,9 +111,19 @@ const steps = [
           </ul>
         </div>
       </div>
-      <div class="split__media reveal">
-        <img class="float" src={url('/img/ale-solution.webp')} alt="Boulder detail screen in Alé: official grade 6a+ next to community grade 6b, description, tags and an 'Alé! Chiuso' button." width="638" height="650" />
-      </div>
+    </section>
+
+    <section class="phones" aria-label="Alé screens">
+      <ul class="phones__row" data-phones>
+        {screens.map(([img, alt]) => (
+          <li class="phones__item">
+            <div class="phone-mock">
+              <img class="phone-mock__screen" src={url(`/img/${img}.webp`)} alt={alt} loading="lazy" width="375" height="812" />
+              <img class="phone-mock__frame" src={url('/img/phone-frame-2.svg')} alt="" />
+            </div>
+          </li>
+        ))}
+      </ul>
     </section>
 
     <section class="progress" aria-labelledby="now">
@@ -187,6 +202,16 @@ const steps = [
   .dock__users img { position: absolute; inset: 0; }
   .dock__users .dock__users-icon { inset: 22%; width: 56%; height: 56%; }
 
+  /* Solution: a row of iPhones; drag (mouse) or swipe to scroll */
+  .phones { margin-top: calc(clamp(80px, 10vw, 180px) * -0.5); }
+  .phones__row { list-style: none; margin: 0 calc(var(--gutter) * -1); padding: 8px var(--gutter) 24px; display: flex; gap: 32px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: grab; }
+  .phones__row::-webkit-scrollbar { display: none; }
+  .phones__row.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+  .phones__item { flex: 0 0 clamp(150px, 17vw, 230px); scroll-snap-align: start; }
+  .phone-mock { position: relative; aspect-ratio: 143.44 / 298.22; }
+  .phone-mock__frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .phone-mock__screen { position: absolute; left: 3.36%; top: 1.38%; width: 93.9%; height: 97.24%; object-fit: cover; border-radius: 9% / 4.3%; }
+  @media (max-width: 760px) { .phones__row { gap: 16px; } .phones__item { flex-basis: calc((100% - 16px) / 2.3); } }
   .float { animation: float 6s ease-in-out infinite; }
   @keyframes float { 50% { transform: translateY(-10px); } }
 
@@ -221,6 +246,17 @@ const steps = [
 </style>
 
 <script>
+  // iPhone row: drag with the mouse to scroll (touch scrolls natively)
+  const row = document.querySelector('[data-phones]');
+  if (row) {
+    let x0 = null, s0 = 0;
+    row.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; x0 = e.clientX; s0 = row.scrollLeft; row.classList.add('is-dragging'); row.setPointerCapture(e.pointerId); });
+    row.addEventListener('pointermove', (e) => { if (x0 !== null) row.scrollLeft = s0 - (e.clientX - x0); });
+    const end = () => { x0 = null; row.classList.remove('is-dragging'); };
+    row.addEventListener('pointerup', end); row.addEventListener('pointercancel', end);
+    row.addEventListener('dragstart', (e) => e.preventDefault());
+  }
+
   // Dock magnification (mouse only; purely decorative)
   const dock = document.querySelector('[data-dock]');
   if (dock && matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches) {
