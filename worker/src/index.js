@@ -1,0 +1,46 @@
+// Visitors' wall for folkmerdesign.com: stores drawing strokes in D1.
+// Visitors can add strokes and undo/erase only their own (each stroke has a private key kept in their browser).
+// Francesca removes strokes from the Cloudflare dashboard (D1 > folkmer-wall > strokes).
+const ORIGINS = ['https://folkmerdesign.com', 'https://www.folkmerdesign.com', 'http://folkmerdesign.com', 'http://localhost:4321'];
+const MAX_POINTS = 2000, MAX_PER_DAY = 200;
+const cors = (req) => {
+  const o = req.headers.get('Origin');
+  return { 'Access-Control-Allow-Origin': ORIGINS.includes(o) ? o : ORIGINS[0], 'Access-Control-Allow-Methods': 'GET,POST,DELETE,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Vary': 'Origin' };
+};
+const json = (req, body, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', ...cors(req) } });
+const hash = async (s) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))].slice(0, 8).map((b) => b.toString(16).padStart(2, '0')).join('');
+const okColour = (c) => /^#[0-9a-f]{6}$/i.test(c);
+
+export default {
+  async fetch(req, env) {
+    const url = new URL(req.url);
+    if (req.method === 'OPTIONS') return new Response(null, { headers: cors(req) });
+    const del = url.pathname.match(/^\/strokes\/(\d+)$/);
+    if (del && req.method === 'DELETE') {
+      const key = url.searchParams.get('key') || '';
+      if (key.length < 16) return json(req, { error: 'key' }, 403);
+      const r = await env.DB.prepare('DELETE FROM strokes WHERE id = ? AND key_hash = ?').bind(Number(del[1]), await hash(key)).run();
+      return json(req, { deleted: r.meta.changes });
+    }
+    if (url.pathname !== '/strokes') return json(req, { error: 'not found' }, 404);
+    if (req.method === 'GET') {
+      const { results } = await env.DB.prepare('SELECT id, data FROM strokes ORDER BY id DESC LIMIT 3000').all();
+      return json(req, results.reverse().map((r) => ({ id: r.id, ...JSON.parse(r.data) })));
+    }
+    if (req.method === 'POST') {
+      if (!ORIGINS.includes(req.headers.get('Origin'))) return json(req, { error: 'origin' }, 403);
+      let s; try { s = await req.json(); } catch { return json(req, { error: 'bad json' }, 400); }
+      const pts = Array.isArray(s.pts) ? s.pts : [];
+      if (!pts.length || pts.length > MAX_POINTS || !pts.every((p) => Array.isArray(p) && p.length === 2 && p.every((n) => typeof n === 'number' && n >= -0.05 && n <= 1.05))) return json(req, { error: 'bad stroke' }, 400);
+      if (!okColour(s.colour) || typeof s.size !== 'number' || s.size < 1 || s.size > 40 || typeof s.alpha !== 'number' || s.alpha < 0.1 || s.alpha > 1) return json(req, { error: 'bad style' }, 400);
+      const ip = await hash((req.headers.get('CF-Connecting-IP') || '') + new Date().toISOString().slice(0, 10));
+      const { results } = await env.DB.prepare("SELECT COUNT(*) AS n FROM strokes WHERE ip_hash = ? AND created_at > datetime('now', '-1 day')").bind(ip).all();
+      if (results[0].n >= MAX_PER_DAY) return json(req, { error: 'enough for today' }, 429);
+      const data = JSON.stringify({ pts: pts.map(([x, y]) => [Math.round(x * 1000) / 1000, Math.round(y * 1000) / 1000]), colour: s.colour.toLowerCase(), size: s.size, alpha: s.alpha });
+      const key = typeof s.key === 'string' && s.key.length >= 16 ? s.key : '';
+      const r = await env.DB.prepare('INSERT INTO strokes (ip_hash, key_hash, data) VALUES (?, ?, ?)').bind(ip, key ? await hash(key) : null, data).run();
+      return json(req, { id: r.meta.last_row_id });
+    }
+    return json(req, { error: 'method' }, 405);
+  },
+};

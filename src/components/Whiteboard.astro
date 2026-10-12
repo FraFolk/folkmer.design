@@ -144,10 +144,36 @@ const colours = [
     const undoBtn = root.querySelector('[data-board-undo]');
     // Strokes use 0..1 coordinates so the drawing scales with the board.
     // { pts: [[x,y],...], colour, size, alpha, mine }
+    // Shared wall (Cloudflare Worker + D1). Your own strokes carry a private key kept in this
+    // browser, so you can undo or erase them; nobody can erase anyone else's.
+    const API = 'https://folkmer-wall.folkmerdesign.workers.dev';
+    const mineKey = 'wall-mine';
+    const readMine = () => { try { return JSON.parse(localStorage.getItem(mineKey) || '{}'); } catch { return {}; } };
+    const writeMine = (m) => { try { localStorage.setItem(mineKey, JSON.stringify(m)); } catch {} };
     const store = {
-      others: [],   // later: loaded from the shared wall (read-only for visitors)
+      others: [],
       mine: [],
-      save() { /* later: send the new stroke to the shared wall */ },
+      async load() {
+        try {
+          const list = await (await fetch(`${API}/strokes`)).json();
+          const mine = readMine();
+          this.mine = list.filter((st) => mine[st.id]).map((st) => ({ ...st, key: mine[st.id] }));
+          this.others = list.filter((st) => !mine[st.id]);
+        } catch {}
+      },
+      async save(st) {
+        st.key = crypto.getRandomValues(new Uint32Array(4)).join('-');
+        try {
+          const r = await fetch(`${API}/strokes`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pts: st.pts, colour: st.colour, size: st.size, alpha: st.alpha, key: st.key }) });
+          const { id } = await r.json();
+          if (id) { st.id = id; const m = readMine(); m[id] = st.key; writeMine(m); }
+        } catch {}
+      },
+      remove(st) {
+        if (!st.id) return;
+        fetch(`${API}/strokes/${st.id}?key=${encodeURIComponent(st.key)}`, { method: 'DELETE' }).catch(() => {});
+        const m = readMine(); delete m[st.id]; writeMine(m);
+      },
     };
     let brush = { id: 'pencil', size: 3, alpha: 1 };
     let colour = '#1f1f1f';
@@ -196,7 +222,9 @@ const colours = [
     const erase = (e) => {
       const [x, y] = pt(e); const { w, h } = scale(); const r = 14;
       const before = store.mine.length;
-      store.mine = store.mine.filter((st) => !st.pts.some(([px, py]) => Math.hypot((px - x) * w, (py - y) * h) < r + st.size));
+      const hit = (st) => st.pts.some(([px, py]) => Math.hypot((px - x) * w, (py - y) * h) < r + st.size);
+      store.mine.filter(hit).forEach((st) => store.remove(st));
+      store.mine = store.mine.filter((st) => !hit(st));
       if (store.mine.length !== before) draw();
     };
     canvas.addEventListener('pointerdown', (e) => {
@@ -210,8 +238,11 @@ const colours = [
     const end = () => { if (!current) return; store.mine.push(current); store.save(current); current = null; draw(); };
     canvas.addEventListener('pointerup', end);
     canvas.addEventListener('pointercancel', end);
-    undoBtn.addEventListener('click', () => { store.mine.pop(); draw(); });
+    undoBtn.addEventListener('click', () => { const st = store.mine.pop(); if (st) store.remove(st); draw(); });
 
+    // load everyone's drawings, and refresh now and then
+    store.load().then(draw);
+    setInterval(() => { if (!document.hidden && !current) store.load().then(draw); }, 20000);
     new ResizeObserver(resize).observe(canvas);
     resize();
   }

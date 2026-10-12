@@ -1,0 +1,9 @@
+name = "folkmer-wall"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "folkmer-wall"
+database_id = "2fa5e0be-dccf-41af-a661-b846331c9283"
+
