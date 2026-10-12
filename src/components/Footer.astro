@@ -102,13 +102,13 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
   .talk__q--summary :global(b) { color: var(--orange); font-weight: 500; }
   .talk__blank {
     font: 500 var(--fs-h1)/1.1 'Satoshi', sans-serif; letter-spacing: -.02em;
-    color: var(--orange); background: transparent; border: 0; border-bottom: 2px solid rgba(255,255,255,.85); border-radius: 0;
+    color: var(--orange); background: transparent; border: 0; border-bottom: 2px solid var(--night-edge); border-radius: 0;
     padding: 0 .05em; width: 7ch; min-width: 3ch; max-width: 100%;
     caret-color: var(--orange);
   }
   .talk__blank--wide { width: 12ch; }
   .talk__blank::placeholder { color: #4f5753; }
-  .talk__blank:focus { outline: none; border-bottom-color: var(--orange); }
+  .talk__blank:focus { outline: none; border-bottom-color: #fff; }
   .talk__blank[aria-invalid='true'] { border-bottom-style: dashed; border-bottom-color: var(--orange); }
   .talk__hint { width: 100%; color: var(--night-muted); font-size: var(--fs-small); margin-top: 8px; }
 

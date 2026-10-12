@@ -1,81 +1,114 @@
 ---
-// Alé, told on a timeline: drag the ruler (mouse), swipe (touch) or use the arrow keys
-// to travel from the first idea (July 2025) to the launch (December 2026).
+// Alé, told on a timeline. The ruler is a gentle arc, like the ring of a camera lens:
+// drag it (mouse), swipe (touch), use the side arrows (desktop) or the arrow keys.
+// Each stop has its own "material" background: B/W photos, rock, paper, the goat.
 import { url } from '../lib/url.js';
 
-// month index: 0 = July 2025 … 17 = December 2026
-const milestones = [
-  { m: 0, kind: 'idea', title: 'Why is finding the perfect spot so hard?', hand: "Let's make an app", caption: 'First day' },
-  { m: 2, kind: 'research', title: 'First, we listened.', text: 'A survey with climbers and long chats at the crag. The problem was real: information is scattered and out of date.' },
-  { m: 6, kind: 'design', title: 'Back on it, screen by screen.', text: 'From personas and journeys to the full app, tested with climbers along the way.' },
-  { m: 15, kind: 'now', title: 'Building it. And finding partners.', text: 'Development is almost done. We are talking with the main climbing events for 2027.' },
-  { m: 17, kind: 'launch', title: 'Out on the stores.', hand: 'See you at the crag' },
+// m = months from July 2025 (0) to December 2026 (17)
+const stops = [
+  { m: 0, tag: 'Jul 2025', label: 'The idea', bg: 'dark', title: 'Why is finding the perfect spot so hard?', hand: "Let's make an app", visual: 'polas' },
+  { m: 1, tag: 'Aug 2025', label: 'Research', bg: 'photo-rock', title: 'First, we listened.', text: 'A survey with 50+ climbers, 5 interviews and a lot of chats at the crag.', visual: 'numbers' },
+  { m: 2, tag: 'Sep 2025', label: 'Design', bg: 'paper', title: 'Flows first, then screens.', text: 'We mapped how climbers really look for a spot, then started drawing.', visual: 'screens-a' },
+  { m: 4, tag: 'Nov 2025', label: 'The gap', bg: 'night', title: 'Everything ready. Except a developer.', text: 'A quiet winter of searching. Ideas on hold, not in the bin.', visual: 'empty' },
+  { m: 6, tag: 'Jan 2026', label: 'Build', bg: 'dark', title: 'We found our developer.', text: 'Development starts, and the last screens get finished on the way.', visual: 'screens-b' },
+  { m: 10, tag: 'May 2026', label: 'The goat', bg: 'beige', title: 'Alé gets a face.', text: 'We created and registered the logo: a goat, the best climber we know.', visual: 'logo' },
+  { m: 12, tag: 'Jul 2026', label: 'On the rock', bg: 'photo-climb', title: 'Testing at the crag.', text: 'Tests, new screens and data collected spot by spot, travelling around the crags.', visual: 'none' },
+  { m: 15, tag: 'Oct 2026', label: 'Now', bg: 'photo-hand', title: 'Looking for partners.', text: 'We are talking with the main climbing events for 2027.', visual: 'none' },
+  { m: 17, tag: 'Dec 2026', label: 'Launch', bg: 'beige', title: 'The app made by climbers, for climbers.', hand: 'See you at the crag', visual: 'logo-small' },
 ];
 const MONTHS = 18;
-const label = (m) => new Date(2025, 6 + m, 1).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+const PAD = 5;   // ruler months shown before and after
+const PER = 8;   // ticks per month: close together, like a lens ring
+const ticks = [];
+for (let i = -PAD * PER; i <= (MONTHS - 1 + PAD) * PER; i++) ticks.push(i / PER);
+const bgUrl = { 'photo-rock': url('/img/ale-challenge.webp'), 'photo-climb': url('/img/climbing.webp'), 'photo-hand': url('/img/ale-hand.webp') };
 ---
 <div class="atl" data-atl data-months={MONTHS}>
   <div class="atl__stage" aria-live="polite">
-    {milestones.map((ms, i) => (
-      <div class={`atl__scene atl__scene--${ms.kind}`} data-scene={ms.m} hidden={i !== 0}>
+    {stops.map((s, i) => (
+      <div class={`atl__scene atl__scene--${s.bg}`} data-scene={s.m} hidden={i !== 0}>
+        {bgUrl[s.bg] && <img class="atl__bg" src={bgUrl[s.bg]} alt="" loading="lazy" />}
         <div class="atl__copy">
-          <p class="atl__title">{ms.title}</p>
-          {ms.hand && <p class="atl__hand">{ms.hand}</p>}
-          {ms.text && <p class="atl__text">{ms.text}</p>}
+          <p class="atl__when">{s.tag} · {s.label}</p>
+          <p class="atl__title">{s.title}</p>
+          {s.hand && <p class="atl__hand">{s.hand}</p>}
+          {s.text && <p class="atl__text">{s.text}</p>}
         </div>
         <div class="atl__visual" aria-hidden="true">
-          {ms.kind === 'idea' && (
+          {s.visual === 'polas' && (
             <div class="atl__polas">
               <figure class="pola pola--a"><img src={url('/img/tl-marta.webp')} alt="" /><figcaption>Marta</figcaption></figure>
               <figure class="pola pola--b"><img src={url('/img/tl-francesca.webp')} alt="" /><figcaption>Francesca</figcaption></figure>
-              <p class="atl__caption">{ms.caption}</p>
+              <p class="atl__caption">First day</p>
             </div>
           )}
-          {ms.kind === 'research' && (
-            <div class="atl__stats"><p><b>50+</b>climbers surveyed</p><p><b>5</b>in-depth interviews</p></div>
-          )}
-          {ms.kind === 'design' && (
-            <div class="atl__phones">
-              <img src={url('/img/ale-s-home.webp')} alt="" />
-              <img src={url('/img/ale-s-spot.webp')} alt="" />
-            </div>
-          )}
-          {ms.kind === 'now' && (
-            <div class="atl__phones"><img src={url('/img/ale-s-event.webp')} alt="" /></div>
-          )}
-          {ms.kind === 'launch' && (
-            <div class="atl__stats"><p><b>Dec</b>2026</p></div>
-          )}
+          {s.visual === 'numbers' && <div class="atl__stats"><p><b>50+</b>climbers surveyed</p><p><b>5</b>interviews</p></div>}
+          {s.visual === 'screens-a' && <div class="atl__phones"><img src={url('/img/ale-s-search.webp')} alt="" /><img src={url('/img/ale-s-filters.webp')} alt="" /></div>}
+          {s.visual === 'empty' && <p class="atl__big">?</p>}
+          {s.visual === 'screens-b' && <div class="atl__phones"><img src={url('/img/ale-s-map.webp')} alt="" /><img src={url('/img/ale-s-spot.webp')} alt="" /></div>}
+          {s.visual === 'logo' && <img class="atl__logo" src={url('/img/ale-logo-black.png')} alt="" />}
+          {s.visual === 'logo-small' && <img class="atl__logo atl__logo--sm" src={url('/img/ale-logo-black.png')} alt="" />}
         </div>
       </div>
     ))}
-    <p class="sr-only">Use the left and right arrow keys on the timeline to move through the months.</p>
   </div>
 
-  <p class="atl__month" data-atl-month aria-hidden="true">{label(0)}</p>
-  <div class="atl__ruler" data-atl-ruler role="slider" tabindex="0"
-    aria-label="Alé timeline" aria-valuemin="0" aria-valuemax={MONTHS - 1} aria-valuenow="0" aria-valuetext={label(0)}>
-    <div class="atl__ticks" data-atl-ticks style={`--months:${MONTHS}`}>
-      {milestones.map((ms) => <span class="atl__mark" style={`--m:${ms.m}`}></span>)}
+  <div class="atl__dial">
+    <button type="button" class="atl__arrow" data-atl-prev aria-label="Previous moment">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+    </button>
+    <div class="atl__ruler" data-atl-ruler role="slider" tabindex="0"
+      aria-label="Alé timeline, from July 2025 to December 2026" aria-valuemin="0" aria-valuemax={MONTHS - 1} aria-valuenow="0" aria-valuetext={`${stops[0].tag}: ${stops[0].title}`}>
+      <div class="atl__ring" data-atl-ring>
+        {ticks.map((t) => {
+          const stop = stops.find((s) => s.m === t);
+          return (
+            <span class={`atl__tick${Number.isInteger(t) ? ' is-month' : ''}${stop ? ' is-stop' : ''}${t < 0 || t > MONTHS - 1 ? ' is-out' : ''}`} data-t={t}>
+              {stop && <span class="atl__stop">{stop.tag}<br /><b>{stop.label}</b></span>}
+            </span>
+          );
+        })}
+      </div>
+      <span class="atl__needle" aria-hidden="true"></span>
     </div>
-    <span class="atl__needle" aria-hidden="true"></span>
+    <button type="button" class="atl__arrow" data-atl-next aria-label="Next moment">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
+    </button>
   </div>
 </div>
 
 <style>
   .atl {
-    --month: 96px; position: relative; height: 100%; min-height: 420px; overflow: hidden; border-radius: inherit;
-    background: linear-gradient(65deg, #1a1c19 4%, #373a39 84%); color: #fff;
-    display: flex; flex-direction: column; user-select: none;
+    --orange-ale: #e34c2c; --beige-ale: #f3f0ed;
+    position: relative; height: 100%; min-height: 460px; overflow: hidden; border-radius: inherit;
+    background: #1a1c19; color: #fff; display: flex; flex-direction: column; user-select: none;
   }
-  .atl__stage { position: relative; flex: 1; min-height: 0; }
-  .atl__scene { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 32px; padding: 32px 8% 16px; animation: scene-in 200ms ease-out; }
+  /* film grain on everything: the "material" feel */
+  .atl::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .2; mix-blend-mode: overlay; z-index: 3;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .atl__stage { position: absolute; inset: 0; }
+  .atl__scene { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 32px; padding: 32px 8% 144px; animation: scene-in 200ms ease-out; overflow: hidden; }
   .atl__scene[hidden] { display: none; }
-  @keyframes scene-in { from { opacity: 0; transform: translateY(6px); } }
-  .atl__copy { display: flex; flex-direction: column; gap: 12px; max-width: 26ch; justify-self: end; }
-  .atl__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.25; }
-  .atl__hand { font: 500 calc(var(--fs-h3) * 1.25)/1 'Caveat', cursive; color: #fff; }
-  .atl__text { color: var(--night-soft); font-size: var(--fs-small); }
+  @keyframes scene-in { from { opacity: 0; } }
+  .atl__scene > * { position: relative; z-index: 1; }
+  .atl__bg { position: absolute !important; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.05); z-index: 0 !important; }
+  .atl__scene:has(.atl__bg)::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(10,12,11,.88) 30%, rgba(10,12,11,.25)); }
+  .atl__scene--photo-hand .atl__bg { object-fit: contain; object-position: right 10% bottom; background: #2a2b2a; }
+
+  /* backgrounds */
+  .atl__scene--dark { background: linear-gradient(65deg, #1a1c19 4%, #373a39 84%); }
+  .atl__scene--night { background: radial-gradient(120% 90% at 70% 40%, #2a2e2c, #0f1110 70%); }
+  .atl__scene--paper { background: #e9e5df; color: #1e1e1e; }
+  .atl__scene--beige { background: var(--beige-ale); color: #0a0a0a; }
+
+  .atl__copy { display: flex; flex-direction: column; gap: 12px; max-width: 28ch; justify-self: end; }
+  .atl__when { font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; color: var(--orange-ale); }
+  .atl__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.2; }
+  .atl__scene--beige .atl__title { font-weight: 600; letter-spacing: -.01em; }
+  .atl__hand { font: 500 calc(var(--fs-h3) * 1.25)/1 'Caveat', cursive; }
+  .atl__text { font-size: var(--fs-small); opacity: .85; }
   .atl__visual { display: flex; align-items: center; justify-content: flex-start; min-height: 0; }
 
   .atl__polas { position: relative; width: 300px; height: 230px; }
@@ -85,90 +118,102 @@ const label = (m) => new Date(2025, 6 + m, 1).toLocaleDateString('en-GB', { mont
   .pola--a { left: 0; top: 50px; transform: rotate(-5deg); }
   .pola--b { left: 128px; top: 0; transform: rotate(5.5deg); }
   .atl__caption { position: absolute; left: 220px; top: 196px; font-size: var(--fs-small); }
-
   .atl__stats { display: flex; gap: 32px; }
-  .atl__stats p { display: flex; flex-direction: column; color: var(--night-soft); font-size: var(--fs-small); }
-  .atl__stats b { font-size: var(--fs-display); font-weight: 500; line-height: 1; color: #fff; }
+  .atl__stats p { display: flex; flex-direction: column; font-size: var(--fs-small); opacity: .9; }
+  .atl__stats b { font-size: var(--fs-display); font-weight: 500; line-height: 1; }
   .atl__phones { display: flex; gap: 16px; }
-  .atl__phones img { height: clamp(180px, 20vw, 270px); width: auto; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+  .atl__phones img { height: clamp(170px, 19vw, 250px); width: auto; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+  .atl__big { font-size: calc(var(--fs-display) * 2); font-weight: 300; line-height: 1; opacity: .25; }
+  .atl__logo { width: clamp(200px, 28vw, 380px); height: auto; }
+  .atl__logo--sm { width: clamp(150px, 18vw, 240px); }
 
-  .atl__month { text-align: center; font-size: var(--fs-body); font-weight: 500; margin-bottom: 12px; }
-  .atl__ruler { position: relative; height: 56px; cursor: grab; touch-action: pan-y; outline: none; }
+  /* the dial: a lens ring */
+  .atl__dial { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; align-items: flex-end; gap: 8px; padding: 0 16px; background: linear-gradient(to top, rgba(10,12,11,.88), rgba(10,12,11,.55) 60%, rgba(10,12,11,0)); }
+  .atl__ruler { position: relative; flex: 1; height: 128px; overflow: hidden; cursor: grab; touch-action: pan-y; outline: none; }
   .atl__ruler:active { cursor: grabbing; }
-  .atl__ruler:focus-visible { box-shadow: inset 0 0 0 3px #fff; }
-  .atl__ticks {
-    --pad: 8; /* months of ruler shown before July 2025 and after December 2026 */
-    position: absolute; left: calc(50% - var(--pad) * var(--month)); bottom: 0; height: 100%; width: calc((var(--months) + var(--pad) * 2) * var(--month));
-    background:
-      repeating-linear-gradient(to right, rgba(255,255,255,.95) 0 2px, transparent 2px var(--month)) left bottom / 100% 100% no-repeat,
-      repeating-linear-gradient(to right, rgba(255,255,255,.45) 0 1px, transparent 1px calc(var(--month) / 4)) left bottom / 100% 60% no-repeat;
-    transform: translateX(calc(var(--pos, 0) * var(--month) * -1));
-    transition: transform 300ms cubic-bezier(.16, 1, .3, 1);
+  .atl__ruler:focus-visible { box-shadow: inset 0 0 0 3px #fff; border-radius: 12px; }
+  .atl__ring { position: absolute; left: 50%; bottom: 20px; width: 0; height: 100%; }
+  .atl__tick {
+    position: absolute; left: 0; bottom: 0; width: 1px; height: 12px; margin-left: -.5px; background: rgba(255,255,255,.4);
+    transform-origin: 50% calc(100% + var(--R)); transition: transform 300ms cubic-bezier(.16, 1, .3, 1), opacity 300ms;
   }
-  .atl__ticks.is-dragging { transition: none; }
-  .atl__mark { position: absolute; bottom: 0; left: calc((var(--m) + var(--pad)) * var(--month)); width: 2px; height: 100%; background: var(--orange); opacity: .55; }
-  .atl__needle { position: absolute; left: 50%; bottom: 0; width: 3px; height: 100%; margin-left: -1px; background: var(--orange); border-radius: 2px; }
+  .atl__tick.is-month { height: 20px; background: rgba(255,255,255,.75); }
+  .atl__tick.is-stop { height: 28px; width: 2px; background: #fff; }
+  .atl__tick.is-out { opacity: .35; }
+  .atl__ring.is-dragging .atl__tick { transition: none; }
+  .atl__stop { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: var(--fs-meta); line-height: 1.3; color: rgba(255,255,255,.7); }
+  .atl__stop b { font-weight: 600; color: #fff; }
+  .atl__tick.is-current .atl__stop { color: #fff; } .atl__tick.is-current .atl__stop b { color: #fff; font-size: var(--fs-caption); }
+  .atl__needle { position: absolute; left: 50%; bottom: 12px; width: 3px; height: 44px; margin-left: -1.5px; background: var(--orange-ale); border-radius: 2px; }
+  .atl__arrow { flex: none; width: 44px; height: 44px; margin-bottom: 16px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.08); color: #fff; display: grid; place-items: center; cursor: pointer; transition: background-color 200ms; }
+  .atl__arrow:hover { background: rgba(255,255,255,.2); }
+  .atl__arrow:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 
   @media (max-width: 760px) {
-    .atl { --month: 72px; min-height: 520px; }
-    .atl__scene { grid-template-columns: 1fr; align-content: center; text-align: left; padding: 24px 24px 8px; gap: 16px; }
+    .atl { min-height: 580px; }
+    .atl__arrow { display: none; }
+    .atl__dial { padding: 0; }
+    .atl__scene { grid-template-columns: 1fr; align-content: start; padding: 24px 24px 140px; gap: 16px; }
+    .atl__scene:has(.atl__bg)::before { background: linear-gradient(180deg, rgba(10,12,11,.88) 45%, rgba(10,12,11,.3)); }
     .atl__copy { justify-self: start; }
-    .atl__polas { transform: scale(.8); transform-origin: left top; height: 190px; }
-    .atl__phones img { height: 190px; }
+    .atl__polas { transform: scale(.78); transform-origin: left top; height: 190px; }
+    .atl__phones img { height: 170px; }
   }
-  @media (prefers-reduced-motion: reduce) { .atl__ticks, .atl__scene { transition: none; animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .atl__tick, .atl__scene { transition: none; animation: none; } }
 </style>
 
 <script>
   for (const root of document.querySelectorAll('[data-atl]')) {
     const months = Number(root.dataset.months);
     const ruler = root.querySelector('[data-atl-ruler]');
-    const ticks = root.querySelector('[data-atl-ticks]');
-    const monthEl = root.querySelector('[data-atl-month]');
+    const ring = root.querySelector('[data-atl-ring]');
+    const ticks = [...root.querySelectorAll('.atl__tick')];
     const scenes = [...root.querySelectorAll('[data-scene]')];
     const stops = scenes.map((s) => Number(s.dataset.scene));
-    const monthW = () => parseFloat(getComputedStyle(root).getPropertyValue('--month')) || 96;
-    const label = (m) => new Date(2025, 6 + Math.round(m), 1).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
     let pos = 0;
-
+    const monthPx = () => (ruler.offsetWidth < 600 ? 64 : 96);
+    // a big wheel under the ruler: ticks rotate around it, so they move along an arc
+    const geo = () => { const R = Math.max(1600, ruler.offsetWidth * 2.6); return { R, deg: (monthPx() / R) * (180 / Math.PI) }; };
+    const current = () => { let k = 0; stops.forEach((m, i) => { if (pos + 0.5 >= m) k = i; }); return k; };
     const render = () => {
-      ticks.style.setProperty('--pos', pos);
-      monthEl.textContent = label(pos);
-      // the scene of the latest milestone reached
-      let k = 0; stops.forEach((m, i) => { if (pos + 0.5 >= m) k = i; });
+      const { R, deg } = geo();
+      ring.style.setProperty('--R', `${R}px`);
+      const k = current();
+      ticks.forEach((t) => {
+        const v = Number(t.dataset.t), a = (v - pos) * deg;
+        t.style.transform = `rotate(${a}deg)`;
+        t.style.visibility = Math.abs(a) > 14 ? 'hidden' : '';
+        t.style.opacity = String((t.classList.contains('is-out') ? .35 : 1) * Math.max(0, 1 - (Math.abs(a) / 14) ** 3));
+        t.classList.toggle('is-current', v === stops[k]);
+      });
       scenes.forEach((s, i) => { s.hidden = i !== k; });
       ruler.setAttribute('aria-valuenow', String(Math.round(pos)));
-      ruler.setAttribute('aria-valuetext', `${label(pos)}: ${scenes[k].querySelector('.atl__title').textContent}`);
+      ruler.setAttribute('aria-valuetext', `${scenes[k].querySelector('.atl__when').textContent}: ${scenes[k].querySelector('.atl__title').textContent}`);
     };
     const clamp = (v) => Math.max(0, Math.min(months - 1, v));
     const snap = () => { pos = stops.reduce((a, b) => (Math.abs(b - pos) < Math.abs(a - pos) ? b : a)); render(); };
-
-    // drag (mouse) and swipe (touch): the ruler follows the finger, then snaps to the nearest milestone
-    let startX = null, startPos = 0;
-    const down = (x) => { startX = x; startPos = pos; ticks.classList.add('is-dragging'); };
-    const move = (x) => { if (startX === null) return; pos = clamp(startPos - (x - startX) / monthW()); render(); };
-    const up = () => { if (startX === null) return; startX = null; ticks.classList.remove('is-dragging'); snap(); };
-    ruler.addEventListener('pointerdown', (e) => { ruler.setPointerCapture(e.pointerId); down(e.clientX); });
-    ruler.addEventListener('pointermove', (e) => move(e.clientX));
-    ruler.addEventListener('pointerup', up);
-    ruler.addEventListener('pointercancel', up);
-    // swiping on the story itself also moves through time
+    const step = (dir) => {
+      const i = stops.reduce((best, m, j) => (Math.abs(m - pos) < Math.abs(stops[best] - pos) ? j : best), 0);
+      pos = stops[Math.max(0, Math.min(stops.length - 1, i + dir))]; render();
+    };
+    let x0 = null, p0 = 0;
+    ruler.addEventListener('pointerdown', (e) => { ruler.setPointerCapture(e.pointerId); x0 = e.clientX; p0 = pos; ring.classList.add('is-dragging'); });
+    ruler.addEventListener('pointermove', (e) => { if (x0 === null) return; pos = clamp(p0 - (e.clientX - x0) / monthPx()); render(); });
+    const up = () => { if (x0 === null) return; x0 = null; ring.classList.remove('is-dragging'); snap(); };
+    ruler.addEventListener('pointerup', up); ruler.addEventListener('pointercancel', up);
     let sx = null;
     const stage = root.querySelector('.atl__stage');
     stage.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
-    stage.addEventListener('touchend', (e) => {
-      if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null;
-      if (Math.abs(dx) < 40) return;
-      const i = stops.findIndex((m) => m === pos);
-      pos = stops[Math.max(0, Math.min(stops.length - 1, (i < 0 ? 0 : i) + (dx < 0 ? 1 : -1)))]; render();
-    });
-    // keyboard: arrows move one month, Home/End jump to the ends
+    stage.addEventListener('touchend', (e) => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null; if (Math.abs(dx) > 40) step(dx < 0 ? 1 : -1); });
+    root.querySelector('[data-atl-prev]').addEventListener('click', () => step(-1));
+    root.querySelector('[data-atl-next]').addEventListener('click', () => step(1));
     ruler.addEventListener('keydown', (e) => {
       const map = { ArrowRight: 1, ArrowLeft: -1, ArrowUp: 1, ArrowDown: -1 };
-      if (e.key in map) { pos = clamp(Math.round(pos) + map[e.key]); render(); e.preventDefault(); }
+      if (e.key in map) { step(map[e.key]); e.preventDefault(); }
       if (e.key === 'Home') { pos = 0; render(); e.preventDefault(); }
       if (e.key === 'End') { pos = months - 1; render(); e.preventDefault(); }
     });
+    addEventListener('resize', render);
     render();
   }
 </script>
