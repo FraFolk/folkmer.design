@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { url } from '../lib/url.js';
 import MySetup from '../components/MySetup.astro';
+import Icon from '../components/Icon.astro';
 
 const jobs = [
   { years: '2025 - Now', role: 'Co-founder & Product Design Lead', company: 'Alé', text: 'Co-founded an app for climbers with Marta. I lead <b>product design</b> in a team of four, from discovery to the MVP launching in December 2026.' },
@@ -34,7 +35,7 @@ const tools = [
           <span class="call__initials">FF</span>
           <span class="call__controls">
             <span class="call__btn" aria-hidden="true"><img src={url('/img/mic-slash.svg')} alt="" /></span>
-            <button type="button" class="call__btn call__btn--cam" data-frames-toggle aria-pressed="false" aria-label="Pause the photos"><img src={url('/img/camera.svg')} alt="" /></button>
+            <button type="button" class="call__btn call__btn--cam" data-frames-toggle aria-pressed="false" aria-label="Turn on the camera"><span class="cam-off"><Icon name="video-camera-slash" size={18} /></span><span class="cam-on"><Icon name="video-camera" size={18} /></span></button>
           </span>
         </div>
       </div>
@@ -135,7 +136,6 @@ const tools = [
   .call__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
   .call__photo img.is-on { opacity: 1; }
   .call__btn--cam { cursor: pointer; padding: 0; }
-  .call__btn--cam[aria-pressed='true'] { background: var(--orange-text) !important; border-color: var(--orange-text) !important; }
   .call__btn--cam:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
   .call__photo { position: absolute; inset: 0; opacity: 0; transform: scale(1.08); transition: opacity .6s ease .7s, transform 1.2s var(--ease-out) .7s; }
   .call__tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 80%, rgba(0,0,0,.5)); }
@@ -149,7 +149,11 @@ const tools = [
   .call__btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid #fff; display: grid; place-items: center; font-size: 14px; color: #fff; transition: background-color .3s ease, transform .3s var(--ease-spring); }
   .call__btn img { height: 16px; width: auto; }
   .call__btn--cam { background: var(--orange-text); border-color: var(--orange-text); }
-  .call.is-live .call__tile { width: 100%; opacity: 1; box-shadow: 0 20px 50px rgba(42,47,45,.18); }
+  .call.is-shown .call__tile, .call.is-live .call__tile { width: 100%; opacity: 1; box-shadow: 0 20px 50px rgba(42,47,45,.18); }
+  .call__btn--cam .cam-on { display: none; }
+  .call.is-live .call__btn--cam .cam-on { display: inline; }
+  .call.is-live .call__btn--cam .cam-off { display: none; }
+  .call__btn--cam { color: #fff; }
   .call.is-live .call__photo { opacity: 1; transform: none; }
   .call.is-live .call__initials { opacity: 0; }
   .call.is-live .call__btn--cam { background: transparent; border-color: #fff; }
@@ -229,22 +233,19 @@ const tools = [
 
 <script>
   // Video call tile: goes "live" when it scrolls into view
-  // Four poses at the desk, flipping like a stop-motion (pausable with the camera button)
+  // Video call tile: shows up "camera off" (initials). The camera button turns it on,
+  // and four poses at the desk flip like a stop-motion; click again to turn it off.
+  const call = document.querySelector('[data-call]');
   const frames = [...document.querySelectorAll('[data-frames] img')];
   const toggle = document.querySelector('[data-frames-toggle]');
-  if (frames.length && toggle) {
+  if (call && toggle) {
     let k = 0, timer = null;
+    const reduceM = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const step = () => { frames[k].classList.remove('is-on'); k = (k + 1) % frames.length; frames[k].classList.add('is-on'); };
-    const play = () => { if (!timer) timer = setInterval(step, 700); toggle.setAttribute('aria-pressed', 'false'); toggle.setAttribute('aria-label', 'Pause the photos'); };
-    const pause = () => { clearInterval(timer); timer = null; toggle.setAttribute('aria-pressed', 'true'); toggle.setAttribute('aria-label', 'Play the photos'); };
-    toggle.addEventListener('click', () => (timer ? pause() : play()));
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) play(); else pause();
-  }
-  const call = document.querySelector('[data-call]');
-  if (call) {
-    const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setTimeout(() => call.classList.add('is-live'), 300); io.disconnect(); }
-    }, { threshold: 0.4 });
+    const on = () => { call.classList.add('is-live'); if (!reduceM && !timer) timer = setInterval(step, 700); toggle.setAttribute('aria-pressed', 'true'); toggle.setAttribute('aria-label', 'Turn off the camera'); };
+    const off = () => { call.classList.remove('is-live'); clearInterval(timer); timer = null; toggle.setAttribute('aria-pressed', 'false'); toggle.setAttribute('aria-label', 'Turn on the camera'); };
+    toggle.addEventListener('click', () => (call.classList.contains('is-live') ? off() : on()));
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { call.classList.add('is-shown'); io.disconnect(); } }, { threshold: 0.4 });
     io.observe(call);
   }
   // Photo stacks fan out when they enter the screen (handled by the global .reveal → .is-in)

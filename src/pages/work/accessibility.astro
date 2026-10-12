@@ -2,7 +2,6 @@
 import Base from '../../layouts/Base.astro';
 import CaseIntro from '../../components/CaseIntro.astro';
 import Cover from '../../components/Cover.astro';
-import NextProject from '../../components/NextProject.astro';
 import { url } from '../../lib/url.js';
 
 // TODO(Francesca): Sky timeline and team; replace the .visual-slot with a before/after visual.
@@ -133,9 +132,6 @@ const steps = [
           </li>
         ))}
       </ol>
-      <div class="visual-slot visual-slot--wide reveal" role="img" aria-label="Visual in progress: before and after of a component">
-        <span>Visual in progress · before / after</span>
-      </div>
     </section>
 
     <section class="results" aria-labelledby="results">
@@ -164,7 +160,6 @@ const steps = [
       <p>Fixing is the easy part. What makes accessibility stick is moving it earlier, into the components, and explaining the why to the people who write the code. And talking about it in the language of the business: fewer blocked releases, less rework, lower risk.</p>
     </section>
 
-    <NextProject current="accessibility" />
   </article>
 </Base>
 

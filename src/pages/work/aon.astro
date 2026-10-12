@@ -1,7 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
 import CaseIntro from '../../components/CaseIntro.astro';
-import NextProject from '../../components/NextProject.astro';
 import Cover from '../../components/Cover.astro';
 import { url } from '../../lib/url.js';
 
@@ -20,7 +19,7 @@ const phases = [
       title="Aon: joined to execute, ended up owning the design"
       facts={[['Timeline', '[to confirm]'], ['Role', 'Sole Product Designer'], ['Scope', 'Functional analysis to dev handoff']]}
     >
-      <Fragment slot="media"><Cover kind="nda" size="hero" /></Fragment>
+      <Fragment slot="media"><Cover kind="sorry" size="hero" /></Fragment>
       <p>I joined the project doing execution. Along the way I became the <b>only design reference</b>: today I take it from functional analysis to dev handoff, on my own.</p>
     </CaseIntro>
 
@@ -40,20 +39,7 @@ const phases = [
       </ol>
     </section>
 
-    <section class="nda reveal" aria-labelledby="nda-title">
-      <div class="nda__text">
-        <h2 id="nda-title" class="h3">The screens stay under NDA</h2>
-        <p>But the story doesn't. I'm happy to walk you through the project, the decisions and what I learned, in a call.</p>
-        <p>
-          <a class="btn" href="mailto:folkmer.design@gmail.com?subject=Let's%20talk%20about%20Aon">
-            <span>Let's talk</span>
-            <span class="btn__icon" aria-hidden="true"><img src={url("/img/card-arrow.svg")} alt="" width="24" height="24" /></span>
-          </a>
-        </p>
-      </div>
-    </section>
 
-    <NextProject current="aon" />
   </article>
 </Base>
 

@@ -60,10 +60,15 @@ const quotes = [
       <span class="secret-case__text">
         <span class="secret-case__tags">Insurance · End-to-end · Ownership</span>
         <span class="secret-case__title">Joined to execute. Ended up owning the design.</span>
-        <span class="secret-case__sub">An insurance platform where I became the only design reference. The details stay offline: move the torch around, or ask me in person.</span>
+        <span class="secret-case__sub">A complex insurance platform where I became the only design reference, from functional analysis to developer handoff.</span>
         <span class="secret-case__cta">Open the case <Icon name="arrow-right" size={18} /></span>
       </span>
-      <span class="secret-case__cover"><Cover kind="nda" /></span>
+      <span class="secret-case__cover">
+        <span class="mac">
+          <img class="mac__body" src={url('/img/macbook.webp')} alt="" width="1600" height="950" loading="lazy" />
+          <span class="mac__screen"><img src={url('/img/aon-screen.jpg')} alt="" loading="lazy" /></span>
+        </span>
+      </span>
     </a>
   </section>
 
@@ -214,18 +219,23 @@ const quotes = [
   .plot.is-in .plot__new { clip-path: inset(-20% -5% -20% 0); }
 
   /* cases */
-  .secret-case { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: #111513; color: #f4f6f5; border-radius: var(--radius-card); overflow: hidden; text-decoration: none; min-height: 380px; text-align: left; }
+  .secret-case { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--surface); color: var(--ink); border-radius: var(--radius-card); overflow: hidden; text-decoration: none; min-height: 380px; text-align: left; align-items: center; }
   .secret-case__text { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: clamp(28px, 4vw, 64px); }
-  .secret-case__tags { font-style: italic; color: #9aa29e; }
+  .secret-case__tags { font-style: italic; color: var(--ink-2); }
   .secret-case__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.2; }
-  .secret-case__sub { color: #c4cac7; max-width: 44ch; }
+  .secret-case__sub { color: var(--ink-2); max-width: 44ch; }
   .secret-case__cta, .a11y__cta, .ale-card__cta { font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: color .3s var(--ease-out); }
   .secret-case__cta :global(.icon), .a11y__cta :global(.icon), .ale-card__cta :global(.icon) { transition: transform .45s var(--ease-spring); }
   /* hover/focus on the whole card: the arrow moves ahead, text and icon change colour */
   .a11y:is(:hover, :focus-visible) .a11y__cta { color: var(--orange-text); }
-  .secret-case:is(:hover, :focus-visible) .secret-case__cta, .ale-card:is(:hover, :focus-visible) .ale-card__cta { color: var(--orange); }
+  .secret-case:is(:hover, :focus-visible) .secret-case__cta { color: var(--orange-text); }
+  .ale-card:is(:hover, :focus-visible) .ale-card__cta { color: var(--orange); }
   :is(.a11y, .secret-case, .ale-card):is(:hover, :focus-visible) :global(.icon) { transform: translateX(6px); }
-  .secret-case__cover { display: block; min-height: 300px; }
+  .secret-case__cover { position: relative; display: block; padding: 24px 24px 24px 0; }
+  .mac__body { width: 100%; height: auto; display: block; }
+  .mac { position: relative; display: block; }
+  .mac__screen { position: absolute; left: 34.1%; top: 2.32%; width: 56.9%; height: 62.2%; display: block; overflow: hidden; border-radius: 4px 4px 0 0; }
+  .mac__screen img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
   .secret-case:focus-visible, .a11y:focus-visible, .ale-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
 
   .a11y { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; text-align: left; text-decoration: none; background: var(--surface); border-radius: var(--radius-card); padding: clamp(28px, 4vw, 64px); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow .35s var(--ease-out); }
