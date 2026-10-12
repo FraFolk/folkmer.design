@@ -52,7 +52,7 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
 
       <p class="talk__error" role="alert" data-talk-error></p>
 
-      <p class="talk__privacy" data-talk-privacy hidden>Your message reaches my inbox through FormSubmit. I only use your details to reply.</p>
+      <p class="talk__privacy" data-talk-privacy hidden>Your message goes straight to my inbox. I only use your details to reply.</p>
 
       <div class="talk__actions">
         <button type="button" class="talk__btn talk__btn--ghost" data-talk-back hidden>← Back</button>
@@ -257,14 +257,11 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       next.disabled = true; next.textContent = 'Sending…';
       let ok = false;
       try {
-        // FormSubmit forwards the message to Francesca's inbox (no account, no database here)
-        const res = await fetch('https://formsubmit.co/ajax/folkmer.design@gmail.com', {
+        // Our own Cloudflare Worker saves the message and forwards it to Francesca's inbox
+        const res = await fetch('https://folkmer-wall.folkmerdesign.workers.dev/contact', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({
-            _subject: `Portfolio: hi from ${name.value.trim()}`, _template: 'box', _captcha: 'false',
-            name: name.value.trim(), company: c, topic: topic.value.trim(), email: email.value.trim(), message: body,
-          }),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: name.value.trim(), company: c, topic: topic.value.trim(), email: email.value.trim() }),
         });
         ok = res.ok;
       } catch { ok = false; }

@@ -1,8 +1,47 @@
+import { EmailMessage } from "cloudflare:email";
 // Visitors' wall for folkmerdesign.com: stores drawing strokes in D1.
 // Visitors can add strokes and undo/erase only their own (each stroke has a private key kept in their browser).
 // Francesca removes strokes from the Cloudflare dashboard (D1 > folkmer-wall > strokes).
 const ORIGINS = ['https://folkmerdesign.com', 'https://www.folkmerdesign.com', 'http://folkmerdesign.com', 'http://localhost:4321'];
 const MAX_POINTS = 2000, MAX_PER_DAY = 200;
+const clean = (v, n) => String(v || '').replace(/[\r\n]+/g, ' ').trim().slice(0, n);
+const b64 = (str) => btoa(unescape(encodeURIComponent(str)));
+
+// Contact form: saves the message and forwards it to Francesca's inbox (Cloudflare Email Routing).
+async function contact(req, env) {
+  if (!ORIGINS.includes(req.headers.get('Origin'))) return json(req, { error: 'origin' }, 403);
+  let m; try { m = await req.json(); } catch { return json(req, { error: 'bad json' }, 400); }
+  if (m.website) return json(req, { ok: true }); // honeypot: bots fill hidden fields
+  const name = clean(m.name, 80), company = clean(m.company, 120), topic = clean(m.topic, 300), email = clean(m.email, 160);
+  if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return json(req, { error: 'invalid' }, 400);
+  const ip = await hash((req.headers.get('CF-Connecting-IP') || '') + 'contact' + new Date().toISOString().slice(0, 10));
+  const { results } = await env.DB.prepare("SELECT COUNT(*) AS n FROM messages WHERE ip_hash = ? AND created_at > datetime('now', '-1 day')").bind(ip).all();
+  if (results[0].n >= 5) return json(req, { error: 'enough for today' }, 429);
+  const body = `Hi Francesca, I'm ${name}${company ? ` from ${company}` : ''}. I'd love to talk about ${topic || 'anything'}. You can reach me at ${email}.`;
+  const row = await env.DB.prepare('INSERT INTO messages (ip_hash, name, company, topic, email, body) VALUES (?, ?, ?, ?, ?, ?)').bind(ip, name, company, topic, email, body).run();
+  const raw = [
+    'From: Portfolio <portfolio@folkmerdesign.com>',
+    'To: folkmer.design@gmail.com',
+    `Reply-To: ${email}`,
+    `Subject: =?UTF-8?B?${b64(`Portfolio: hi from ${name}`)}?=`,
+    `Message-ID: <${crypto.randomUUID()}@folkmerdesign.com>`,
+    `Date: ${new Date().toUTCString()}`,
+    'MIME-Version: 1.0',
+    'Content-Type: text/plain; charset=utf-8',
+    'Content-Transfer-Encoding: base64',
+    '',
+    b64(`${body}\n\nName: ${name}\nCompany: ${company || '-'}\nTopic: ${topic || '-'}\nEmail: ${email}\n\nSent from the form on folkmerdesign.com. Just hit Reply to answer.`),
+  ].join('\r\n');
+  try {
+    await env.MAIL.send(new EmailMessage('portfolio@folkmerdesign.com', 'folkmer.design@gmail.com', raw));
+    await env.DB.prepare('UPDATE messages SET sent = 1 WHERE id = ?').bind(row.meta.last_row_id).run();
+  } catch (e) {
+    // the message is saved anyway; it can be read in D1 > messages
+    return json(req, { ok: true, mailed: false });
+  }
+  return json(req, { ok: true, mailed: true });
+}
+
 const cors = (req) => {
   const o = req.headers.get('Origin');
   return { 'Access-Control-Allow-Origin': ORIGINS.includes(o) ? o : ORIGINS[0], 'Access-Control-Allow-Methods': 'GET,POST,DELETE,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type', 'Vary': 'Origin' };
@@ -15,6 +54,7 @@ export default {
   async fetch(req, env) {
     const url = new URL(req.url);
     if (req.method === 'OPTIONS') return new Response(null, { headers: cors(req) });
+    if (url.pathname === '/contact' && req.method === 'POST') return contact(req, env);
     const del = url.pathname.match(/^\/strokes\/(\d+)$/);
     if (del && req.method === 'DELETE') {
       const key = url.searchParams.get('key') || '';

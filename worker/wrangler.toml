@@ -7,3 +7,7 @@ binding = "DB"
 database_name = "folkmer-wall"
 database_id = "2fa5e0be-dccf-41af-a661-b846331c9283"
 
+
+[[send_email]]
+name = "MAIL"
+destination_address = "folkmer.design@gmail.com"
