@@ -23,13 +23,13 @@ const quotes = [
         <p class="hero__body">I turn complex services into simple, accessible products. With a soft spot for AI and a hard rule on contrast.</p>
       </div>
       <div class="hero__actions">
-        <a class="roll" href={url('/about/')} data-slide-to-about>
-          <span>About me</span>
-          <span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span>
-        </a>
-        <a class="roll roll--ghost" href="#work" data-dir="down">
+        <a class="roll" href="#work" data-dir="down">
           <span>See what I do</span>
           <span class="roll__ball" aria-hidden="true"><Icon name="arrow-down" size={22} /></span>
+        </a>
+        <a class="roll roll--ghost" href={url('/about/')} data-slide-to-about>
+          <span>About me</span>
+          <span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span>
         </a>
       </div>
     </div>
@@ -60,7 +60,7 @@ const quotes = [
       <span class="secret-case__text">
         <span class="secret-case__tags">Insurance · End-to-end · Ownership</span>
         <span class="secret-case__title">Joined to execute. Ended up owning the design.</span>
-        <span class="secret-case__sub">A complex insurance platform where I became the only design reference, from functional analysis to developer handoff.</span>
+        <span class="secret-case__sub">An insurance platform where I became the only design reference, from functional analysis to developer handoff.</span>
         <span class="secret-case__cta">Open the case <Icon name="arrow-right" size={18} /></span>
       </span>
       <span class="secret-case__cover">
@@ -197,7 +197,7 @@ const quotes = [
 
   /* ---------- Sections: story first, then the case ---------- */
   /* (wall spacing lives in PhotoBooth) */
-  .story, .lab-section { margin-bottom: clamp(110px, 12vw, 200px); }
+  .story, .lab-section { margin-bottom: clamp(72px, 12vw, 200px); }
   .story { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; scroll-margin-top: 120px; }
   .story:focus { outline: none; }
   .story__title { max-width: 22ch; }
@@ -336,7 +336,7 @@ const quotes = [
     let visible = true;
     document.addEventListener('visibilitychange', () => { visible = !document.hidden; });
     while (true) {
-      if (!visible) { await wait(500); continue; }
+      if (!visible || document.documentElement.classList.contains('is-paused')) { await wait(500); continue; }
       const b = bubbles[i];
       const typed = b.querySelector('.bubble__typed');
       typed.textContent = '';

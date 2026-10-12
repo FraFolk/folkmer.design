@@ -23,7 +23,7 @@ export const ale = {
     title: 'Alé: an app for climbers, by climbers',
     summary: 'I co-founded it and I lead the product design. From 50+ survey answers and 5 interviews to an MVP launching in December 2026.',
     href: '/ale/',
-    image: '/img/card-ale.png',
+    image: '/img/card-ale.webp',
     alt: 'The Alé app on a phone, lying on granite next to climbing shoes, a rope and a chalk bag.',
   };
 

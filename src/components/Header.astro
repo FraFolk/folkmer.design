@@ -23,7 +23,7 @@ const parent = path.startsWith('/work/')
 
     <div class="profile" data-profile>
       <button class="profile__pill" type="button" aria-expanded="false" aria-controls="profile-contacts" data-profile-toggle>
-        <img class="profile__avatar" src={url('/img/avatar.png')} alt="" width="56" height="56" />
+        <img class="profile__avatar" src={url('/img/avatar.webp')} alt="" width="56" height="56" />
         <span class="profile__text">
           <span class="profile__name">Francesca Folkmer</span>
           <span class="profile__status">
@@ -40,6 +40,7 @@ const parent = path.startsWith('/work/')
             <li><a href="mailto:folkmer.design@gmail.com">folkmer.design@gmail.com</a></li>
             <li><a href="https://www.linkedin.com/in/francescafolkmer/" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></li>
             <li><a href="tel:+393470662369">+39 347 066 2369</a></li>
+            <li class="profile__cv"><button type="button" class="profile__pause" data-pause aria-pressed="false">Pause animations</button></li>
             <li class="profile__cv"><a href={url('/Francesca-Folkmer-CV.pdf')} download>Download CV</a></li>
           </ul>
         </div>
@@ -47,6 +48,11 @@ const parent = path.startsWith('/work/')
     </div>
 
     <div class="site-header__side site-header__side--end">
+      <button type="button" class="pause-btn" data-pause aria-pressed="false" aria-describedby="pause-tip">
+        <span class="pause-btn__icon" aria-hidden="true"><i></i><i></i></span>
+        <span class="sr-only">Pause animations</span>
+        <span class="pause-btn__tip" id="pause-tip" role="tooltip">Pause all repeating animations</span>
+      </button>
       <a class="roll roll--ghost roll--small" href={url('/Francesca-Folkmer-CV.pdf')} download data-dir="down">
         <span>Download CV</span>
         <span class="roll__ball" aria-hidden="true"><Icon name="arrow-down" size={18} /></span>
@@ -72,7 +78,19 @@ const parent = path.startsWith('/work/')
     max-width: var(--container); margin: 0 auto;
     display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 16px;
   }
-  .site-header__side--end { display: flex; justify-content: flex-end; }
+  .site-header__side--end { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
+  .pause-btn { position: relative; width: 48px; height: 48px; border-radius: 50%; border: 0; background: var(--btn2); color: var(--ink); display: grid; place-items: center; cursor: pointer; transition: background-color 200ms; }
+  .pause-btn:hover { background: var(--btn2-hover); }
+  .pause-btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+  .pause-btn__icon { display: flex; gap: 4px; }
+  .pause-btn__icon i { width: 4px; height: 14px; border-radius: 2px; background: currentColor; }
+  .pause-btn[aria-pressed='true'] .pause-btn__icon { gap: 0; }
+  .pause-btn[aria-pressed='true'] .pause-btn__icon i:first-child { width: 0; height: 0; border-radius: 0; background: none; border-left: 12px solid currentColor; border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+  .pause-btn[aria-pressed='true'] .pause-btn__icon i:last-child { display: none; }
+  .pause-btn__tip { position: absolute; top: calc(100% + 8px); right: 0; white-space: nowrap; background: var(--dark); color: #fff; font-size: 14px; padding: 8px 12px; border-radius: 8px; opacity: 0; pointer-events: none; transform: translateY(-4px); transition: opacity 150ms ease-out, transform 150ms ease-out; }
+  .pause-btn:is(:hover, :focus-visible) .pause-btn__tip { opacity: 1; transform: none; }
+  .profile__pause { font: inherit; color: inherit; background: none; border: 0; padding: 2px 0; cursor: pointer; }
+  .profile__pause:hover { text-decoration: underline; }
   .back-link {
     display: inline-flex; align-items: center; gap: 10px;
     font-weight: 600; font-size: 18px; text-decoration: none; padding: 8px 12px 8px 0;
@@ -157,6 +175,22 @@ const parent = path.startsWith('/work/')
 </style>
 
 <script>
+  // Pause all repeating animations (remembered on this device)
+  const docEl = document.documentElement;
+  const pauseBtns = [...document.querySelectorAll('[data-pause]')];
+  const setPaused = (on) => {
+    docEl.classList.toggle('is-paused', on);
+    pauseBtns.forEach((b) => {
+      b.setAttribute('aria-pressed', String(on));
+      if (b.classList.contains('profile__pause')) b.textContent = on ? 'Play animations' : 'Pause animations';
+      const sr = b.querySelector('.sr-only'); if (sr) sr.textContent = on ? 'Play animations' : 'Pause animations';
+      const tip = b.querySelector('.pause-btn__tip'); if (tip) tip.textContent = on ? 'Play the repeating animations again' : 'Pause all repeating animations';
+    });
+    try { localStorage.setItem('paused', on ? '1' : '0'); } catch {}
+  };
+  try { if (localStorage.getItem('paused') === '1') setPaused(true); } catch {}
+  pauseBtns.forEach((b) => b.addEventListener('click', () => setPaused(!docEl.classList.contains('is-paused'))));
+
   document.querySelector('[data-back-from-about]')?.addEventListener('click', () => { try { sessionStorage.setItem('slide', 'right'); } catch {} });
   const root = document.querySelector('[data-profile]');
   const toggle = root?.querySelector('[data-profile-toggle]');

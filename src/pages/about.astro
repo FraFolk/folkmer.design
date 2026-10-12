@@ -12,7 +12,7 @@ const jobs = [
 ];
 
 const tools = [
-  ['Figma', 'tool-figma.png'], ['Adobe Suite', 'tool-adobe.png'], ['Notion', 'tool-notion.png'], ['Perplexity', 'tool-perplexity.png'],
+  ['Figma', 'tool-figma.png'], ['Adobe Suite', 'tool-adobe.webp'], ['Notion', 'tool-notion.png'], ['Perplexity', 'tool-perplexity.png'],
   ['Google AI Studio', 'tool-aistudio.png'], ['Stark', 'tool-stark.png'], ['Siteimprove', 'tool-siteimprove.png'],
 ];
 ---
@@ -89,8 +89,8 @@ const tools = [
 
       <div class="outdoor">
       <div class="stack reveal" aria-hidden="true">
-        <img class="stack__p stack__p--0" src={url('/img/hiker-1.png')} alt="" />
-        <img class="stack__p stack__p--1" src={url('/img/climbing.png')} alt="" />
+        <img class="stack__p stack__p--0" src={url('/img/hiker-1.webp')} alt="" />
+        <img class="stack__p stack__p--1" src={url('/img/climbing.webp')} alt="" />
         <img class="stack__p stack__p--2" src={url('/img/alpinist.png')} alt="" />
         <img class="stack__p stack__p--3" src={url('/img/hiker-dog.jpg')} alt="" />
       </div>
@@ -118,7 +118,7 @@ const tools = [
 </Base>
 
 <style>
-  .about { display: flex; flex-direction: column; gap: clamp(80px, 10vw, 200px); padding: clamp(24px, 4vw, 53px) var(--gutter) clamp(80px, 10vw, 200px); }
+  .about { display: flex; flex-direction: column; gap: clamp(64px, 10vw, 200px); padding: clamp(24px, 4vw, 53px) var(--gutter) clamp(48px, 10vw, 200px); }
 
   .intro { display: grid; grid-template-columns: minmax(0, 653fr) minmax(0, 567fr); gap: clamp(32px, 6vw, 108px); align-items: center; }
   .intro__text { display: flex; flex-direction: column; gap: 24px; }
@@ -150,8 +150,9 @@ const tools = [
   .call__btn img { height: 16px; width: auto; }
   .call__btn--cam { background: var(--orange-text); border-color: var(--orange-text); }
   .call.is-shown .call__tile, .call.is-live .call__tile { width: 100%; opacity: 1; box-shadow: 0 20px 50px rgba(42,47,45,.18); }
+  .call__btn--cam > span { display: grid; place-items: center; line-height: 0; }
   .call__btn--cam .cam-on { display: none; }
-  .call.is-live .call__btn--cam .cam-on { display: inline; }
+  .call.is-live .call__btn--cam .cam-on { display: grid; }
   .call.is-live .call__btn--cam .cam-off { display: none; }
   .call__btn--cam { color: #fff; }
   .call.is-live .call__photo { opacity: 1; transform: none; }
@@ -185,7 +186,7 @@ const tools = [
   .tools img { width: 24px; height: 24px; object-fit: contain; }
 
   /* Figma "Pics hiker": stacked photos that fan out */
-  .beyond { display: flex; flex-direction: column; gap: clamp(64px, 8vw, 128px); }
+  .beyond { display: flex; flex-direction: column; gap: clamp(48px, 8vw, 128px); }
   .beyond__q { width: 100%; max-width: 24ch; margin: 0 auto; text-align: center; }
   .outdoor h3 { margin-bottom: 16px; }
   .outdoor { display: grid; grid-template-columns: minmax(0, 578fr) minmax(0, 616fr); gap: clamp(32px, 7vw, 134px); align-items: center; }
@@ -227,7 +228,7 @@ const tools = [
     .job__head { font-size: 20px; column-gap: 12px; }
     .skills__grid { grid-template-columns: 1fr; }
     .tools li { font-size: 16px; padding: 8px 12px; }
-    .stack { margin: 8% 10% 16%; }
+    .stack { margin: 8% 10% 12%; }
   }
 </style>
 
@@ -241,7 +242,7 @@ const tools = [
   if (call && toggle) {
     let k = 0, timer = null;
     const reduceM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const step = () => { frames[k].classList.remove('is-on'); k = (k + 1) % frames.length; frames[k].classList.add('is-on'); };
+    const step = () => { if (document.documentElement.classList.contains('is-paused')) return; frames[k].classList.remove('is-on'); k = (k + 1) % frames.length; frames[k].classList.add('is-on'); };
     const on = () => { call.classList.add('is-live'); if (!reduceM && !timer) timer = setInterval(step, 700); toggle.setAttribute('aria-pressed', 'true'); toggle.setAttribute('aria-label', 'Turn off the camera'); };
     const off = () => { call.classList.remove('is-live'); clearInterval(timer); timer = null; toggle.setAttribute('aria-pressed', 'false'); toggle.setAttribute('aria-label', 'Turn on the camera'); };
     toggle.addEventListener('click', () => (call.classList.contains('is-live') ? off() : on()));

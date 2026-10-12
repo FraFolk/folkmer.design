@@ -251,3 +251,6 @@ html:active-view-transition-type(slide-right)::view-transition-new(root) { anima
 @media (prefers-reduced-motion: reduce) { .roll, .roll__ball { transition: none; } }
 
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+/* "Pause" in the header: freezes every looping animation */
+html.is-paused *, html.is-paused *::before, html.is-paused *::after { animation-play-state: paused !important; }
