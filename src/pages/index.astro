@@ -245,7 +245,7 @@ const quotes = [
   .ale-card__title { font-size: var(--fs-h3); font-weight: 500; }
   .ale-card__body .ale-card__cta { position: absolute; right: 32px; bottom: 28px; }
   .ale-card__body { padding-right: 230px; }
-  @media (max-width: 700px) { .ale-card__body { padding-right: 32px; padding-bottom: 72px; } }
+  @media (max-width: 700px) { .ale-card__body { padding: 72px 16px 64px; } .ale-card__facts { font-size: 14px; } }
   .ale-card__facts { display: flex; flex-wrap: wrap; gap: 8px; font-size: 15px; }
   .ale-card__facts span { background: rgba(12,15,14,.7); border: 1px solid rgba(255,255,255,.35); color: #fff; border-radius: 99px; padding: 4px 12px; }
 
@@ -277,7 +277,9 @@ const quotes = [
 
   @media (max-width: 900px) {
     .secret-case, .a11y { grid-template-columns: 1fr; }
-    .ale-card img { aspect-ratio: 4 / 5; }
+    .ale-card img { aspect-ratio: 4 / 3; }
+    .ale-card__body { padding: 72px 16px 64px; gap: 8px; }
+    .ale-card__body .ale-card__cta { right: 16px; bottom: 16px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .plot__old::after { transform: scaleX(1) rotate(-3deg); transition: none; }

@@ -26,13 +26,15 @@ const tools = [
           <p>Then I moved to digital product design and brought <b>the same rigour</b> with me. Today I work on accessibility, design systems and AI-assisted workflows. I'm CPACC-certified, so for me accessibility isn't the final check: it's where I start.</p>
         </div>
       </div>
-      <div class="call" data-call aria-hidden="true">
+      <div class="call" data-call>
         <div class="call__tile">
-          <img class="call__photo" src={url('/img/video-still.png')} alt="" />
+          <div class="call__photo" data-frames aria-hidden="true">
+            {[1, 2, 3, 4].map((n, i) => <img src={url(`/img/desk-${n}.jpg`)} alt="" class={i === 0 ? 'is-on' : ''} loading={i === 0 ? 'eager' : 'lazy'} />)}
+          </div>
           <span class="call__initials">FF</span>
           <span class="call__controls">
-            <span class="call__btn"><img src={url('/img/mic-slash.svg')} alt="" /></span>
-            <span class="call__btn call__btn--cam"><img src={url('/img/camera.svg')} alt="" /></span>
+            <span class="call__btn" aria-hidden="true"><img src={url('/img/mic-slash.svg')} alt="" /></span>
+            <button type="button" class="call__btn call__btn--cam" data-frames-toggle aria-pressed="false" aria-label="Pause the photos"><img src={url('/img/camera.svg')} alt="" /></button>
           </span>
         </div>
       </div>
@@ -130,7 +132,12 @@ const tools = [
     opacity: 0;
     transition: width 1s var(--ease-spring), opacity .4s ease, box-shadow .4s ease;
   }
-  .call__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.08); transition: opacity .6s ease .7s, transform 1.2s var(--ease-out) .7s; }
+  .call__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+  .call__photo img.is-on { opacity: 1; }
+  .call__btn--cam { cursor: pointer; padding: 0; }
+  .call__btn--cam[aria-pressed='true'] { background: var(--orange-text) !important; border-color: var(--orange-text) !important; }
+  .call__btn--cam:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+  .call__photo { position: absolute; inset: 0; opacity: 0; transform: scale(1.08); transition: opacity .6s ease .7s, transform 1.2s var(--ease-out) .7s; }
   .call__tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 80%, rgba(0,0,0,.5)); }
   .call__initials {
     position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
@@ -222,6 +229,17 @@ const tools = [
 
 <script>
   // Video call tile: goes "live" when it scrolls into view
+  // Four poses at the desk, flipping like a stop-motion (pausable with the camera button)
+  const frames = [...document.querySelectorAll('[data-frames] img')];
+  const toggle = document.querySelector('[data-frames-toggle]');
+  if (frames.length && toggle) {
+    let k = 0, timer = null;
+    const step = () => { frames[k].classList.remove('is-on'); k = (k + 1) % frames.length; frames[k].classList.add('is-on'); };
+    const play = () => { if (!timer) timer = setInterval(step, 700); toggle.setAttribute('aria-pressed', 'false'); toggle.setAttribute('aria-label', 'Pause the photos'); };
+    const pause = () => { clearInterval(timer); timer = null; toggle.setAttribute('aria-pressed', 'true'); toggle.setAttribute('aria-label', 'Play the photos'); };
+    toggle.addEventListener('click', () => (timer ? pause() : play()));
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) play(); else pause();
+  }
   const call = document.querySelector('[data-call]');
   if (call) {
     const io = new IntersectionObserver(([e]) => {
