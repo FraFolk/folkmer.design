@@ -1,13 +1,14 @@
 ---
 import Base from '../layouts/Base.astro';
 import { url } from '../lib/url.js';
+import Icon from '../components/Icon.astro';
 ---
 <Base noindex title="Page not found · Francesca Folkmer" description="This page doesn't exist. Head back to the homepage.">
   <section class="container nf">
     <p class="eyebrow">404</p>
     <h1 class="h1">Wrong route.</h1>
     <p class="lead">This page doesn't exist, or it moved. Even good climbers take a wrong line sometimes.</p>
-    <p><a class="roll" href={url('/')}><span>Back to the homepage</span></a></p>
+    <p><a class="roll" href={url('/')}><span>Back to the homepage</span><span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span></a></p>
   </section>
 </Base>
 
