@@ -41,7 +41,7 @@ import { url } from '../../lib/url.js';
 
     <section class="split split--media-first" aria-labelledby="solution">
       <div class="split__media reveal">
-        <img class="shot" src={url('/img/novera-calculator.png')} alt="Mortgage calculator result: fixed and variable rate side by side with monthly payment, rates and total interest, and two equal actions: request the mortgage or contact an advisor." />
+        <img class="shot" src={url('/img/novera-calculator.webp')} alt="Mortgage calculator result: fixed and variable rate side by side with monthly payment, rates and total interest, and two equal actions: request the mortgage or contact an advisor." />
       </div>
       <div class="split__text reveal">
         <div class="split__title">
@@ -105,7 +105,7 @@ import { url } from '../../lib/url.js';
   .shot { border-radius: var(--radius-l); box-shadow: 0 10px 40px rgba(42,47,45,.12); }
   .flow { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; counter-reset: s; }
   .flow li {
-    background: var(--surface); border-radius: 18px; padding: 14px 18px 14px 56px; position: relative;
+    background: var(--surface); border-radius: var(--radius-l); padding: 14px 18px 14px 56px; position: relative;
     opacity: 0; transform: translateX(24px); transition: opacity .5s ease, transform .7s var(--ease-out);
   }
   .flow li::before {

@@ -57,7 +57,16 @@ Weights: 400 body · 500 headings and labels · 600 max (emphasis). Line-height:
 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 · 128. Sections: `clamp(72px, 12vw, 200px)`.
 
 ### Radius
-`--radius-pill` 100px (buttons, chips) · `--radius-card` 56px (big cards; 32px on mobile) · `--radius-l` 24px (inner media, small cards) · 28px whiteboard.
+| Token | Value | Use |
+|---|---|---|
+| `--radius-pill` | 100px | Buttons, chips, bars |
+| `--radius-card` | 56px (32px mobile) | Big story cards, project cards |
+| `--radius-xl` | 32px | Lab cards, whiteboard, media inside big cards |
+| `--radius-l` | 24px | Inner media, small cards, dock |
+| `--radius-m` | 12px | Thumbnails, focus rings on tiles, toolbars |
+| `--radius-s` | 8px | Tags, small chips, tools |
+
+Device mockups (phone, MacBook) keep their own physical radius. No raw px radius in components.
 
 ### Motion
 100 / 150 / 200 / 300 ms. Ease-out on enter. Transform and opacity only. Every loop can be paused (header Pause button) and respects `prefers-reduced-motion`.
@@ -73,7 +82,6 @@ Weights: 400 body · 500 headings and labels · 600 max (emphasis). Line-height:
 | **Eyebrow** | `.eyebrow` | Uppercase, `--sage-text` |
 | **Chip** | `.ale-card__facts span` | Pill on dark gradient |
 | **Status dot** | Header | 7px + ripple |
-| **Step dot** | Footer, Alé timeline | 9px: done filled, now orange + halo, next outline |
 | **Round icon button** | Carousel arrows, Pause, Alé card ball | 44–56px circle, white or `--btn2` |
 
 ## 3. Molecules

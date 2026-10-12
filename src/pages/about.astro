@@ -12,8 +12,8 @@ const jobs = [
 ];
 
 const tools = [
-  ['Figma', 'tool-figma.png'], ['Adobe Suite', 'tool-adobe.webp'], ['Notion', 'tool-notion.png'], ['Perplexity', 'tool-perplexity.png'],
-  ['Google AI Studio', 'tool-aistudio.png'], ['Stark', 'tool-stark.png'], ['Siteimprove', 'tool-siteimprove.png'],
+  ['Figma', 'tool-figma.webp'], ['Adobe Suite', 'tool-adobe.webp'], ['Notion', 'tool-notion.webp'], ['Perplexity', 'tool-perplexity.webp'],
+  ['Google AI Studio', 'tool-aistudio.webp'], ['Stark', 'tool-stark.webp'], ['Siteimprove', 'tool-siteimprove.webp'],
 ];
 ---
 <Base title="About · Francesca Folkmer" description="From set design to design systems: who I am and how I work.">
@@ -30,7 +30,7 @@ const tools = [
       <div class="call" data-call>
         <div class="call__tile">
           <div class="call__photo" data-frames aria-hidden="true">
-            {[1, 2, 3, 4].map((n, i) => <img src={url(`/img/desk-${n}.jpg`)} alt="" class={i === 0 ? 'is-on' : ''} loading={i === 0 ? 'eager' : 'lazy'} />)}
+            {[1, 2, 3, 4].map((n, i) => <img src={url(`/img/desk-${n}.webp`)} alt="" class={i === 0 ? 'is-on' : ''} loading={i === 0 ? 'eager' : 'lazy'} />)}
           </div>
           <span class="call__initials">FF</span>
           <span class="call__controls">
@@ -91,8 +91,8 @@ const tools = [
       <div class="stack reveal" aria-hidden="true">
         <img class="stack__p stack__p--0" src={url('/img/hiker-1.webp')} alt="" />
         <img class="stack__p stack__p--1" src={url('/img/climbing.webp')} alt="" />
-        <img class="stack__p stack__p--2" src={url('/img/alpinist.png')} alt="" />
-        <img class="stack__p stack__p--3" src={url('/img/hiker-dog.jpg')} alt="" />
+        <img class="stack__p stack__p--2" src={url('/img/alpinist.webp')} alt="" />
+        <img class="stack__p stack__p--3" src={url('/img/hiker-dog.webp')} alt="" />
       </div>
         <div class="reveal">
           <h3 class="h3">Off screen, I'm usually halfway up a mountain.</h3>
@@ -106,10 +106,10 @@ const tools = [
           <p>A dog, two cats and a turtle. Between the four of them, I never take myself too seriously.</p>
         </div>
         <div class="stack stack--pets reveal" aria-hidden="true">
-          <img class="stack__p stack__p--0" src={url('/img/pet-cat-2.jpg')} alt="" />
-          <img class="stack__p stack__p--1" src={url('/img/pet-turtle.jpg')} alt="" />
-          <img class="stack__p stack__p--2" src={url('/img/pet-cat-1.jpg')} alt="" />
-          <img class="stack__p stack__p--3" src={url('/img/pet-dog.jpg')} alt="" />
+          <img class="stack__p stack__p--0" src={url('/img/pet-cat-2.webp')} alt="" />
+          <img class="stack__p stack__p--1" src={url('/img/pet-turtle.webp')} alt="" />
+          <img class="stack__p stack__p--2" src={url('/img/pet-cat-1.webp')} alt="" />
+          <img class="stack__p stack__p--3" src={url('/img/pet-dog.webp')} alt="" />
         </div>
       </div>
     </section>
@@ -128,7 +128,7 @@ const tools = [
   .call { display: grid; place-items: center; }
   .call__tile {
     position: relative; overflow: hidden;
-    width: 48%; aspect-ratio: 475 / 264; border-radius: 12px;
+    width: 48%; aspect-ratio: 475 / 264; border-radius: var(--radius-m);
     background: var(--ink);
     opacity: 0;
     transition: width 1s var(--ease-spring), opacity .4s ease, box-shadow .4s ease;
@@ -196,7 +196,7 @@ const tools = [
   .stack { position: relative; aspect-ratio: 578 / 305; margin: 12% 0 14%; }
   .stack__p {
     position: absolute; left: 22%; top: 18%; width: 52%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: center;
-    border-radius: 11px; box-shadow: 0 6px 24px rgba(42,47,45,.18);
+    border-radius: var(--radius-m); box-shadow: 0 6px 24px rgba(42,47,45,.18);
     transition: transform .9s var(--ease-spring);
   }
   .stack__p--0 { transform: rotate(3.7deg); }
