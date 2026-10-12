@@ -77,9 +77,7 @@ const quotes = [
     <h2 id="a11y-title" class="h2 story__title reveal cert">I make <mark class="cert__mark">accessibility</mark> the first step, not the last fix.</h2>
     <p class="story__lead reveal">I'm <b>CPACC-certified</b>. I review the accessibility strategy, build it into the components and explain the why to the people who write the code. On real projects, it looks like this.</p>
     <a class="a11y reveal" href={url('/work/accessibility/')}>
-      <span class="a11y__stat" aria-hidden="true">
-        <span class="a11y__from">50%</span><span class="a11y__arrow">→</span><span class="a11y__to">85%</span>
-      </span>
+      <img class="a11y__img" src={url('/img/sky-a11y.webp')} alt="" width="2000" height="823" loading="lazy" />
       <span class="a11y__text">
         <span class="a11y__title">{projects[0].title}</span>
         <span>300+ defects kept coming back, so we stopped chasing bugs and changed the process. Then we measured it: two touchpoints now pass every criterion.</span>
@@ -238,11 +236,8 @@ const quotes = [
   .mac__screen img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
   .secret-case:focus-visible, .a11y:focus-visible, .ale-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
 
-  .a11y { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; text-align: left; text-decoration: none; background: var(--surface); border-radius: var(--radius-card); padding: clamp(28px, 4vw, 64px); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow .35s var(--ease-out); }
-  .a11y__stat { display: flex; flex-wrap: wrap; align-items: baseline; gap: .15em; min-width: 0; font-weight: 600; letter-spacing: -.04em; line-height: .9; }
-  .a11y__from { font-size: calc(var(--fs-display) * .55); color: #7d8581; }
-  .a11y__arrow { font-size: calc(var(--fs-display) * .4); color: var(--ink-2); font-weight: 400; }
-  .a11y__to { font-size: calc(var(--fs-display) * 1.4); color: var(--sage-text); }
+  .a11y { margin-top: 12px; width: 100%; display: grid; grid-template-columns: 1fr; gap: clamp(24px, 4vw, 48px); align-items: center; text-align: left; text-decoration: none; background: var(--surface); border-radius: var(--radius-card); padding: clamp(28px, 4vw, 64px); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow .35s var(--ease-out); }
+  .a11y__img { width: 100%; height: auto; display: block; border-radius: var(--radius-l); }
   .a11y__text { display: flex; flex-direction: column; gap: 16px; }
   .a11y__title { font-size: var(--fs-h3); font-weight: 500; }
 

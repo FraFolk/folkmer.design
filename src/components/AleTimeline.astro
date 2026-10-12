@@ -4,50 +4,81 @@
 // Each stop has its own "material" background: B/W photos, rock, paper, the goat.
 import { url } from '../lib/url.js';
 
-// m = months from July 2025 (0) to December 2026 (17)
+// m = months from July 2025 (0) to now, October 2026 (15). The launch stays a surprise.
 const stops = [
-  { m: 0, tag: 'Jul 2025', label: 'The idea', bg: 'dark', title: 'Why is finding the perfect spot so hard?', hand: "Let's make an app", visual: 'polas' },
-  { m: 1, tag: 'Aug 2025', label: 'Research', bg: 'photo-rock', title: 'First, we listened.', text: 'A survey with 50+ climbers, 5 interviews and a lot of chats at the crag.', visual: 'numbers' },
-  { m: 2, tag: 'Sep 2025', label: 'Design', bg: 'paper', title: 'Flows first, then screens.', text: 'We mapped how climbers really look for a spot, then started drawing.', visual: 'screens-a' },
-  { m: 4, tag: 'Nov 2025', label: 'The gap', bg: 'night', title: 'Everything ready. Except a developer.', text: 'A quiet winter of searching. Ideas on hold, not in the bin.', visual: 'empty' },
-  { m: 6, tag: 'Jan 2026', label: 'Build', bg: 'dark', title: 'We found our developer.', text: 'Development starts, and the last screens get finished on the way.', visual: 'screens-b' },
-  { m: 10, tag: 'May 2026', label: 'The goat', bg: 'beige', title: 'Alé gets a face.', text: 'We created and registered the logo: a goat, the best climber we know.', visual: 'logo' },
-  { m: 12, tag: 'Jul 2026', label: 'On the rock', bg: 'photo-climb', title: 'Testing at the crag.', text: 'Tests, new screens and data collected spot by spot, travelling around the crags.', visual: 'none' },
-  { m: 15, tag: 'Oct 2026', label: 'Now', bg: 'photo-hand', title: 'Looking for partners.', text: 'We are talking with the main climbing events for 2027.', visual: 'none' },
-  { m: 17, tag: 'Dec 2026', label: 'Launch', bg: 'beige', title: 'The app made by climbers, for climbers.', hand: 'See you at the crag', visual: 'logo-small' },
+  { m: 0, tag: 'Jul 2025', label: 'The idea', bg: 'idea', title: 'It started with a chat at the crag.', visual: 'chat' },
+  { m: 1, tag: 'Aug 2025', label: 'Research', bg: 'research', title: 'First, we listened.', text: 'A survey with 50+ climbers, 5 interviews and a lot of chats at the crag.', visual: 'numbers' },
+  { m: 2, tag: 'Sep 2025', label: 'Design', bg: 'design', title: 'Flows first, then screens.', text: 'We mapped how climbers really look for a spot, then started drawing.', visual: 'screens-a' },
+  { m: 4, tag: 'Nov 2025', label: 'The gap', bg: 'gap', title: 'Everything ready. Except a developer.', text: 'A quiet winter of searching. Ideas on hold, not in the bin.', visual: 'empty' },
+  { m: 7, tag: 'Feb 2026', label: 'Build', bg: 'build', title: 'We found our developer.', text: 'Development starts, and the last screens get finished on the way.', visual: 'code' },
+  { m: 10, tag: 'May 2026', label: 'The goat', bg: 'goat', title: 'Alé gets a face.', text: 'We created and registered the logo: a goat, the best climber we know.', visual: 'logo' },
+  { m: 12, tag: 'Jul 2026', label: 'On the rock', bg: 'climb', title: 'Testing at the crag.', text: 'Tests, new screens and data collected spot by spot, travelling around the crags.', visual: 'none' },
+  { m: 15, tag: 'Oct 2026', label: 'Now', bg: 'now', title: 'Looking for partners.', text: 'We are talking with the main climbing events for 2027.', visual: 'hand' },
 ];
-const MONTHS = 18;
+const MONTHS = 16;
 const PAD = 5;   // ruler months shown before and after
 const PER = 8;   // ticks per month: close together, like a lens ring
 const ticks = [];
 for (let i = -PAD * PER; i <= (MONTHS - 1 + PAD) * PER; i++) ticks.push(i / PER);
-const bgUrl = { 'photo-rock': url('/img/ale-challenge.webp'), 'photo-climb': url('/img/climbing.webp'), 'photo-hand': url('/img/ale-hand.webp') };
+const bgUrl = {
+  idea: url('/img/ale-idea.webp'), research: url('/img/ale-research.webp'), design: url('/img/ale-design.webp'),
+  gap: url('/img/ale-gap.webp'), build: url('/img/ale-build.webp'), goat: url('/img/ale-goat-bg.webp'), climb: url('/img/climbing.webp'),
+};
+const chat = [
+  { who: 'Marta', me: false, text: 'What if we made an app?' },
+  { who: 'Fra', me: true, text: 'A climbing app?' },
+  { who: 'Marta', me: false, text: '"AléDur*"?' },
+  { who: 'Fra', me: true, text: 'Just Alé?' },
+];
+const code = [
+  ['c', '// alé · spot screen'],
+  ['', '<span class="k">export function</span> <span class="f">SpotScreen</span>({ spot }) {'],
+  ['', '  <span class="k">const</span> routes = <span class="f">useRoutes</span>(spot.id);'],
+  ['', '  <span class="k">return</span> ('],
+  ['', '    &lt;<span class="t">Screen</span> <span class="a">title</span>={spot.name}&gt;'],
+  ['', '      &lt;<span class="t">Exposure</span> <span class="a">value</span>={spot.exposure} /&gt;'],
+  ['', '      &lt;<span class="t">RouteList</span> <span class="a">routes</span>={routes} /&gt;'],
+  ['', '    &lt;/<span class="t">Screen</span>&gt;'],
+  ['', '  );'],
+  ['', '}'],
+];
 ---
 <div class="atl" data-atl data-months={MONTHS}>
   <div class="atl__stage" aria-live="polite">
     {stops.map((s, i) => (
       <div class={`atl__scene atl__scene--${s.bg}`} data-scene={s.m} hidden={i !== 0}>
-        {bgUrl[s.bg] && <img class="atl__bg" src={bgUrl[s.bg]} alt="" loading="lazy" />}
+        {bgUrl[s.bg] && <img class="atl__bg" src={bgUrl[s.bg]} alt="" loading={i === 0 ? 'eager' : 'lazy'} />}
+        {s.visual === 'hand' && <img class="atl__handimg" src={url('/img/ale-hand.webp')} alt="" loading="lazy" />}
         <div class="atl__copy">
-          <p class="atl__when">{s.tag} · {s.label}</p>
+          <p class="atl__when sr-only">{s.tag} · {s.label}</p>
           <p class="atl__title">{s.title}</p>
-          {s.hand && <p class="atl__hand">{s.hand}</p>}
           {s.text && <p class="atl__text">{s.text}</p>}
+          {s.visual === 'chat' && (
+            <ol class="atl__chat" aria-label="Our first chat about the app">
+              {chat.map((c) => (
+                <li class={`msg${c.me ? ' msg--me' : ''}`}>
+                  <img class="msg__av" src={url(c.me ? '/img/tl-francesca.webp' : '/img/tl-marta.webp')} alt="" />
+                  <span class="msg__who">{c.who}</span>
+                  <span class="msg__text">{c.text}</span>
+                </li>
+              ))}
+            </ol>
+          )}
         </div>
         <div class="atl__visual" aria-hidden="true">
-          {s.visual === 'polas' && (
-            <div class="atl__polas">
-              <figure class="pola pola--a"><img src={url('/img/tl-marta.webp')} alt="" /><figcaption>Marta</figcaption></figure>
-              <figure class="pola pola--b"><img src={url('/img/tl-francesca.webp')} alt="" /><figcaption>Francesca</figcaption></figure>
-              <p class="atl__caption">First day</p>
-            </div>
-          )}
           {s.visual === 'numbers' && <div class="atl__stats"><p><b>50+</b>climbers surveyed</p><p><b>5</b>interviews</p></div>}
           {s.visual === 'screens-a' && <div class="atl__phones"><img src={url('/img/ale-s-search.webp')} alt="" /><img src={url('/img/ale-s-filters.webp')} alt="" /></div>}
           {s.visual === 'empty' && <p class="atl__big">?</p>}
-          {s.visual === 'screens-b' && <div class="atl__phones"><img src={url('/img/ale-s-map.webp')} alt="" /><img src={url('/img/ale-s-spot.webp')} alt="" /></div>}
-          {s.visual === 'logo' && <img class="atl__logo" src={url('/img/ale-logo-black.png')} alt="" />}
-          {s.visual === 'logo-small' && <img class="atl__logo atl__logo--sm" src={url('/img/ale-logo-black.png')} alt="" />}
+          {s.visual === 'code' && (
+            <div class="atl__monitor">
+              <div class="atl__screen">
+                <span class="atl__dots"><i></i><i></i><i></i></span>
+                <pre class="atl__code">{code.map(([k, line]) => <span class={k === 'c' ? 'cm' : ''} set:html={line} />)}</pre>
+              </div>
+              <span class="atl__stand"></span>
+            </div>
+          )}
+          {s.visual === 'logo' && <img class="atl__logo" src={url('/img/ale-logo-white.png')} alt="" />}
         </div>
       </div>
     ))}
@@ -58,7 +89,7 @@ const bgUrl = { 'photo-rock': url('/img/ale-challenge.webp'), 'photo-climb': url
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
     </button>
     <div class="atl__ruler" data-atl-ruler role="slider" tabindex="0"
-      aria-label="Alé timeline, from July 2025 to December 2026" aria-valuemin="0" aria-valuemax={MONTHS - 1} aria-valuenow="0" aria-valuetext={`${stops[0].tag}: ${stops[0].title}`}>
+      aria-label="Alé timeline, from July 2025 to today" aria-valuemin="0" aria-valuemax={MONTHS - 1} aria-valuenow="0" aria-valuetext={`${stops[0].tag}: ${stops[0].title}`}>
       <div class="atl__ring" data-atl-ring>
         {ticks.map((t) => {
           const stop = stops.find((s) => s.m === t);
@@ -89,50 +120,57 @@ const bgUrl = { 'photo-rock': url('/img/ale-challenge.webp'), 'photo-climb': url
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   .atl__stage { position: absolute; inset: 0; }
-  .atl__scene { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 32px; padding: 32px 8% 144px; animation: scene-in 200ms ease-out; overflow: hidden; }
+  .atl__scene { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 32px; padding: 32px 8% 176px; animation: scene-in 200ms ease-out; overflow: hidden; background: linear-gradient(65deg, #1a1c19 4%, #373a39 84%); }
   .atl__scene[hidden] { display: none; }
   @keyframes scene-in { from { opacity: 0; } }
   .atl__scene > * { position: relative; z-index: 1; }
   .atl__bg { position: absolute !important; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.05); z-index: 0 !important; }
-  .atl__scene:has(.atl__bg)::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(10,12,11,.88) 30%, rgba(10,12,11,.25)); }
-  .atl__scene--photo-hand .atl__bg { object-fit: contain; object-position: right 10% bottom; background: #2a2b2a; }
+  .atl__scene:has(.atl__bg)::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(10,12,11,.85) 25%, rgba(10,12,11,.15) 75%); }
+  .atl__scene--climb .atl__bg { transform: scaleX(-1); }
+  .atl__scene--idea .atl__bg { object-position: 60% 70%; }
+  .atl__scene--research .atl__bg { object-position: 50% 45%; }
+  /* Now: the hand already is B/W, so the app screen inside keeps its colours */
+  .atl__handimg { position: absolute !important; right: 6%; bottom: 0; height: 96%; width: auto; z-index: 1; }
 
-  /* backgrounds */
-  .atl__scene--dark { background: linear-gradient(65deg, #1a1c19 4%, #373a39 84%); }
-  .atl__scene--night { background: radial-gradient(120% 90% at 70% 40%, #2a2e2c, #0f1110 70%); }
-  .atl__scene--paper { background: #e9e5df; color: #1e1e1e; }
-  .atl__scene--beige { background: var(--beige-ale); color: #0a0a0a; }
-
-  .atl__copy { display: flex; flex-direction: column; gap: 12px; max-width: 28ch; justify-self: end; }
-  .atl__when { font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; color: var(--orange-ale); }
+  .atl__copy { display: flex; flex-direction: column; gap: 12px; text-shadow: 0 1px 12px rgba(0,0,0,.35); max-width: 30ch; justify-self: start; }
   .atl__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.2; }
-  .atl__scene--beige .atl__title { font-weight: 600; letter-spacing: -.01em; }
-  .atl__hand { font: 500 calc(var(--fs-h3) * 1.25)/1 'Caveat', cursive; }
-  .atl__text { font-size: var(--fs-small); opacity: .85; }
-  .atl__visual { display: flex; align-items: center; justify-content: flex-start; min-height: 0; }
+  .atl__text { font-size: var(--fs-small); opacity: .9; }
+  .atl__visual { display: flex; align-items: center; justify-content: center; min-height: 0; }
 
-  .atl__polas { position: relative; width: 300px; height: 230px; }
-  .pola { position: absolute; margin: 0; width: 150px; padding: 7px 7px 4px; background: #fff; border-radius: 3px; box-shadow: 0 2px 10px rgba(0,0,0,.35); }
-  .pola img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
-  .pola figcaption { font: 500 15px/1.4 'Caveat', cursive; color: #1e1e1e; text-align: center; padding-top: 2px; }
-  .pola--a { left: 0; top: 50px; transform: rotate(-5deg); }
-  .pola--b { left: 128px; top: 0; transform: rotate(5.5deg); }
-  .atl__caption { position: absolute; left: 220px; top: 196px; font-size: var(--fs-small); }
+  /* The idea: the first chat, glass card over the photo */
+  .atl__chat { list-style: none; margin: 4px 0 0; padding: 12px; display: flex; flex-direction: column; gap: 4px; width: min(280px, 100%);
+    border: 1px solid rgba(255,255,255,.28); border-radius: 16px; background: rgba(255,255,255,.06); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .msg { display: grid; grid-template-columns: 24px auto; grid-template-areas: 'av who' 'av text'; column-gap: 8px; justify-content: start; }
+  .msg--me { grid-template-columns: auto 24px; grid-template-areas: 'who av' 'text av'; justify-content: end; text-align: right; }
+  .msg__av { grid-area: av; width: 24px; height: 24px; border-radius: 50%; object-fit: cover; align-self: start; }
+  .msg__who { grid-area: who; font-size: var(--fs-meta); font-weight: 600; opacity: .8; }
+  .msg__text { grid-area: text; justify-self: start; padding: 4px 10px; border-radius: 4px 12px 12px 12px; background: #fde6e0; color: #1e1e1e; font-size: var(--fs-caption); line-height: 1.4; }
+  .msg--me .msg__text { justify-self: end; border-radius: 12px 4px 12px 12px; background: var(--orange-ale); color: #fff; }
+
   .atl__stats { display: flex; gap: 32px; }
-  .atl__stats p { display: flex; flex-direction: column; font-size: var(--fs-small); opacity: .9; }
+  .atl__stats p { display: flex; flex-direction: column; font-size: var(--fs-small); text-shadow: 0 1px 12px rgba(0,0,0,.6); }
   .atl__stats b { font-size: var(--fs-display); font-weight: 500; line-height: 1; }
   .atl__phones { display: flex; gap: 16px; }
   .atl__phones img { height: clamp(170px, 19vw, 250px); width: auto; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
-  .atl__big { font-size: calc(var(--fs-display) * 2); font-weight: 300; line-height: 1; opacity: .25; }
+  .atl__big { font-size: calc(var(--fs-display) * 2); font-weight: 300; line-height: 1; opacity: .4; }
   .atl__logo { width: clamp(200px, 28vw, 380px); height: auto; }
-  .atl__logo--sm { width: clamp(150px, 18vw, 240px); }
+
+  /* Build: a desktop with code, dark mode */
+  .atl__monitor { display: flex; flex-direction: column; align-items: center; width: min(420px, 100%); }
+  .atl__screen { width: 100%; padding: 12px 16px 16px; border-radius: 12px; background: #16181a; border: 6px solid #2b2e30; box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+  .atl__dots { display: flex; gap: 6px; margin-bottom: 12px; }
+  .atl__dots i { width: 8px; height: 8px; border-radius: 50%; background: #4a4f52; }
+  .atl__code { margin: 0; display: flex; flex-direction: column; font: 500 clamp(10px, 1vw, 13px)/1.6 ui-monospace, 'SF Mono', Menlo, monospace; color: #d6dbd8; white-space: pre; overflow: hidden; }
+  .atl__code .cm { color: #7d8581; }
+  .atl__code :global(.k) { color: #ff8a6b; } .atl__code :global(.f) { color: #aee7ca; } .atl__code :global(.t) { color: #8cc3ff; } .atl__code :global(.a) { color: #f3d58a; }
+  .atl__stand { width: 64px; height: 28px; background: linear-gradient(#2b2e30, #1c1e20); clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%); }
 
   /* the dial: a lens ring */
-  .atl__dial { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; align-items: flex-end; gap: 8px; padding: 0 16px; background: linear-gradient(to top, rgba(10,12,11,.88), rgba(10,12,11,.55) 60%, rgba(10,12,11,0)); }
-  .atl__ruler { position: relative; flex: 1; height: 128px; overflow: hidden; cursor: grab; touch-action: pan-y; outline: none; }
+  .atl__dial { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex; align-items: flex-end; gap: 8px; padding: 0 clamp(24px, 4vw, 48px); background: linear-gradient(to top, rgba(10,12,11,.88), rgba(10,12,11,.55) 60%, rgba(10,12,11,0)); }
+  .atl__ruler { position: relative; flex: 1; height: 168px; overflow: hidden; cursor: grab; touch-action: pan-y; outline: none; }
   .atl__ruler:active { cursor: grabbing; }
   .atl__ruler:focus-visible { box-shadow: inset 0 0 0 3px #fff; border-radius: 12px; }
-  .atl__ring { position: absolute; left: 50%; bottom: 20px; width: 0; height: 100%; }
+  .atl__ring { position: absolute; left: 50%; bottom: 44px; width: 0; height: 100%; }
   .atl__tick {
     position: absolute; left: 0; bottom: 0; width: 1px; height: 12px; margin-left: -.5px; background: rgba(255,255,255,.4);
     transform-origin: 50% calc(100% + var(--R)); transition: transform 300ms cubic-bezier(.16, 1, .3, 1), opacity 300ms;
@@ -144,8 +182,8 @@ const bgUrl = { 'photo-rock': url('/img/ale-challenge.webp'), 'photo-climb': url
   .atl__stop { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); white-space: nowrap; text-align: center; font-size: var(--fs-meta); line-height: 1.3; color: rgba(255,255,255,.7); }
   .atl__stop b { font-weight: 600; color: #fff; }
   .atl__tick.is-current .atl__stop { color: #fff; } .atl__tick.is-current .atl__stop b { color: #fff; font-size: var(--fs-caption); }
-  .atl__needle { position: absolute; left: 50%; bottom: 12px; width: 3px; height: 44px; margin-left: -1.5px; background: var(--orange-ale); border-radius: 2px; }
-  .atl__arrow { flex: none; width: 44px; height: 44px; margin-bottom: 16px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.08); color: #fff; display: grid; place-items: center; cursor: pointer; transition: background-color 200ms; }
+  .atl__needle { position: absolute; left: 50%; bottom: 36px; width: 3px; height: 44px; margin-left: -1.5px; background: var(--orange-ale); border-radius: 2px; }
+  .atl__arrow { flex: none; width: 44px; height: 44px; margin-bottom: 56px; border-radius: 50%; border: 1px solid rgba(255,255,255,.35); background: rgba(255,255,255,.08); color: #fff; display: grid; place-items: center; cursor: pointer; transition: background-color 200ms; }
   .atl__arrow:hover { background: rgba(255,255,255,.2); }
   .atl__arrow:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 
@@ -153,11 +191,15 @@ const bgUrl = { 'photo-rock': url('/img/ale-challenge.webp'), 'photo-climb': url
     .atl { min-height: 580px; }
     .atl__arrow { display: none; }
     .atl__dial { padding: 0; }
-    .atl__scene { grid-template-columns: 1fr; align-content: start; padding: 24px 24px 140px; gap: 16px; }
-    .atl__scene:has(.atl__bg)::before { background: linear-gradient(180deg, rgba(10,12,11,.88) 45%, rgba(10,12,11,.3)); }
-    .atl__copy { justify-self: start; }
-    .atl__polas { transform: scale(.78); transform-origin: left top; height: 190px; }
+    .atl__ruler { height: 150px; }
+    .atl__ring { bottom: 32px; }
+    .atl__needle { bottom: 24px; }
+    .atl__scene { grid-template-columns: 1fr; align-content: start; padding: 24px 24px 160px; gap: 16px; }
+    .atl__scene:has(.atl__bg)::before { background: linear-gradient(180deg, rgba(10,12,11,.88) 40%, rgba(10,12,11,.35)); }
     .atl__phones img { height: 170px; }
+    .atl__visual { justify-content: flex-start; }
+    .atl__handimg { right: -10%; height: 74%; bottom: 0; }
+    .atl__scene--now .atl__copy { max-width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) { .atl__tick, .atl__scene { transition: none; animation: none; } }
 </style>
@@ -173,7 +215,7 @@ const bgUrl = { 'photo-rock': url('/img/ale-challenge.webp'), 'photo-climb': url
     let pos = 0;
     const monthPx = () => (ruler.offsetWidth < 600 ? 64 : 96);
     // a big wheel under the ruler: ticks rotate around it, so they move along an arc
-    const geo = () => { const R = Math.max(1600, ruler.offsetWidth * 2.6); return { R, deg: (monthPx() / R) * (180 / Math.PI) }; };
+    const geo = () => { const R = Math.max(1100, ruler.offsetWidth * 1.8); return { R, deg: (monthPx() / R) * (180 / Math.PI) }; };
     const current = () => { let k = 0; stops.forEach((m, i) => { if (pos + 0.5 >= m) k = i; }); return k; };
     const render = () => {
       const { R, deg } = geo();
@@ -182,8 +224,8 @@ const bgUrl = { 'photo-rock': url('/img/ale-challenge.webp'), 'photo-climb': url
       ticks.forEach((t) => {
         const v = Number(t.dataset.t), a = (v - pos) * deg;
         t.style.transform = `rotate(${a}deg)`;
-        t.style.visibility = Math.abs(a) > 14 ? 'hidden' : '';
-        t.style.opacity = String((t.classList.contains('is-out') ? .35 : 1) * Math.max(0, 1 - (Math.abs(a) / 14) ** 3));
+        t.style.visibility = Math.abs(a) > 18 ? 'hidden' : '';
+        t.style.opacity = String((t.classList.contains('is-out') ? .35 : 1) * Math.max(0, 1 - (Math.abs(a) / 18) ** 3));
         t.classList.toggle('is-current', v === stops[k]);
       });
       scenes.forEach((s, i) => { s.hidden = i !== k; });
