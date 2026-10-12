@@ -47,10 +47,9 @@ const phases = [
   .phases { display: flex; flex-direction: column; gap: 32px; }
   .phases__list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; counter-reset: p; position: relative; }
   .phase { background: var(--surface); border-radius: var(--radius-l); padding: 24px; display: flex; flex-direction: column; gap: 8px; }
-  /* Today: the dark one, where I am now */
-  .phase:last-child { background: var(--night); color: var(--on-night); }
-  .phase:last-child .phase__label { color: var(--night-soft); }
-  .phase:last-child p { color: var(--night-soft); }
+  /* Today: dark green from the palette, where I am now */
+  .phase:last-child { background: var(--sage-deep); color: #fff; }
+  .phase:last-child .phase__label, .phase:last-child p { color: var(--surface-2); }
   .phase h3 { font-size: var(--fs-h4); font-weight: 600; }
   .phase__label { font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--sage-text); }
   .phases__list .phase:nth-child(2) { transition-delay: .12s; }

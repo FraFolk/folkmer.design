@@ -20,7 +20,7 @@ Rule: no raw hex, no raw font sizes in components. Use the tokens below.
 | `--ink-faint` | #b4bab7 | Placeholders, ghost captions (decorative only) |
 | `--sage` | #748d7a | Large numbers, graphics |
 | `--sage-text` | #5e7663 | Eyebrows, small green text (4.8:1) |
-| `--sage-deep` | #405e47 | Favicon |
+| `--sage-deep` | #405e47 | Favicon, highlighted cards (Aon "Today") |
 | `--orange` | #ff5c33 | Graphics, accents on dark |
 | `--orange-text` | #d4380f | Orange text on light (4.8:1) |
 | `--mint` | #aee7ca | "Available" dot only |
