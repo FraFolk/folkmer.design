@@ -11,7 +11,7 @@ const H = `h${headingLevel}`;
       : <img src={url(project.image)} alt={project.alt} loading="lazy" width="662" height="395" />}
   </div>
   <div class="card__body">
-    <p class="card__tags">{project.tags.join(' • ')}</p>
+    <p class="card__tags">{project.tags.join(' · ')}</p>
     <H class="card__title">
       <a href={url(project.href || `/work/${project.slug}/`)} class="card__link">{project.title}</a>
     </H>

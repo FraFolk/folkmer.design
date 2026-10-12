@@ -87,13 +87,13 @@ const parent = path.startsWith('/work/')
   .pause-btn[aria-pressed='true'] .pause-btn__icon { gap: 0; }
   .pause-btn[aria-pressed='true'] .pause-btn__icon i:first-child { width: 0; height: 0; border-radius: 0; background: none; border-left: 12px solid currentColor; border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
   .pause-btn[aria-pressed='true'] .pause-btn__icon i:last-child { display: none; }
-  .pause-btn__tip { position: absolute; top: calc(100% + 8px); right: 0; white-space: nowrap; background: var(--dark); color: #fff; font-size: 14px; padding: 8px 12px; border-radius: 8px; opacity: 0; pointer-events: none; transform: translateY(-4px); transition: opacity 150ms ease-out, transform 150ms ease-out; }
+  .pause-btn__tip { position: absolute; top: calc(100% + 8px); right: 0; white-space: nowrap; background: var(--dark); color: #fff; font-size: var(--fs-caption); padding: 8px 12px; border-radius: 8px; opacity: 0; pointer-events: none; transform: translateY(-4px); transition: opacity 150ms ease-out, transform 150ms ease-out; }
   .pause-btn:is(:hover, :focus-visible) .pause-btn__tip { opacity: 1; transform: none; }
   .profile__pause { font: inherit; color: inherit; background: none; border: 0; padding: 2px 0; cursor: pointer; }
   .profile__pause:hover { text-decoration: underline; }
   .back-link {
     display: inline-flex; align-items: center; gap: 10px;
-    font-weight: 600; font-size: 18px; text-decoration: none; padding: 8px 12px 8px 0;
+    font-weight: 600; font-size: var(--fs-body); text-decoration: none; padding: 8px 12px 8px 0;
   }
   .back-link :global(.icon) { transition: transform .35s var(--ease-spring); }
   .back-link:hover :global(.icon) { transform: translateX(-6px); }
@@ -111,8 +111,8 @@ const parent = path.startsWith('/work/')
   }
   .profile__avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
   .profile__text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-  .profile__name { font-weight: 500; font-size: 20px; line-height: 1.2; white-space: nowrap; }
-  .profile__status { display: inline-flex; align-items: center; gap: 6px; color: var(--mint); font-size: 14px; }
+  .profile__name { font-weight: 500; font-size: var(--fs-lead); line-height: 1.2; white-space: nowrap; }
+  .profile__status { display: inline-flex; align-items: center; gap: 6px; color: var(--mint); font-size: var(--fs-caption); }
   /* status dot: a solid dot with a ripple that grows and fades */
   .status-dot { position: relative; width: 7px; height: 7px; margin: 0 3px 0 2px; border-radius: 50%; background: var(--mint); flex: none; }
   .status-dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--mint); animation: status-pulse 2s var(--ease-out) infinite; }
@@ -138,7 +138,7 @@ const parent = path.startsWith('/work/')
   .profile__links {
     list-style: none; margin: 0; padding: 8px 24px 24px;
     display: flex; flex-direction: column; gap: 6px;
-    color: #f4f6f5; font-size: 16px;
+    color: var(--on-night); font-size: var(--fs-small);
   }
   .profile__links li {
     opacity: 0; transform: translateY(-6px);
@@ -164,13 +164,13 @@ const parent = path.startsWith('/work/')
     .profile { width: auto; justify-self: center; }
     .profile__pill { height: 56px; padding: 6px 12px 6px 6px; }
     .profile__avatar { width: 44px; height: 44px; }
-    .profile__name { font-size: 16px; }
+    .profile__name { font-size: var(--fs-small); }
     .profile__panel { padding-top: 56px; border-radius: 28px; }
-    .profile__links { padding: 6px 18px 18px; font-size: 15px; }
-    .site-header__side--end .roll { padding: 0 14px; font-size: 14px; }
+    .profile__links { padding: 6px 18px 18px; font-size: var(--fs-caption); }
+    .site-header__side--end .roll { padding: 0 14px; font-size: var(--fs-caption); }
   }
   @media (max-width: 400px) {
-    .profile__name { font-size: 15px; }
+    .profile__name { font-size: var(--fs-caption); }
   }
 </style>
 

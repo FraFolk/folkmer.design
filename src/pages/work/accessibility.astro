@@ -165,12 +165,12 @@ const steps = [
 
 <style>
   .chapter { display: flex; flex-direction: column; gap: 12px; padding-top: clamp(32px, 4vw, 56px); border-top: 1px solid var(--line); }
-  .chapter__lead { font-size: 20px; color: var(--ink-2); max-width: 52ch; }
+  .chapter__lead { font-size: var(--fs-lead); color: var(--ink-2); max-width: 52ch; }
 
   .visual-slot {
     aspect-ratio: 540 / 400; border-radius: var(--radius-l);
     border: 2px dashed var(--line); background: var(--surface);
-    display: grid; place-items: center; color: var(--ink-2); font-size: 16px; text-align: center; padding: 16px;
+    display: grid; place-items: center; color: var(--ink-2); font-size: var(--fs-small); text-align: center; padding: 16px;
   }
   .visual-slot--wide { aspect-ratio: 1328 / 520; margin-top: 32px; }
 
@@ -188,8 +188,8 @@ const steps = [
   .steps { display: flex; flex-direction: column; gap: 32px; }
   .steps__list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
   .step { background: var(--surface); border-radius: var(--radius-l); padding: 24px; display: flex; flex-direction: column; gap: 8px; }
-  .step h3 { font-size: 20px; font-weight: 600; }
-  .step__n { font-size: 14px; font-weight: 600; color: var(--sage-text); letter-spacing: .06em; }
+  .step h3 { font-size: var(--fs-lead); font-weight: 600; }
+  .step__n { font-size: var(--fs-caption); font-weight: 600; color: var(--sage-text); letter-spacing: .06em; }
   .steps__list .step:nth-child(2) { transition-delay: .1s; }
   .steps__list .step:nth-child(3) { transition-delay: .2s; }
   .steps__list .step:nth-child(4) { transition-delay: .3s; }

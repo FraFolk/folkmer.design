@@ -62,10 +62,11 @@ const apps = [
 
   /* the note: a scrap of paper in the middle of the desktop */
   .setup__note {
+    touch-action: pan-y;
     position: relative; margin-top: 16px; max-width: 380px;
     transform: rotate(-1.5deg);
-    background: #fbf8f0; color: #2a2f2d;
-    padding: 24px 24px 24px; border-radius: 3px; font-size: 17px; line-height: 1.5;
+    background: var(--paper); color: #2a2f2d;
+    padding: 24px 24px 24px; border-radius: 3px; font-size: var(--fs-small); line-height: 1.5;
     box-shadow: 0 2px 4px rgba(0,0,0,.12), 0 22px 40px -22px rgba(0,0,0,.45);
     animation: note-in .45s var(--ease-out);
   }
@@ -123,6 +124,19 @@ const apps = [
       note.style.minHeight = `${max}px`;
     };
     document.fonts?.ready.then(fitNote); addEventListener('resize', fitNote); fitNote();
+    // touch: swipe sideways on the note (or the screen) to move to the next/previous app
+    let tx = null;
+    const swipeArea = [note, root.querySelector('.setup__screen')];
+    swipeArea.forEach((el) => {
+      el.addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; }, { passive: true });
+      el.addEventListener('touchend', (e) => {
+        if (tx === null) return;
+        const dx = e.changedTouches[0].clientX - tx; tx = null;
+        if (Math.abs(dx) < 40) return;
+        const i = btns.findIndex((b) => b.getAttribute('aria-pressed') === 'true');
+        pick(btns[(i + (dx < 0 ? 1 : -1) + btns.length) % btns.length]);
+      });
+    });
     const pick = (b) => {
       if (b.getAttribute('aria-pressed') === 'true') return;
       btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));

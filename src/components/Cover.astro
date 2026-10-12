@@ -75,7 +75,7 @@ const { kind, size = 'card' } = Astro.props;
   .cover--aon { background: #111513; color: #1f2523; --mx: 50%; --my: 50%; }
   .torch__layer { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .3em; }
   .torch__layer--lit {
-    color: #f4f6f5;
+    color: var(--on-night);
     -webkit-mask-image: radial-gradient(circle 9em at var(--mx) var(--my), #000 0%, rgba(0,0,0,.35) 45%, transparent 75%);
             mask-image: radial-gradient(circle 9em at var(--mx) var(--my), #000 0%, rgba(0,0,0,.35) 45%, transparent 75%);
     background: radial-gradient(circle 11em at var(--mx) var(--my), rgba(255, 245, 220, .10), transparent 70%);

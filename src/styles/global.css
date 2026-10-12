@@ -38,6 +38,17 @@
   --btn2-hover: #d0d9d2;
   --mint: #aee7ca;
 
+  /* Dark surfaces (footer, dark cards) */
+  --night: #121614;
+  --night-line: #2c3330;
+  --night-edge: #3a423e;
+  --night-muted: #9aa29e;
+  --night-soft: #c4cac7;
+  --on-night: #f4f6f5;
+  --paper: #fbf8f0;        /* notes, the setup "paper" card */
+  --ink-faint: #b4bab7;    /* placeholders, ghost captions (decorative only) */
+  --dot: #cfd5d2;          /* whiteboard grid dots */
+
   --focus: #115aba;
 
   --radius-card: 56px;
@@ -50,14 +61,21 @@
   --ease-out: cubic-bezier(.22, 1, .36, 1);
   --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
 
-  --fs-body: clamp(16px, 1.05vw + 10px, 18px);
-  --fs-h1: clamp(36px, 3.2vw + 12px, 48px);
-  --fs-h2: clamp(26px, 2vw + 12px, 36px);
-  --fs-h3: clamp(22px, 1.4vw + 10px, 28px);
+  /* Type scale: mobile (375px) → desktop (1440px), fluid in between. See DESIGN-SYSTEM.md */
+  --fs-display: clamp(56px, 33.46px + 6.009vw, 120px);
+  --fs-h1: clamp(36px, 31.77px + 1.127vw, 48px);
+  --fs-h2: clamp(28px, 25.18px + 0.751vw, 36px);
+  --fs-h3: clamp(22px, 19.89px + 0.563vw, 28px);
+  --fs-h4: clamp(18px, 16.59px + 0.376vw, 22px);
+  --fs-lead: clamp(17px, 15.94px + 0.282vw, 20px);
+  --fs-body: clamp(16px, 15.30px + 0.188vw, 18px);
+  --fs-small: clamp(14px, 13.30px + 0.188vw, 16px);
+  --fs-caption: clamp(13px, 12.65px + 0.094vw, 14px);
+  --fs-meta: 12px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
 body {
   margin: 0;
   background: var(--bg);
@@ -108,7 +126,7 @@ b, strong { font-weight: 600; }
   letter-spacing: .02em;
   font-size: var(--fs-body);
 }
-.tags { font-style: italic; }
+.tags { font-style: italic; color: var(--ink-2); }
 .h1 { font-size: var(--fs-h1); font-weight: 500; }
 .h2 { font-size: var(--fs-h2); font-weight: 500; }
 .h3 { font-size: var(--fs-h3); font-weight: 500; }
@@ -126,7 +144,7 @@ b, strong { font-weight: 600; }
   padding: 8px 8px 8px 24px;
   border-radius: var(--radius-pill);
   background: var(--btn-bg); color: var(--btn-fg);
-  font: 500 18px/1.2 'Satoshi', sans-serif;
+  font: 500 var(--fs-body)/1.2 'Satoshi', sans-serif;
   text-decoration: none; border: 0; cursor: pointer;
   transition: background-color .3s var(--ease-out), padding .45s var(--ease-spring);
 }
@@ -142,7 +160,7 @@ b, strong { font-weight: 600; }
 .btn--secondary { --btn-bg: var(--btn2); --btn-fg: var(--ink); }
 .btn--secondary:hover { --btn-bg: var(--btn2-hover); }
 .btn--secondary:hover .btn__icon { transform: translateY(3px); }
-.btn--small { font-size: 16px; padding: 8px 8px 8px 16px; }
+.btn--small { font-size: var(--fs-small); padding: 8px 8px 8px 16px; }
 .btn--small .btn__icon { width: 36px; height: 36px; }
 .btn--small .btn__icon img { width: 20px; height: 20px; }
 
@@ -192,7 +210,7 @@ b, strong { font-weight: 600; }
 }
 .result--stat { flex-direction: row; align-items: center; gap: 16px; }
 .result__num { font-size: clamp(44px, 4vw, 64px); font-weight: 600; color: var(--sage); line-height: 1; white-space: nowrap; }
-.result__label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--sage-text); display: block; margin-bottom: 4px; }
+.result__label { font-size: var(--fs-meta); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--sage-text); display: block; margin-bottom: 4px; }
 
 .retro { text-align: center; max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
 
@@ -237,13 +255,12 @@ html:active-view-transition-type(slide-right)::view-transition-new(root) { anima
 
 /* Pill button: on hover a white circle with the arrow rolls in from the right edge,
    turning anticlockwise (like a wheel rolling left), and settles inside the pill. */
-.roll { display: inline-flex; position: relative; align-items: center; height: 64px; padding: 0 32px; border-radius: 99px; overflow: hidden; background: var(--btn); color: #fff; font-weight: 500; font-size: 18px; text-decoration: none; white-space: nowrap; transition: padding 300ms cubic-bezier(.16,1,.3,1), background-color 200ms; }
+.roll { --h: 56px; --ball: 44px; --inset: 6px; display: inline-flex; position: relative; align-items: center; height: var(--h); padding: 0 28px; border-radius: 99px; overflow: hidden; background: var(--btn); color: #fff; font-weight: 500; font-size: var(--fs-body); text-decoration: none; white-space: nowrap; transition: padding 300ms cubic-bezier(.16,1,.3,1), background-color 200ms; }
 .roll--ghost { background: var(--btn2); color: var(--ink); }
-.roll--small { height: 48px; padding: 0 20px; font-size: 16px; }
-.roll__ball { position: absolute; right: 8px; top: 8px; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--ink); transform: translateX(calc(100% + 16px)) rotate(180deg); transition: transform 300ms cubic-bezier(.16,1,.3,1); }
-.roll--small .roll__ball { right: 6px; top: 6px; width: 36px; height: 36px; }
-.roll:is(:hover, :focus-visible) { padding-right: 72px; }
-.roll--small:is(:hover, :focus-visible) { padding-right: 56px; }
+.roll--small { --h: 44px; --ball: 32px; padding: 0 18px; font-size: var(--fs-small); }
+.roll__ball { position: absolute; right: var(--inset); top: var(--inset); width: var(--ball); height: var(--ball); border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--ink); transform: translateX(calc(100% + 16px)) rotate(180deg); transition: transform 300ms cubic-bezier(.16,1,.3,1); }
+.roll:is(:hover, :focus-visible) { padding-right: calc(var(--inset) + var(--ball) + 12px); }
+@media (max-width: 760px) { .roll { --h: 48px; --ball: 36px; padding: 0 20px; font-size: var(--fs-small); } .roll--small { --h: 40px; --ball: 28px; } }
 .roll:is(:hover, :focus-visible) .roll__ball { transform: none; }
 .roll:hover { background: var(--btn-hover); }
 .roll--ghost:hover { background: var(--btn2-hover); }
@@ -254,3 +271,5 @@ html:active-view-transition-type(slide-right)::view-transition-new(root) { anima
 
 /* "Pause" in the header: freezes every looping animation */
 html.is-paused *, html.is-paused *::before, html.is-paused *::after { animation-play-state: paused !important; }
+
+@media (max-width: 760px) { :root { --radius-card: 32px; } }
