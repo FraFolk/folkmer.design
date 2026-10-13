@@ -8,8 +8,12 @@ import { EmailMessage } from 'cloudflare:email';
 // Revoke a code: D1 > folkmer-wall > access_codes > set revoked = 1.
 // The private HTML and images live in worker/protected/ (kept out of git: the site repo is public).
 import creditAgricole from '../protected/credit-agricole.html';
+import aon from '../protected/aon.html';
 
-const CASES = { 'credit-agricole': { title: 'Crédit Agricole redesign', html: creditAgricole } };
+const CASES = {
+  'credit-agricole': { title: 'Crédit Agricole: evolving the customer app', html: creditAgricole },
+  aon: { title: 'Aon: joined to execute, ended up owning the design', html: aon },
+};
 const CODE_DAYS = 14;          // a code works for 14 days
 const TOKEN_HOURS = 12;        // image links work for 12 hours after unlocking
 const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O, 1/I: easy to read and type

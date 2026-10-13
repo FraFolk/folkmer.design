@@ -4,8 +4,17 @@ import Cover from '../components/Cover.astro';
 import LabCarousel from '../components/LabCarousel.astro';
 import Whiteboard from '../components/Whiteboard.astro';
 import Icon from '../components/Icon.astro';
+import CaseGate from '../components/CaseGate.astro';
 import { projects, ale } from '../lib/projects.js';
 import { url } from '../lib/url.js';
+
+// Brands I've designed for. Logos go in public/img/brands/<slug>.svg (or .webp); without a file only the name shows.
+import { existsSync } from 'node:fs';
+const brands = ['Aon', 'Crédit Agricole', 'Intesa Sanpaolo', 'Arcaplanet', 'Bancomat', 'Nexi', 'Poste Italiane', 'Sky', 'Telepass Pay X'].map((name) => {
+  const slug = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-');
+  const file = ['svg', 'webp', 'png'].map((x) => `/img/brands/${slug}.${x}`).find((f) => existsSync(`public${f}`));
+  return { name, logo: file };
+});
 
 // Figma hero: three colleague comments that appear one at a time and "type" their text.
 const quotes = [
@@ -52,11 +61,19 @@ const quotes = [
     </figure>
   </section>
 
+  <!-- Brands I've designed for -->
+  <section class="brands container reveal" aria-labelledby="brands-title">
+    <h2 id="brands-title" class="brands__title">Brands I've designed for</h2>
+    <ul class="brands__list">
+      {brands.map((b) => <li>{b.logo && <img src={url(b.logo)} alt="" width="24" height="24" loading="lazy" />}<span>{b.name}</span></li>)}
+    </ul>
+  </section>
+
   <!-- 1. End to end: the story first, the (secret) project below -->
   <section id="work" class="story container" aria-labelledby="e2e-title" tabindex="-1">
     <h2 id="e2e-title" class="h2 story__title reveal">I follow products from the first workshop to the last handoff.</h2>
     <p class="story__lead reveal">On big products I don't stop at the screens: functional analysis, flows, UI, and the developers' questions on a Friday afternoon.</p>
-    <a class="secret-case reveal" href={url('/work/aon/')}>
+    <a class="secret-case reveal" href={url('/work/aon/')} data-gate="aon" data-gate-title="Aon: joined to execute, ended up owning the design">
       <span class="secret-case__text">
         <span class="secret-case__tags">Insurance · End-to-end · Ownership</span>
         <span class="secret-case__title">Joined to execute. Ended up owning the design.</span>
@@ -70,7 +87,7 @@ const quotes = [
         </span>
       </span>
     </a>
-    <a class="secret-case reveal" href={url('/work/credit-agricole/')}>
+    <a class="secret-case reveal" href={url('/work/credit-agricole/')} data-gate="credit-agricole" data-gate-title="Crédit Agricole: evolving an app people already love">
       <span class="secret-case__text">
         <span class="secret-case__tags">Banking · Mobile App · Personalisation</span>
         <span class="secret-case__title">Evolving an app people already love.</span>
@@ -150,6 +167,7 @@ const quotes = [
 
   <!-- 6. The wall: photo booth -->
   <Whiteboard />
+  <CaseGate />
 </Base>
 
 <style>
@@ -242,7 +260,7 @@ const quotes = [
   .plot.is-in .plot__new { clip-path: inset(-20% -5% -20% 0); }
 
   /* cases */
-  .secret-case + .secret-case { margin-top: 24px; }
+  .secret-case + .secret-case { margin-top: 12px; }
   .secret-case { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--surface); color: var(--ink); border-radius: var(--radius-card); overflow: hidden; text-decoration: none; min-height: 380px; text-align: left; align-items: center; }
   .secret-case__text { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: clamp(28px, 4vw, 64px); }
   .secret-case__tags { font-style: italic; color: var(--ink-2); }
@@ -279,6 +297,13 @@ const quotes = [
   /* dark-to-transparent gradient under the text, so white text always reads (WCAG AA) */
   .ale-card__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 144px 32px 32px; display: flex; flex-direction: column; gap: 4px;
     background: linear-gradient(to top, rgba(12,15,14,.92) 0%, rgba(12,15,14,.78) 40%, rgba(12,15,14,0) 100%); }
+  .brands { display: flex; flex-direction: column; align-items: center; gap: 16px; padding-top: clamp(48px, 6vw, 96px); padding-bottom: clamp(48px, 6vw, 96px); }
+  .brands__title { font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .brands__list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; row-gap: 12px; }
+  .brands__list li { display: flex; align-items: center; gap: 12px; font-size: var(--fs-lead); color: var(--ink-2); padding: 8px 24px; }
+  .brands__list li + li { border-left: 1px solid var(--line); }
+  .brands__list img { width: 24px; height: 24px; object-fit: contain; }
+  @media (max-width: 760px) { .brands__list li { font-size: var(--fs-small); padding: 6px 12px; } }
   .more { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding-top: clamp(72px, 10vw, 160px); padding-bottom: clamp(48px, 6vw, 96px); }
   .more__text { color: var(--ink-2); max-width: 44ch; margin-bottom: 8px; }
   .ale-card__title { font-size: var(--fs-h3); font-weight: 500; }

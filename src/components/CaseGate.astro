@@ -1,0 +1,79 @@
+---
+// Homepage: private cases open a small window first ("The full case is private").
+// Right code -> go to the case page, already unlocked. No code -> the "Request access" dialog.
+// Cards opt in with data-gate="slug" and data-gate-title="…". Without JS the card is a normal link.
+import Icon from './Icon.astro';
+import RequestAccess from './RequestAccess.astro';
+---
+<dialog class="gate" data-gate-dialog aria-labelledby="gate-title">
+  <button type="button" class="gate__close" data-gate-close aria-label="Close"><Icon name="x-mark" size={22} /></button>
+  <span class="gate__lock" aria-hidden="true"><Icon name="lock-closed" size={28} /></span>
+  <h2 id="gate-title" class="h3">The full case is private</h2>
+  <p class="gate__case" data-gate-name></p>
+  <p class="gate__text">Have a code? Type it here.</p>
+  <form class="gate__unlock" data-gate-form novalidate>
+    <label class="sr-only" for="gate-code">Access code</label>
+    <input id="gate-code" class="gate__code" name="code" type="text" placeholder="XXXX-XXXX" maxlength="9" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" required />
+    <button type="submit" class="roll roll--light"><span>Unlock</span><span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span></button>
+  </form>
+  <p class="gate__error" data-gate-error role="alert"></p>
+  <button type="button" class="gate__ask" data-gate-ask>No code? Request access</button>
+</dialog>
+<RequestAccess />
+
+<style>
+  .gate { width: min(520px, calc(100vw - 32px)); padding: 56px clamp(24px, 4vw, 48px) 40px; border: 0; border-radius: var(--radius-xl); background: var(--night); color: var(--on-night); text-align: center; }
+  .gate[open] { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .gate::backdrop { background: rgba(18,22,20,.6); backdrop-filter: blur(4px); }
+  .gate__close { position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--night-edge); background: transparent; color: var(--on-night); display: grid; place-items: center; cursor: pointer; }
+  .gate__close:hover { border-color: var(--night-muted); }
+  .gate__lock { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--on-night); color: var(--night); }
+  .gate__case { color: var(--night-soft); font-style: italic; margin-top: -8px; }
+  .gate__case:empty { display: none; }
+  .gate__text { color: var(--night-soft); }
+  .gate__unlock { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
+  .gate__code { height: 56px; width: 200px; padding: 0 20px; border-radius: var(--radius-pill); border: 1.5px solid var(--night-edge); background: transparent; font: 500 var(--fs-body)/1 ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--on-night); caret-color: var(--orange); text-align: center; }
+  .gate__code::placeholder { color: #4f5753; }
+  .gate__code:focus-visible { outline: none; border-color: #fff; }
+  .gate__error { color: var(--orange); font-weight: 500; }
+  .gate__error:empty { display: none; }
+  .gate__ask { background: none; border: 0; padding: 12px 8px; font: 500 var(--fs-body)/1.2 inherit; font-family: inherit; color: var(--on-night); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+  .gate__ask:hover { color: var(--orange); }
+  .gate button:focus-visible { outline: 3px solid var(--on-night); outline-offset: 3px; }
+</style>
+
+<script>
+  import { formatCode, unlock, savedCode } from '../lib/access.js';
+  const dialog = document.querySelector('[data-gate-dialog]');
+  if (dialog) {
+    const form = dialog.querySelector('[data-gate-form]');
+    const err = dialog.querySelector('[data-gate-error]');
+    let card = null;
+    formatCode(form.code);
+    document.querySelectorAll('[data-gate]').forEach((a) => a.addEventListener('click', (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+      // already unlocked in this tab: go straight to the case
+      if (savedCode(a.dataset.gate)) return;
+      e.preventDefault();
+      card = a;
+      dialog.querySelector('[data-gate-name]').textContent = a.dataset.gateTitle || '';
+      err.textContent = ''; form.code.value = '';
+      dialog.showModal(); form.code.focus();
+    }));
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const code = form.code.value.trim();
+      if (!code) { err.textContent = 'Type your code first.'; form.code.focus(); return; }
+      const r = await unlock(card.dataset.gate, code);
+      if (!r.ok) { err.textContent = r.message; form.code.focus(); return; }
+      location.href = card.href; // the page opens unlocked (the code is kept for this tab)
+    });
+    dialog.querySelector('[data-gate-close]').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+    dialog.addEventListener('close', () => card?.focus());
+    dialog.querySelector('[data-gate-ask]').addEventListener('click', () => {
+      dialog.close();
+      window.requestAccess?.(card.dataset.gate, card.dataset.gateTitle, card);
+    });
+  }
+</script>

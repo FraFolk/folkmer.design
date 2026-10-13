@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import CaseIntro from '../../components/CaseIntro.astro';
 import Cover from '../../components/Cover.astro';
 import { url } from '../../lib/url.js';
+import ProtectedCase from '../../components/ProtectedCase.astro';
 
 // TODO(Francesca): confirm Timeline.
 const phases = [
@@ -38,6 +39,8 @@ const phases = [
         ))}
       </ol>
     </section>
+
+    <ProtectedCase slug="aon" title="Aon: joined to execute, ended up owning the design" preview="/img/aon-screen.webp" />
 
 
   </article>

@@ -1,0 +1,200 @@
+---
+// "Request access" dialog for private case studies: one sentence at a time, like the footer form.
+// One per page. Open it with window.requestAccess(slug, title, returnFocusElement).
+import Icon from './Icon.astro';
+import { url } from '../lib/url.js';
+---
+<dialog class="pc-dialog" data-pc-dialog aria-labelledby="ra-title" data-ra>
+  <button type="button" class="pc-dialog__close" data-pc-close aria-label="Close"><Icon name="x-mark" size={22} /></button>
+  <form class="pc-dialog__form" data-pc-request novalidate>
+    <div class="pc-dialog__top">
+      <p class="pc-dialog__eyebrow" id="ra-title">Request access</p>
+      <p class="pc-dialog__count" data-pc-count aria-hidden="true">1 of 5</p>
+    </div>
+    <p class="pc-recap" data-pc-recap aria-live="polite"></p>
+
+    <div class="pc-step" data-pc-step="0">
+      <span class="pc-q">Hi Francesca, I'm</span>
+      <label class="sr-only" for="ra-first">First name</label><input id="ra-first" class="pc-blank" name="first" type="text" autocomplete="given-name" placeholder="first name" required />
+      <label class="sr-only" for="ra-last">Last name</label><input id="ra-last" class="pc-blank" name="last" type="text" autocomplete="family-name" placeholder="last name" required />
+    </div>
+    <div class="pc-step" data-pc-step="1" hidden>
+      <label class="pc-q" for="ra-company">from</label>
+      <input id="ra-company" class="pc-blank" name="company" type="text" autocomplete="organization" placeholder="company" />
+      <p class="pc-hint">Optional. Skip it if you like.</p>
+    </div>
+    <div class="pc-step" data-pc-step="2" hidden>
+      <label class="pc-q" for="ra-reason">I'd love to see this project because</label>
+      <textarea id="ra-reason" class="pc-blank pc-blank--area" name="reason" rows="1" placeholder="tell me why" required></textarea>
+    </div>
+    <div class="pc-step" data-pc-step="3" hidden>
+      <label class="pc-q" for="ra-email">You can send me the code at</label>
+      <input id="ra-email" class="pc-blank" name="email" type="email" autocomplete="email" placeholder="your email" required />
+    </div>
+    <div class="pc-step" data-pc-step="4" hidden>
+      <p class="pc-q pc-q--summary" data-pc-summary tabindex="-1"></p>
+    </div>
+
+    <input class="pc-dialog__hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+    <p class="pc-dialog__error" data-pc-request-error role="alert"></p>
+    <p class="pc-dialog__privacy" data-pc-privacy hidden>I only use your details to answer this request. <a href={url('/privacy/')}>Privacy</a></p>
+    <div class="pc-actions">
+      <button type="button" class="pc-back" data-pc-back hidden><Icon name="arrow-left" size={18} /> Back</button>
+      <button type="submit" class="roll roll--light" data-pc-next><span data-pc-send-label>Continue</span><span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span></button>
+      <p class="pc-enter" data-pc-enter aria-hidden="true">or press <kbd>Enter ↵</kbd></p>
+    </div>
+  </form>
+  <div class="pc-dialog__done" data-pc-done hidden tabindex="-1">
+    <p class="pc-msg pc-msg--done">Thanks, <b data-pc-who></b>! Your request is on its way.</p>
+    <p class="pc-dialog__intro">I'll read it and, if it's a yes, you'll get your code at <b data-pc-mail></b> within a couple of days.</p>
+    <button type="button" class="roll roll--light" data-pc-close><span>Close</span><span class="roll__ball" aria-hidden="true"><Icon name="x-mark" size={22} /></span></button>
+  </div>
+</dialog>
+
+<style>
+  .pc-dialog [hidden] { display: none !important; }
+  /* Request access: same look as the footer form */
+  .pc-dialog { width: min(760px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: clamp(24px, 4vw, 48px); border: 0; border-radius: var(--radius-xl); background: var(--night); color: var(--on-night); }
+  .pc-dialog::backdrop { background: rgba(18,22,20,.6); backdrop-filter: blur(4px); }
+  .pc-dialog__close { position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--night-edge); background: transparent; color: var(--on-night); display: grid; place-items: center; cursor: pointer; }
+  .pc-dialog__close:hover { border-color: var(--night-muted); }
+  .pc-dialog__form, .pc-dialog__done { display: flex; flex-direction: column; gap: 20px; outline: none; }
+  .pc-dialog__eyebrow { font-weight: 600; text-transform: uppercase; letter-spacing: .02em; color: rgba(255,255,255,.7); }
+  .pc-dialog__intro { color: var(--night-soft); }
+  /* one sentence at a time, like the footer */
+  .pc-dialog__top { display: flex; justify-content: space-between; align-items: baseline; padding-right: 56px; }
+  .pc-dialog__count { color: var(--on-night); }
+  .pc-recap { color: var(--night-muted); font-size: var(--fs-body); min-height: 1.5em; }
+  .pc-recap :global(b) { color: var(--on-night); font-weight: 500; }
+  .pc-step { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .35em; animation: pc-step-in .4s ease-out; }
+  @keyframes pc-step-in { from { opacity: 0; transform: translateY(12px); } }
+  .pc-q { font-size: var(--fs-h2); font-weight: 500; line-height: 1.15; letter-spacing: -.02em; color: var(--night-muted); }
+  .pc-q--summary { color: var(--on-night); outline: none; }
+  .pc-q--summary :global(b) { color: var(--orange); font-weight: 500; }
+  .pc-step .pc-blank { font-size: var(--fs-h2); line-height: 1.15; letter-spacing: -.02em; }
+  .pc-hint { width: 100%; color: var(--night-muted); font-size: var(--fs-small); margin-top: 8px; }
+  .pc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .pc-back { height: 48px; padding: 0 24px; display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-pill); border: 1.5px solid var(--night-edge); background: transparent; color: var(--on-night); font: 500 var(--fs-body)/1 inherit; font-family: inherit; cursor: pointer; }
+  .pc-back:hover { border-color: var(--night-muted); }
+  .pc-enter { color: var(--night-muted); font-size: var(--fs-caption); }
+  .pc-enter kbd { font: 12px/1 ui-monospace, monospace; border: 1px solid var(--night-edge); border-radius: var(--radius-s); padding: 3px 8px; color: var(--night-muted); }
+  @media (hover: none) { .pc-enter { display: none; } }
+  .pc-msg { font-size: var(--fs-h3); font-weight: 500; line-height: 1.6; letter-spacing: -.01em; color: var(--night-muted); padding-right: 32px; }
+  .pc-msg--done { color: var(--on-night); }
+  .pc-dialog__intro b, .pc-msg b { color: var(--orange); font-weight: 500; }
+  .pc-blank { font: inherit; letter-spacing: inherit; color: var(--on-night); background: transparent; border: 0; border-bottom: 2px solid var(--night-edge); border-radius: 0; padding: 0 .05em; width: 8ch; min-width: 3ch; max-width: 100%; caret-color: var(--orange); }
+  .pc-blank::placeholder { color: #4f5753; }
+  .pc-blank:focus { outline: none; border-bottom-color: #fff; }
+  .pc-dialog [aria-invalid='true'] { border-bottom-style: dashed; border-bottom-color: var(--orange); }
+  .pc-dialog__hp { position: absolute; left: -9999px; }
+  .pc-dialog__error { color: var(--orange); font-weight: 500; }
+  .pc-dialog__error:empty { display: none; }
+  .pc-dialog__privacy { color: var(--night-muted); font-size: var(--fs-caption); }
+  .pc-dialog__privacy a { color: inherit; text-underline-offset: 3px; }
+  .pc-dialog .roll { --h: 48px; --ball: 36px; }
+  .pc-dialog__done .roll { align-self: flex-start; }
+  .pc-dialog :is(button, a):focus-visible { outline: 3px solid var(--on-night); outline-offset: 3px; }
+  .pc-blank--area { display: block; flex-basis: 100%; width: 100% !important; resize: none; overflow: hidden; font-size: var(--fs-h2); line-height: 1.25; letter-spacing: -.02em; font-family: inherit; font-weight: 500; }
+</style>
+
+<script>
+  import { API } from '../lib/access.js';
+  const dialog = document.querySelector('[data-ra]');
+  if (dialog && !window.requestAccess) {
+    const f = dialog.querySelector('[data-pc-request]');
+    const reqErr = dialog.querySelector('[data-pc-request-error]');
+    const done = dialog.querySelector('[data-pc-done]');
+    const steps = [...f.querySelectorAll('[data-pc-step]')];
+    const count = f.querySelector('[data-pc-count]');
+    const recap = f.querySelector('[data-pc-recap]');
+    const back = f.querySelector('[data-pc-back]');
+    const nextLabel = f.querySelector('[data-pc-send-label]');
+    const nextBtn = f.querySelector('[data-pc-next]');
+    const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const v = (n) => f[n].value.trim();
+    let cur = 0, slug = '', returnTo = null;
+
+    // blanks grow with the text, like writing on a line; the reason box grows in height
+    const probe = document.createElement('span');
+    probe.setAttribute('aria-hidden', 'true');
+    probe.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;left:-9999px;top:0';
+    dialog.appendChild(probe);
+    const fit = (el) => {
+      if (el.tagName === 'TEXTAREA') { el.style.height = 'auto'; el.style.height = `${el.scrollHeight}px`; return; }
+      const cs = getComputedStyle(el);
+      probe.style.font = cs.font; probe.style.letterSpacing = cs.letterSpacing;
+      probe.textContent = el.value || el.placeholder;
+      el.style.width = `${Math.ceil(probe.offsetWidth) + 6}px`;
+    };
+    dialog.querySelectorAll('.pc-blank').forEach((el) => el.addEventListener('input', () => { fit(el); el.removeAttribute('aria-invalid'); }));
+
+    const recapHtml = (upTo) => {
+      let t = '';
+      if (upTo > 0) t = `Hi, I'm <b>${esc(v('first'))} ${esc(v('last'))}</b>`;
+      if (upTo > 1 && v('company')) t += ` from <b>${esc(v('company'))}</b>`;
+      if (upTo > 2) t += `. I'd love to see it because <b>${esc(v('reason'))}</b>`;
+      return t ? `${t}.` : '';
+    };
+    const show = (i, focus = true) => {
+      cur = i;
+      steps.forEach((st, k) => { st.hidden = k !== i; });
+      const last = i === steps.length - 1;
+      count.textContent = `${i + 1} of ${steps.length}`;
+      back.hidden = i === 0;
+      recap.innerHTML = last ? '' : recapHtml(i);
+      nextLabel.textContent = last ? 'Send request' : 'Continue';
+      nextBtn.classList.toggle('roll--send', last);
+      f.querySelector('[data-pc-enter]').hidden = last;
+      f.querySelector('[data-pc-privacy]').hidden = !last;
+      if (last) {
+        f.querySelector('[data-pc-summary]').innerHTML = `Hi Francesca, I'm <b>${esc(v('first'))} ${esc(v('last'))}</b>${v('company') ? ` from <b>${esc(v('company'))}</b>` : ''}. I'd love to see this project because <b>${esc(v('reason'))}</b>. You can send me the code at <b>${esc(v('email'))}</b>.`;
+      }
+      const inputs = [...steps[i].querySelectorAll('input, textarea')];
+      inputs.forEach(fit);
+      if (focus) (inputs[0] || f.querySelector('[data-pc-summary]')).focus({ preventScroll: true });
+    };
+    const valid = () => {
+      const bad = (n, msg) => { f[n].setAttribute('aria-invalid', 'true'); reqErr.textContent = msg; f[n].focus(); return false; };
+      reqErr.textContent = '';
+      if (cur === 0 && !v('first')) return bad('first', 'I need your first name.');
+      if (cur === 0 && !v('last')) return bad('last', 'And your last name, please.');
+      if (cur === 2 && !v('reason')) return bad('reason', 'A line on why helps me say yes.');
+      if (cur === 3 && (!v('email') || !f.email.checkValidity())) return bad('email', 'That email looks a bit off. Can you check it?');
+      return true;
+    };
+
+    window.requestAccess = (pageSlug, title, from) => {
+      slug = pageSlug; returnTo = from || document.activeElement;
+      f.hidden = false; done.hidden = true; reqErr.textContent = '';
+      dialog.showModal(); show(0);
+    };
+    dialog.querySelectorAll('[data-pc-close]').forEach((b) => b.addEventListener('click', () => dialog.close()));
+    dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+    dialog.addEventListener('close', () => returnTo?.focus?.());
+    back.addEventListener('click', () => { reqErr.textContent = ''; show(Math.max(0, cur - 1)); });
+    // Enter on the first name moves to the last name; in the reason box Enter goes on (Shift+Enter = new line)
+    f.first.addEventListener('keydown', (e) => { if (e.key === 'Enter' && v('first') && !v('last')) { e.preventDefault(); f.last.focus(); } });
+    f.reason.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); f.requestSubmit(); } });
+
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!valid()) return;
+      if (cur < steps.length - 1) { show(cur + 1); return; }
+      nextLabel.textContent = 'Sending…'; nextBtn.disabled = true;
+      try {
+        const res = await fetch(`${API}/access/request`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ page: slug, first: v('first'), last: v('last'), email: v('email'), company: v('company'), reason: v('reason'), website: f.website.value }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        dialog.querySelector('[data-pc-who]').textContent = v('first');
+        dialog.querySelector('[data-pc-mail]').textContent = v('email');
+        f.hidden = true; done.hidden = false; done.focus();
+      } catch (e2) {
+        reqErr.textContent = e2.message === '429' ? "You've sent a few requests today. I'll get back to you soon." : "That didn't go through. Try again, or write to folkmer.design@gmail.com.";
+      } finally {
+        nextBtn.disabled = false; nextLabel.textContent = cur === steps.length - 1 ? 'Send request' : 'Continue';
+      }
+    });
+  }
+</script>
