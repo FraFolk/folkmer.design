@@ -1,0 +1,187 @@
+---
+// Private part of a case study. The real content is NOT in this page: it lives on the Worker
+// and arrives only with a valid personal code (see worker/src/access.js).
+// What you see while locked: a pre-blurred preview image fading to white, a lock, the code field
+// and "Request access", which opens a form in the footer style.
+import Icon from './Icon.astro';
+import { url } from '../lib/url.js';
+
+const { slug, title, preview } = Astro.props;
+const API = import.meta.env.DEV ? 'http://localhost:8787' : 'https://folkmer-wall.folkmerdesign.workers.dev';
+---
+<section class="pc" data-pc data-slug={slug} data-api={API} aria-labelledby={`pc-${slug}`}>
+  <div class="pc__locked" data-pc-locked>
+    <img class="pc__preview" src={url(preview)} alt="" loading="lazy" />
+    <div class="pc__gate">
+      <span class="pc__lock" aria-hidden="true"><Icon name="lock-closed" size={28} /></span>
+      <h2 id={`pc-${slug}`} class="h3">The full case is private</h2>
+      <p class="pc__text">It's client work, so I share it one person at a time. Have a code? Type it here.</p>
+      <form class="pc__unlock" data-pc-unlock novalidate>
+        <label class="sr-only" for={`pc-code-${slug}`}>Access code</label>
+        <input id={`pc-code-${slug}`} class="pc__code" name="code" type="text" placeholder="XXXX-XXXX-XXXX" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" required />
+        <button type="submit" class="roll"><span>Unlock</span><span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span></button>
+      </form>
+      <p class="pc__error" data-pc-error role="alert"></p>
+      <button type="button" class="pc__ask" data-pc-open>No code? Request access</button>
+    </div>
+  </div>
+  <div class="pc__content" data-pc-content tabindex="-1" hidden></div>
+
+  <dialog class="pc-dialog" data-pc-dialog aria-labelledby={`pc-dialog-title-${slug}`}>
+    <button type="button" class="pc-dialog__close" data-pc-close aria-label="Close"><Icon name="x-mark" size={22} /></button>
+    <form class="pc-dialog__form" data-pc-request novalidate>
+      <p class="pc-dialog__eyebrow">Request access</p>
+      <h2 id={`pc-dialog-title-${slug}`} class="pc-dialog__title">{title}</h2>
+      <p class="pc-dialog__intro">Tell me who you are and why you'd like to see it. If it's a yes, I'll email you a personal code.</p>
+      <div class="pc-dialog__row">
+        <label>First name<input name="first" type="text" autocomplete="given-name" required /></label>
+        <label>Last name<input name="last" type="text" autocomplete="family-name" required /></label>
+      </div>
+      <label>Email<input name="email" type="email" autocomplete="email" required /></label>
+      <label><span>Company <span class="pc-dialog__opt">(optional)</span></span><input name="company" type="text" autocomplete="organization" /></label>
+      <label>Why would you like to see it?<textarea name="reason" rows="3" required></textarea></label>
+      <input class="pc-dialog__hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <p class="pc-dialog__error" data-pc-request-error role="alert"></p>
+      <p class="pc-dialog__privacy">I only use your details to answer this request. <a href={url('/privacy/')}>Privacy</a></p>
+      <button type="submit" class="roll roll--light"><span data-pc-send-label>Send request</span><span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span></button>
+    </form>
+    <div class="pc-dialog__done" data-pc-done hidden tabindex="-1">
+      <p class="pc-dialog__title">Thanks, <b data-pc-who></b>!</p>
+      <p class="pc-dialog__intro">I'll read your request and, if it's a yes, email you a code within a couple of days.</p>
+      <button type="button" class="roll roll--light" data-pc-close><span>Close</span><span class="roll__ball" aria-hidden="true"><Icon name="x-mark" size={22} /></span></button>
+    </div>
+  </dialog>
+</section>
+
+<style>
+  .pc { position: relative; }
+  .pc [hidden] { display: none !important; }
+  .pc__locked { position: relative; border-radius: var(--radius-card); overflow: hidden; min-height: 520px; display: grid; place-items: center; }
+  .pc__preview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  /* the preview fades from 0% to 100% white */
+  .pc__locked::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(252,252,250,0) 0%, var(--bg) 70%); }
+  .pc__gate { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; max-width: 440px; padding: 120px 24px 48px; }
+  .pc__lock { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--night); color: var(--on-night); }
+  .pc__text { color: var(--ink-2); }
+  .pc__unlock { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
+  .pc__code { height: 56px; width: 220px; padding: 0 20px; border-radius: var(--radius-pill); border: 1.5px solid var(--line); background: #fff; font: 500 var(--fs-body)/1 ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); text-align: center; }
+  .pc__code::placeholder { color: var(--ink-faint); letter-spacing: .08em; }
+  .pc__code:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .pc__error { color: var(--orange-text); font-weight: 500; min-height: 1.5em; }
+  .pc__ask { background: none; border: 0; padding: 12px 8px; font: 500 var(--fs-body)/1.2 inherit; font-family: inherit; color: var(--ink); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+  .pc__ask:hover { color: var(--orange-text); }
+  .pc__ask:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: var(--radius-s); }
+  .pc__content { display: flex; flex-direction: column; gap: clamp(64px, 8vw, 128px); outline: none; animation: pc-in 300ms ease-out; }
+  .pc__content :global(img) { width: 100%; height: auto; border-radius: var(--radius-l); }
+  .pc__content :global(.pc-section) { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
+  .pc__content :global(.pc-section ul) { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .pc__content :global(.pc-stats) { list-style: none; padding: 0 !important; display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 24px !important; max-width: none; }
+  .pc__content :global(.pc-stats li) { display: flex; flex-direction: column; gap: 4px; color: var(--ink-2); }
+  .pc__content :global(.pc-stats b) { font-size: var(--fs-display); font-weight: 500; line-height: 1; color: var(--sage-text); }
+  @media (max-width: 760px) { .pc__content :global(.pc-stats) { grid-template-columns: 1fr 1fr; } }
+  @keyframes pc-in { from { opacity: 0; transform: translateY(12px); } }
+
+  /* Request access: same look as the footer form */
+  .pc-dialog { width: min(640px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: clamp(24px, 4vw, 48px); border: 0; border-radius: var(--radius-xl); background: var(--night); color: var(--on-night); }
+  .pc-dialog::backdrop { background: rgba(18,22,20,.6); backdrop-filter: blur(4px); }
+  .pc-dialog__close { position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--night-edge); background: transparent; color: var(--on-night); display: grid; place-items: center; cursor: pointer; }
+  .pc-dialog__close:hover { border-color: var(--night-muted); }
+  .pc-dialog__form, .pc-dialog__done { display: flex; flex-direction: column; gap: 20px; outline: none; }
+  .pc-dialog__eyebrow { font-weight: 600; text-transform: uppercase; letter-spacing: .02em; color: rgba(255,255,255,.7); }
+  .pc-dialog__title { font-size: var(--fs-h2); font-weight: 500; line-height: 1.15; padding-right: 48px; }
+  .pc-dialog__title b { color: var(--orange); font-weight: 500; }
+  .pc-dialog__intro { color: var(--night-soft); }
+  .pc-dialog__row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .pc-dialog label { display: flex; flex-direction: column; gap: 6px; color: var(--night-muted); font-size: var(--fs-small); }
+  .pc-dialog__opt { color: var(--night-muted); }
+  .pc-dialog input, .pc-dialog textarea { font: 500 var(--fs-lead)/1.4 inherit; font-family: inherit; color: var(--on-night); background: transparent; border: 0; border-bottom: 2px solid var(--night-edge); border-radius: 0; padding: 6px 0; caret-color: var(--orange); resize: vertical; }
+  .pc-dialog input:focus, .pc-dialog textarea:focus { outline: none; border-bottom-color: #fff; }
+  .pc-dialog [aria-invalid='true'] { border-bottom-style: dashed; border-bottom-color: var(--orange); }
+  .pc-dialog__hp { position: absolute; left: -9999px; }
+  .pc-dialog__error { color: var(--orange); font-weight: 500; min-height: 1.2em; }
+  .pc-dialog__privacy { color: var(--night-muted); font-size: var(--fs-caption); }
+  .pc-dialog__privacy a { color: inherit; text-underline-offset: 3px; }
+  .pc-dialog .roll { align-self: flex-start; --h: 48px; --ball: 36px; }
+  .pc-dialog :is(button, a):focus-visible { outline: 3px solid var(--on-night); outline-offset: 3px; }
+  @media (max-width: 600px) { .pc-dialog__row { grid-template-columns: 1fr; } .pc__locked { min-height: 460px; } }
+  @media (prefers-reduced-motion: reduce) { .pc__content { animation: none; } }
+</style>
+
+<script>
+  for (const root of document.querySelectorAll('[data-pc]')) {
+    const slug = root.dataset.slug, api = root.dataset.api;
+    const locked = root.querySelector('[data-pc-locked]');
+    const content = root.querySelector('[data-pc-content]');
+    const unlockForm = root.querySelector('[data-pc-unlock]');
+    const err = root.querySelector('[data-pc-error]');
+    const dialog = root.querySelector('[data-pc-dialog]');
+    const reqForm = root.querySelector('[data-pc-request]');
+    const reqErr = root.querySelector('[data-pc-request-error]');
+    const done = root.querySelector('[data-pc-done]');
+    const key = `pc:${slug}`;
+
+    const tryUnlock = async (code, focus = true) => {
+      err.textContent = '';
+      try {
+        const res = await fetch(`${api}/access/unlock`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ page: slug, code }) });
+        const data = await res.json();
+        if (!res.ok) {
+          try { sessionStorage.removeItem(key); } catch {}
+          if (focus) err.textContent = res.status === 429 ? 'Too many tries for today. Try again tomorrow, or ask me for help.' : "That code doesn't work. It may have expired: ask me for a new one.";
+          return;
+        }
+        content.innerHTML = data.html;
+        locked.hidden = true; content.hidden = false;
+        try { sessionStorage.setItem(key, code); } catch {}
+        if (focus) content.focus();
+      } catch {
+        if (focus) err.textContent = "I can't reach the server right now. Try again in a minute.";
+      }
+    };
+
+    unlockForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const code = unlockForm.code.value.trim();
+      if (!code) { err.textContent = 'Type your code first.'; unlockForm.code.focus(); return; }
+      tryUnlock(code);
+    });
+    // same tab, page reloaded: open again without typing
+    try { const saved = sessionStorage.getItem(key); if (saved) tryUnlock(saved, false); } catch {}
+
+    // Request access dialog
+    const opener = root.querySelector('[data-pc-open]');
+    opener.addEventListener('click', () => { dialog.showModal(); reqForm.first.focus(); });
+    root.querySelectorAll('[data-pc-close]').forEach((b) => b.addEventListener('click', () => dialog.close()));
+    dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+    dialog.addEventListener('close', () => opener.focus());
+
+    reqForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      reqErr.textContent = '';
+      const f = reqForm;
+      const missing = ['first', 'last', 'email', 'reason'].find((n) => !f[n].value.trim() || (n === 'email' && !f.email.checkValidity()));
+      ['first', 'last', 'email', 'reason'].forEach((n) => f[n].removeAttribute('aria-invalid'));
+      if (missing) {
+        f[missing].setAttribute('aria-invalid', 'true');
+        reqErr.textContent = missing === 'email' ? 'That email looks a bit off. Can you check it?' : 'I need your name, email and a line on why.';
+        f[missing].focus();
+        return;
+      }
+      const label = f.querySelector('[data-pc-send-label]');
+      label.textContent = 'Sending…';
+      try {
+        const res = await fetch(`${api}/access/request`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ page: slug, first: f.first.value, last: f.last.value, email: f.email.value, company: f.company.value, reason: f.reason.value, website: f.website.value }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        root.querySelector('[data-pc-who]').textContent = f.first.value.trim();
+        f.hidden = true; done.hidden = false; done.focus();
+      } catch (e2) {
+        reqErr.textContent = e2.message === '429' ? "You've sent a few requests today. I'll get back to you soon." : "That didn't go through. Try again, or write to folkmer.design@gmail.com.";
+      } finally {
+        label.textContent = 'Send request';
+      }
+    });
+  }
+</script>

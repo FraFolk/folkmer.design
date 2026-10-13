@@ -1,5 +1,6 @@
 // Sitemap for search engines. Pages kept out of the Lab (noindex) are left out.
-const EXCLUDE = ['/lab/banca-novera/'];
+// Work in progress pages stay out until they are ready.
+const EXCLUDE = ['/lab/banca-novera/', '/work/credit-agricole/'];
 
 export async function GET({ site }) {
   const pages = import.meta.glob('./**/*.astro', { eager: false });

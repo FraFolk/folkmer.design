@@ -1,6 +1,8 @@
 name = "folkmer-wall"
 main = "src/index.js"
 compatibility_date = "2026-10-01"
+# HTML of private case studies is bundled as text
+rules = [{ type = "Text", globs = ["**/*.html"], fallthrough = true }]
 
 [[d1_databases]]
 binding = "DB"
@@ -11,3 +13,11 @@ database_id = "2fa5e0be-dccf-41af-a661-b846331c9283"
 [[send_email]]
 name = "MAIL"
 destination_address = "folkmer.design@gmail.com"
+
+# Private case studies (folder kept out of git, see .gitignore).
+# HTML of each case is bundled as text; images are served only with a valid token.
+
+[assets]
+directory = "./protected/assets"
+binding = "ASSETS"
+run_worker_first = true

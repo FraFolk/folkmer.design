@@ -1,4 +1,5 @@
 import { EmailMessage } from "cloudflare:email";
+import { requestAccess, unlock, asset } from "./access.js";
 // Visitors' wall for folkmerdesign.com: stores drawing strokes in D1.
 // Visitors can add strokes and undo/erase only their own (each stroke has a private key kept in their browser).
 // Francesca removes strokes from the Cloudflare dashboard (D1 > folkmer-wall > strokes).
@@ -55,6 +56,12 @@ export default {
     const url = new URL(req.url);
     if (req.method === 'OPTIONS') return new Response(null, { headers: cors(req) });
     if (url.pathname === '/contact' && req.method === 'POST') return contact(req, env);
+    // private case studies (see access.js)
+    const helpers = { json, ORIGINS, ipHash: (r, salt) => hash((r.headers.get('CF-Connecting-IP') || '') + salt + new Date().toISOString().slice(0, 10)) };
+    if (url.pathname === '/access/request' && req.method === 'POST') return requestAccess(req, env, helpers);
+    if (url.pathname === '/access/unlock' && req.method === 'POST') return unlock(req, env, helpers);
+    const a = url.pathname.match(/^\/access\/asset\/([\w-]+)\/([\w.-]+)$/);
+    if (a && req.method === 'GET') return asset(req, env, a[1], a[2], helpers);
     const del = url.pathname.match(/^\/strokes\/(\d+)$/);
     if (del && req.method === 'DELETE') {
       const key = url.searchParams.get('key') || '';

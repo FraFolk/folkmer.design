@@ -127,7 +127,17 @@ const quotes = [
     </div>
   </section>
 
-  <!-- 5. The wall: photo booth -->
+  <!-- 5. A nudge to the About page -->
+  <section class="more container reveal" aria-labelledby="more-title">
+    <h2 id="more-title" class="h2">Want to know more about me?</h2>
+    <p class="more__text">From set design to design systems, with some climbing and a few pets in between.</p>
+    <a class="roll roll--ghost" href={url('/about/')} data-slide-to-about>
+      <span>About me</span>
+      <span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span>
+    </a>
+  </section>
+
+  <!-- 6. The wall: photo booth -->
   <Whiteboard />
 </Base>
 
@@ -254,6 +264,8 @@ const quotes = [
   /* dark-to-transparent gradient under the text, so white text always reads (WCAG AA) */
   .ale-card__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 144px 32px 32px; display: flex; flex-direction: column; gap: 4px;
     background: linear-gradient(to top, rgba(12,15,14,.92) 0%, rgba(12,15,14,.78) 40%, rgba(12,15,14,0) 100%); }
+  .more { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding-top: clamp(72px, 10vw, 160px); padding-bottom: clamp(48px, 6vw, 96px); }
+  .more__text { color: var(--ink-2); max-width: 44ch; margin-bottom: 8px; }
   .ale-card__title { font-size: var(--fs-h3); font-weight: 500; }
   .ale-card__sub { font-size: var(--fs-small); color: rgba(255,255,255,.85); }
   .ale-card__ball { position: absolute; top: 32px; right: 32px; width: 48px; height: 48px; border-radius: 50%; background: #fff; color: var(--ink); display: grid; place-items: center; transition: background-color 200ms, transform 300ms var(--ease-out); }
@@ -357,14 +369,14 @@ const quotes = [
 
   if (bubbles.length && !reduce) loop();
 
-  document.querySelector('[data-slide-to-about]')?.addEventListener('click', (e) => {
+  document.querySelectorAll('[data-slide-to-about]').forEach((link) => link.addEventListener('click', (e) => {
     try { sessionStorage.setItem('slide', 'left'); } catch {}
     if (reduce || e.metaKey || e.ctrlKey) return;
     // on touch there is no hover: show the rolling ball first, then change page
     const a = e.currentTarget; e.preventDefault();
     a.classList.add('is-rolling');
     setTimeout(() => { location.href = a.href; }, 320);
-  });
+  }));
 
   // Lab: the cards come in softly when the section is visible.
   // Easter egg: click the flask (or browse the cards until it wobbles too much) and it tips over.

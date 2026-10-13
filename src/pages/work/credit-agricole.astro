@@ -1,0 +1,24 @@
+---
+// Crédit Agricole redesign. Public part: cover, intro, role.
+// Private part: on the Worker (worker/protected/credit-agricole.html), unlocked with a personal code.
+// TODO(Francesca): real title, intro, facts and cover. Not linked from the homepage yet.
+import Base from '../../layouts/Base.astro';
+import CaseIntro from '../../components/CaseIntro.astro';
+import Cover from '../../components/Cover.astro';
+import ProtectedCase from '../../components/ProtectedCase.astro';
+---
+<Base noindex title="Crédit Agricole: evolving the customer app · Francesca Folkmer"
+  description="The evolution of the Crédit Agricole customer app: five core areas redesigned and a personalisation strategy built on personas. The full case is private: request access to read it.">
+  <article class="container case">
+    <CaseIntro
+      tags={['Banking', 'Mobile App', 'Personalisation']}
+      title="Crédit Agricole: evolving an app people already love"
+      facts={[['Timeline', '[to fill]'], ['Role', '[to fill]'], ['Scope', '5 core areas + personalisation']]}
+    >
+      <Fragment slot="media"><Cover kind="nda" size="hero" /></Fragment>
+      <p>The app was already rated <b>above 4.5 stars</b>. The job: make it better without touching what's underneath. We redesigned the <b>five areas</b> customers use most and built a <b>personalisation strategy</b> on personas.</p>
+    </CaseIntro>
+
+    <ProtectedCase slug="credit-agricole" title="Crédit Agricole: evolving the customer app" preview="/img/ca-locked-preview.webp" />
+  </article>
+</Base>
