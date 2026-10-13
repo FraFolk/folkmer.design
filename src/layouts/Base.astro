@@ -61,6 +61,8 @@ const jsonLd = {
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" type="application/xml" href={url('/sitemap.xml')} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {/* Cloudflare Web Analytics: no cookies, no personal data (see /privacy/). Production only. */}
+    {import.meta.env.PROD && <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "ad7c33f85c244a83af62b488c2ff2c19"}'></script>}
     <meta name="theme-color" content="#fcfcfa" />
     <link rel="icon" type="image/png" sizes="32x32" href={url('/favicon-32.png')} />
     <link rel="apple-touch-icon" href={url('/favicon-180.png')} />

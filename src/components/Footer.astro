@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { url } from '../lib/url.js';
 // "Let's connect": a step-by-step sentence. Each answer shrinks into a small recap line and the
 // next blank appears. At the end: the whole sentence and a Send button (opens the email app,
 // nothing is stored). Layout inspired by a conversational form (step tag, Back/Continue, Enter).
@@ -50,7 +51,7 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
 
       <p class="talk__error" role="alert" data-talk-error></p>
 
-      <p class="talk__privacy" data-talk-privacy hidden>Your message goes straight to my inbox. I only use your details to reply.</p>
+      <p class="talk__privacy" data-talk-privacy hidden>Your message goes straight to my inbox. I only use your details to reply. <a href={url('/privacy/')}>Privacy</a></p>
 
       <div class="talk__actions">
         <button type="button" class="talk__btn talk__btn--ghost" data-talk-back hidden><Icon name="arrow-left" size={18} /> Back</button>
@@ -71,7 +72,7 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
     </div>
   </div>
   <div class="site-footer__bar">
-    <p>©2026 • <span>1% better every day</span></p>
+    <p>©2026 • <span>1% better every day</span> • <a href={url('/privacy/')}>Privacy</a></p>
   </div>
 </footer>
 
@@ -144,6 +145,8 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
 
   .site-footer__bar { background: var(--night); color: rgba(255,255,255,.7); border-top: 1px solid var(--night-line); min-height: 78px; display: grid; place-items: center; padding: 8px 16px; font-size: var(--fs-caption); }
   .site-footer__bar span { font-weight: 500; }
+  .site-footer__bar a, .talk__privacy a { color: inherit; text-underline-offset: 3px; }
+  .site-footer__bar a:focus-visible, .talk__privacy a:focus-visible { outline: 3px solid var(--on-night); outline-offset: 2px; border-radius: var(--radius-s); }
 
   @media (hover: none) { .talk__enter { display: none; } }
   @media (prefers-reduced-motion: reduce) { .talk__step { animation: none; } }

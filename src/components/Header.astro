@@ -41,7 +41,7 @@ const parent = path.startsWith('/work/')
             <li><a href="https://www.linkedin.com/in/francescafolkmer/" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></li>
             <li><a href="tel:+393470662369">+39 347 066 2369</a></li>
             <li class="profile__cv"><button type="button" class="profile__pause" data-pause aria-pressed="false">Pause animations</button></li>
-            <li class="profile__cv"><a href={url('/Francesca-Folkmer-CV.pdf')} download>Download CV</a></li>
+            <li class="profile__cv"><a href={url('/Francesca-Folkmer-CV.pdf')} download="Francesca Folkmer_Product Designer CV.pdf">Download CV</a></li>
           </ul>
         </div>
       </div>
@@ -53,7 +53,7 @@ const parent = path.startsWith('/work/')
         <span class="sr-only">Pause animations</span>
         <span class="pause-btn__tip" id="pause-tip" role="tooltip">Pause all repeating animations</span>
       </button>
-      <a class="roll roll--ghost roll--small" href={url('/Francesca-Folkmer-CV.pdf')} download data-dir="down">
+      <a class="roll roll--ghost roll--small" href={url('/Francesca-Folkmer-CV.pdf')} download="Francesca Folkmer_Product Designer CV.pdf" data-dir="down">
         <span>Download CV</span>
         <span class="roll__ball" aria-hidden="true"><Icon name="arrow-down" size={18} /></span>
       </a>

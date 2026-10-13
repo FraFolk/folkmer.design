@@ -1,0 +1,62 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Privacy · Francesca Folkmer" description="What happens to your data on folkmerdesign.com: no cookies, privacy-first analytics, and a contact form whose messages I only use to reply.">
+  <article class="container privacy">
+    <header class="privacy__head">
+      <p class="eyebrow">Privacy</p>
+      <h1 class="h1">Your data, in plain words</h1>
+      <p class="lead">Short version: no cookies, no tracking, and if you write to me I only use your details to reply.</p>
+      <p class="privacy__date">Last updated: 13 October 2026</p>
+    </header>
+
+    <section class="prose" aria-labelledby="who">
+      <h2 id="who" class="h3">Who looks after your data</h2>
+      <p>Me: Francesca Folkmer, Crema (CR), Italy. I'm the data controller for this website. For anything about your data, write to <a href="mailto:folkmer.design@gmail.com">folkmer.design@gmail.com</a>.</p>
+    </section>
+
+    <section class="prose" aria-labelledby="form">
+      <h2 id="form" class="h3">The "Let's connect" form</h2>
+      <p>If you write to me, I receive:</p>
+      <ul>
+        <li>your name, your email and what you'd like to talk about;</li>
+        <li>your company or project, if you add it (it's optional);</li>
+        <li>a one-way code made from your IP address, which changes every day. I can't turn it back into your IP: it only limits spam.</li>
+      </ul>
+      <p><b>Why:</b> to read your message and reply. Nothing else: no newsletter, no lists, no selling. <b>Legal basis:</b> you asked to get in touch (art. 6.1.b GDPR) and my legitimate interest in keeping the form free from spam (art. 6.1.f GDPR).</p>
+      <p><b>Where it goes:</b> the form sends your message to a small service I run on Cloudflare, which stores it and forwards it to my Gmail inbox. So Cloudflare and Google process it on my behalf. They may handle data outside the EU, under the EU-US Data Privacy Framework and the European Commission's Standard Contractual Clauses.</p>
+      <p><b>How long:</b> as long as we're in touch, and at most 24 months after your last message. Then I delete it.</p>
+    </section>
+
+    <section class="prose" aria-labelledby="board">
+      <h2 id="board" class="h3">The whiteboard</h2>
+      <p>The board on the homepage saves only the drawings, with the same daily IP code to limit spam. Please don't write personal details on it: everyone can see it.</p>
+    </section>
+
+    <section class="prose" aria-labelledby="stats">
+      <h2 id="stats" class="h3">Statistics</h2>
+      <p>I use <a href="https://www.cloudflare.com/web-analytics/" target="_blank" rel="noopener">Cloudflare Web Analytics<span class="sr-only"> (opens in a new tab)</span></a> to see how many people visit and which pages they read. It uses no cookies, doesn't follow you across sites and doesn't identify you: I only see totals, like page views, the country, the type of device and the site you came from.</p>
+    </section>
+
+    <section class="prose" aria-labelledby="cookies">
+      <h2 id="cookies" class="h3">Cookies</h2>
+      <p>None. That's why there's no cookie banner. The site only keeps a small technical note in your browser to play the slide animation between pages, and it's deleted when you close the tab. The fonts are hosted here, so nothing goes to Google Fonts.</p>
+      <p>Links to other sites, like LinkedIn or the Alé website, follow their own privacy rules.</p>
+    </section>
+
+    <section class="prose" aria-labelledby="rights">
+      <h2 id="rights" class="h3">Your rights</h2>
+      <p>You can ask me to see, correct or delete your data, to limit or stop how I use it, or to get a copy. Just write to <a href="mailto:folkmer.design@gmail.com">folkmer.design@gmail.com</a> and I'll reply within 30 days. If you think I got something wrong, you can also contact the Italian data protection authority, the <a href="https://www.garanteprivacy.it/" target="_blank" rel="noopener">Garante per la protezione dei dati personali<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .privacy { display: flex; flex-direction: column; gap: 48px; padding-top: clamp(120px, 14vw, 180px); padding-bottom: clamp(72px, 10vw, 160px); max-width: 760px; }
+  .privacy__head { display: flex; flex-direction: column; gap: 16px; }
+  .privacy__head .lead { color: var(--ink-2); }
+  .privacy__date { color: var(--ink-2); font-size: var(--fs-small); }
+  .privacy .prose { display: flex; flex-direction: column; gap: 12px; }
+  .privacy .prose ul { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .privacy a { color: inherit; text-underline-offset: 3px; }
+</style>
