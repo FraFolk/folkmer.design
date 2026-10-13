@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import Cover from '../components/Cover.astro';
 import LabCarousel from '../components/LabCarousel.astro';
 import Whiteboard from '../components/Whiteboard.astro';
 import Icon from '../components/Icon.astro';
@@ -196,18 +195,18 @@ const quotes = [
   .bubble {
     position: absolute; width: max-content; max-width: min(340px, 92%);
     opacity: 0; transform: scale(.6); transform-origin: 0 0;
-    transition: opacity .35s ease, transform .6s var(--ease-spring);
+    transition: opacity var(--dur-base) ease, transform var(--dur-slow) var(--ease-spring);
   }
   .bubble.is-on { opacity: 1; transform: scale(1); }
-  .bubble.is-off { opacity: 0; transform: scale(.96) translateY(-6px); transition: opacity .4s ease, transform .4s ease; }
+  .bubble.is-off { opacity: 0; transform: scale(.96) translateY(-6px); transition: opacity var(--dur-base) ease, transform var(--dur-base) ease; }
   .bubble__cursor { width: 29px; height: 30px; }
-  .bubble.is-on .bubble__cursor { animation: nudge 1.6s var(--ease-out) both; }
+  .bubble.is-on .bubble__cursor { animation: nudge var(--dur-story) var(--ease-out) both; }
   .bubble__box {
     display: flex; flex-direction: column; gap: 4px;
     margin: -4px 0 0 18px;
     padding: 12px 24px 12px 24px;
     border: 2.5px solid; border-radius: 2.5px 30px 30px 30px;
-    color: #fff;
+    color: var(--white);
     filter: drop-shadow(5px 5px 6px rgba(42, 47, 45, .16));
   }
   .bubble__name { font-weight: 500; font-size: var(--fs-small); opacity: .9; }
@@ -215,8 +214,8 @@ const quotes = [
   /* the bubble hugs the text as it's typed (like a real message); the full text is only shown without JS/motion */
   .bubble__ghost { display: none; }
   :global(.no-js) .bubble__ghost { display: inline; } :global(.no-js) .bubble__typed { display: none; }
-  .bubble__typed::after { content: ''; display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; background: currentColor; vertical-align: -2px; animation: blink 1s steps(1) infinite; }
-  .bubble--orange .bubble__box { background: var(--orange-text); border-color: #a82a08; }
+  .bubble__typed::after { content: ''; display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; background: currentColor; vertical-align: -2px; animation: blink var(--dur-story) steps(1) infinite; }
+  .bubble--orange .bubble__box { background: var(--orange-text); border-color: var(--orange-text); }
   .bubble--green .bubble__box { background: var(--sage-text); border-color: var(--sage-deep); }
   .bubble--grey .bubble__box { background: var(--ink-2); border-color: var(--ink); }
 
@@ -244,18 +243,18 @@ const quotes = [
   .story__title { max-width: 22ch; }
   .story__lead { max-width: 54ch; font-size: var(--fs-lead); }
   .story__more { color: var(--ink-2); font-weight: 500; }
-  .story__arrow { display: inline-block; animation: bob 1.8s ease-in-out infinite; }
+  .story__arrow { display: inline-block; animation: bob var(--dur-story) ease-in-out infinite; }
   @keyframes bob { 50% { transform: translateY(5px); } }
 
 
   /* accessibility: a highlighter pass on the certification */
-  .cert__mark { color: inherit; background: linear-gradient(transparent 58%, color-mix(in srgb, var(--sage) 32%, transparent) 58%, color-mix(in srgb, var(--sage) 32%, transparent) 92%, transparent 92%) no-repeat 0 0 / 0% 100%; transition: background-size 1s var(--ease-out) .5s; padding: 0 .05em; }
+  .cert__mark { color: inherit; background: linear-gradient(transparent 58%, color-mix(in srgb, var(--sage) 32%, transparent) 58%, color-mix(in srgb, var(--sage) 32%, transparent) 92%, transparent 92%) no-repeat 0 0 / 0% 100%; transition: background-size var(--dur-story) var(--ease-out) .5s; padding: 0 .05em; }
   .cert.is-in .cert__mark { background-size: 100% 100%; }
 
   /* plot twist: "climber" crossed out by pen, "co-founder" handwritten next to it */
   .plot__old { position: relative; color: var(--ink-2); white-space: nowrap; }
-  .plot__old::after { content: ''; position: absolute; left: -4px; right: -4px; top: 52%; height: .08em; background: var(--orange-text); border-radius: 3px; transform: scaleX(0) rotate(-3deg); transform-origin: left; transition: transform .5s cubic-bezier(.6,.1,.3,1) .7s; }
-  .plot__new { display: inline-block; font-family: 'Caveat', cursive; font-weight: 500; font-size: 1.3em; line-height: .8; color: var(--orange-text); transform: rotate(-4deg) translateY(.04em); clip-path: inset(-20% 100% -20% 0); transition: clip-path 1.1s cubic-bezier(.45,.05,.4,1) 1.3s; white-space: nowrap; }
+  .plot__old::after { content: ''; position: absolute; left: -4px; right: -4px; top: 52%; height: .08em; background: var(--orange-text); border-radius: 3px; transform: scaleX(0) rotate(-3deg); transform-origin: left; transition: transform var(--dur-slow) cubic-bezier(.6,.1,.3,1) .7s; }
+  .plot__new { display: inline-block; font-family: 'Caveat', cursive; font-weight: 500; font-size: 1.3em; line-height: .8; color: var(--orange-text); transform: rotate(-4deg) translateY(.04em); clip-path: inset(-20% 100% -20% 0); transition: clip-path var(--dur-story) cubic-bezier(.45,.05,.4,1) 1.3s; white-space: nowrap; }
   .plot.is-in .plot__old::after { transform: scaleX(1) rotate(-3deg); }
   .plot.is-in .plot__new { clip-path: inset(-20% -5% -20% 0); }
 
@@ -266,8 +265,8 @@ const quotes = [
   .secret-case__tags { font-style: italic; color: var(--ink-2); }
   .secret-case__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.2; }
   .secret-case__sub { color: var(--ink-2); max-width: 44ch; }
-  .secret-case__cta, .a11y__cta { font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: color .3s var(--ease-out); }
-  .secret-case__cta :global(.icon), .a11y__cta :global(.icon) { transition: transform .45s var(--ease-spring); }
+  .secret-case__cta, .a11y__cta { font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: color var(--dur-base) var(--ease-out); }
+  .secret-case__cta :global(.icon), .a11y__cta :global(.icon) { transition: transform var(--dur-slow) var(--ease-spring); }
   /* hover/focus on the whole card: the arrow moves ahead, text and icon change colour */
   .a11y:is(:hover, :focus-visible) .a11y__cta { color: var(--orange-text); }
   .secret-case:is(:hover, :focus-visible) .secret-case__cta { color: var(--orange-text); }
@@ -283,17 +282,17 @@ const quotes = [
   .mac__screen img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
   .secret-case:focus-visible, .a11y:focus-visible, .ale-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
 
-  .a11y { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; text-align: left; text-decoration: none; background: var(--surface); border-radius: var(--radius-card); padding: var(--space-inset); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow .35s var(--ease-out); }
+  .a11y { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; text-align: left; text-decoration: none; background: var(--surface); border-radius: var(--radius-card); padding: var(--space-inset); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow var(--dur-base) var(--ease-out); }
   .a11y__stat { display: flex; flex-wrap: wrap; align-items: baseline; gap: .15em; min-width: 0; font-weight: 600; letter-spacing: -.04em; line-height: .9; }
-  .a11y__from { font-size: calc(var(--fs-display) * .55); color: #7d8581; }
+  .a11y__from { font-size: calc(var(--fs-display) * .55); color: var(--ink-2); }
   .a11y__arrow { font-size: calc(var(--fs-display) * .4); color: var(--ink-2); font-weight: 400; }
   .a11y__to { font-size: calc(var(--fs-display) * 1.4); color: var(--sage-text); }
   .a11y__label { flex-basis: 100%; margin-top: 8px; font-size: var(--fs-h4); font-weight: 500; letter-spacing: 0; color: var(--sage-text); }
   .a11y__text { display: flex; flex-direction: column; gap: 16px; }
   .a11y__title { font-size: var(--fs-h3); font-weight: 500; }
 
-  .ale-card { position: relative; display: block; width: 100%; margin-top: 12px; border-radius: var(--radius-card); overflow: hidden; text-decoration: none; color: #fff; text-align: left; }
-  .ale-card img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; transition: transform .9s var(--ease-out); }
+  .ale-card { position: relative; display: block; width: 100%; margin-top: 12px; border-radius: var(--radius-card); overflow: hidden; text-decoration: none; color: var(--white); text-align: left; }
+  .ale-card img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; transition: transform var(--dur-story) var(--ease-out); }
   .ale-card:hover img { transform: scale(1.03); }
   /* dark-to-transparent gradient under the text, so white text always reads (WCAG AA) */
   .ale-card__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 144px 32px 32px; display: flex; flex-direction: column; gap: 4px;
@@ -310,8 +309,8 @@ const quotes = [
   .more__text { color: var(--ink-2); max-width: 44ch; margin-bottom: 8px; }
   .ale-card__title { font-size: var(--fs-h3); font-weight: 500; }
   .ale-card__sub { font-size: var(--fs-small); color: rgba(255,255,255,.85); }
-  .ale-card__ball { position: absolute; top: 32px; right: 32px; width: 48px; height: 48px; border-radius: 50%; background: #fff; color: var(--ink); display: grid; place-items: center; transition: background-color 200ms, transform 300ms var(--ease-out); }
-  .ale-card:is(:hover, :focus-visible) .ale-card__ball { background: var(--orange); color: #fff; transform: scale(1.06); }
+  .ale-card__ball { position: absolute; top: 32px; right: 32px; width: 48px; height: 48px; border-radius: 50%; background: var(--white); color: var(--ink); display: grid; place-items: center; transition: background-color var(--dur-fast), transform var(--dur-base) var(--ease-out); }
+  .ale-card:is(:hover, :focus-visible) .ale-card__ball { background: var(--orange); color: var(--white); transform: scale(1.06); }
   @media (max-width: 700px) {
     .ale-card__body { padding: 72px 16px 16px; gap: 4px; }
     .ale-card__ball { top: 16px; right: 16px; width: 44px; height: 44px; }
@@ -325,20 +324,20 @@ const quotes = [
   .lab-head__title h2 { font: inherit; }
   .flask { position: relative; display: inline-block; height: .78em; aspect-ratio: 32.5 / 40.5; padding: 0; border: 0; background: none; cursor: pointer; font: inherit; }
   .flask:focus-visible { outline: 3px solid var(--focus); outline-offset: 6px; border-radius: 6px; }
-  .flask.is-wobbling svg { animation: wobble 300ms ease-in-out; }
+  .flask.is-wobbling svg { animation: wobble var(--dur-base) ease-in-out; }
   @keyframes wobble { 25% { transform: rotate(-12deg); } 75% { transform: rotate(8deg); } }
-  .flask svg { display: block; width: 100%; height: 100%; overflow: visible; transform-origin: 0% 100%; transition: transform 300ms cubic-bezier(.16,1,.3,1); }
+  .flask svg { display: block; width: 100%; height: 100%; overflow: visible; transform-origin: 0% 100%; transition: transform var(--dur-base) var(--ease-out); }
   .flask__glass { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
-  .flask__liquid { fill: var(--sage); transition: opacity 150ms ease-out 150ms; }
+  .flask__liquid { fill: var(--sage); transition: opacity var(--dur-fast) ease-out 150ms; }
   .flask__drop { position: absolute; left: -124.6%; top: 60%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50% 50% 50% 0; background: var(--sage); opacity: 0; transform: rotate(-45deg); }
   .lab-stage { position: relative; margin-top: 24px; padding-bottom: 0; }
-  .spill { position: absolute; left: 46%; top: -30px; width: min(1240px, 90vw); height: calc(100% + 30px); overflow: visible; transform: translateX(-50%); z-index: 0; opacity: 0; transform: translateX(-50%) scale(.9); transform-origin: 42% 0; transition: opacity 300ms cubic-bezier(.16,1,.3,1) 200ms, transform 300ms cubic-bezier(.16,1,.3,1) 200ms; }
+  .spill { position: absolute; left: 46%; top: -30px; width: min(1240px, 90vw); height: calc(100% + 30px); overflow: visible; transform: translateX(-50%); z-index: 0; opacity: 0; transform: translateX(-50%) scale(.9); transform-origin: 42% 0; transition: opacity var(--dur-base) var(--ease-out) var(--dur-fast), transform var(--dur-base) var(--ease-out) var(--dur-fast); }
   .spill path { fill: color-mix(in srgb, var(--sage) 22%, var(--bg)); }
   .lab-stage :global(.lc) { position: relative; z-index: 1; }
   @media (max-width: 700px) { .spill { width: 180vw; left: 50%; } }
   .lab-section.is-poured .flask svg { transform: rotate(-90deg); }
   .lab-section.is-poured .flask__liquid { opacity: 0; }
-  .lab-section.is-poured .flask__drop { animation: drop 300ms cubic-bezier(.7,0,.84,0) 100ms 1 both; }
+  .lab-section.is-poured .flask__drop { animation: drop var(--dur-base) cubic-bezier(.7,0,.84,0) 100ms 1 both; }
   .lab-section.is-poured .spill { opacity: 1; transform: translateX(-50%) scale(1); }
   @keyframes drop { 0% { opacity: 1; transform: translate(0, 0) rotate(-45deg) scale(1); } 100% { opacity: 0; transform: translate(-4px, 150px) rotate(-45deg) scale(1.6); } }
   :global(.no-js) .lab-section :global(.lc__card) { opacity: 1; translate: none; }

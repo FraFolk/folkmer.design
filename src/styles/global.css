@@ -18,6 +18,7 @@
 
 :root {
   --bg: #fcfcfa;
+  --white: #fff;
   --ink: #2a2f2d;
   --ink-2: #5c615f;
   --surface: #f4f6f5;
@@ -31,10 +32,8 @@
   --orange: #ff5c33;        /* graphics only */
   --orange-text: #d4380f;   /* text / bubbles with white text: 4.8:1 */
 
-  --dark: #1b201e;
   --btn: #373b3a;
   --btn-hover: #09110d;
-  --btn2: #e9efec;
   --btn2-hover: #d0d9d2;
   --mint: #aee7ca;
 
@@ -44,7 +43,8 @@
   --night-edge: #3a423e;
   --night-muted: #9aa29e;
   --night-soft: #c4cac7;
-  --on-night: #f4f6f5;
+  --on-night: var(--surface);   /* text on dark = same value as --surface */
+  --night-faint: #4f5753;       /* placeholders on dark */
   --paper: #fbf8f0;        /* notes, the setup "paper" card */
   --ink-faint: #b4bab7;    /* placeholders, ghost captions (decorative only) */
   --dot: #cfd5d2;          /* whiteboard grid dots */
@@ -66,7 +66,14 @@
   --space-block: clamp(32px, 4vw, 48px);
   --space-inset: clamp(24px, 4vw, 64px);
 
-  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  /* Motion: 4 durations, 3 curves. Transform and opacity only.
+     fast = hover and colour · base = UI enter/exit, buttons · slow = scroll reveals, larger moves · story = decorative loops (always pausable) */
+  --dur-fast: 200ms;
+  --dur-base: 300ms;
+  --dur-slow: 600ms;
+  --dur-story: 1s;
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in-out: cubic-bezier(.4, 0, .2, 1);
   --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
 
   /* Type scale: mobile (375px) → desktop (1440px), fluid in between. See DESIGN-SYSTEM.md */
@@ -114,7 +121,7 @@ b, strong { font-weight: 600; }
 
 .skip-link {
   position: absolute; left: 16px; top: -100px; z-index: 100;
-  background: var(--dark); color: #fff; padding: 12px 24px; border-radius: var(--radius-pill);
+  background: var(--night); color: #fff; padding: 12px 24px; border-radius: var(--radius-pill);
   text-decoration: none; font-weight: 500;
 }
 .skip-link:focus { top: 16px; }
@@ -142,38 +149,13 @@ b, strong { font-weight: 600; }
 .prose ul { padding-left: 1.4em; }
 .prose li + li { margin-top: .5em; }
 
-/* ---------- Buttons (Figma: Button / Button secondary) ---------- */
-.btn {
-  --btn-bg: var(--btn);
-  --btn-fg: #fff;
-  display: inline-flex; align-items: center; justify-content: space-between;
-  gap: 8px;
-  min-width: var(--btn-min, auto);
-  padding: 8px 8px 8px 24px;
-  border-radius: var(--radius-pill);
-  background: var(--btn-bg); color: var(--btn-fg);
-  font: 500 var(--fs-body)/1.2 'Satoshi', sans-serif;
-  text-decoration: none; border: 0; cursor: pointer;
-  transition: background-color .3s var(--ease-out), padding .45s var(--ease-spring);
-}
-.btn__icon {
-  display: grid; place-items: center;
-  width: 48px; height: 48px; border-radius: 50%;
-  background: #fff; color: var(--ink);
-  transition: transform .45s var(--ease-spring);
-}
-.btn__icon img { width: 24px; height: 24px; }
-.btn:hover { --btn-bg: var(--btn-hover); padding-left: 32px; }
-.btn:hover .btn__icon { transform: rotate(-8deg) scale(1.04); }
-.btn--secondary { --btn-bg: var(--btn2); --btn-fg: var(--ink); }
-.btn--secondary:hover { --btn-bg: var(--btn2-hover); }
-.btn--secondary:hover .btn__icon { transform: translateY(3px); }
-.btn--small { font-size: var(--fs-small); padding: 8px 8px 8px 16px; }
-.btn--small .btn__icon { width: 36px; height: 36px; }
-.btn--small .btn__icon img { width: 20px; height: 20px; }
+/* ---------- Outline button on dark (Back in the forms) ---------- */
+.btn-outline { height: 48px; padding: 0 24px; display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-pill); border: 1.5px solid var(--night-edge); background: transparent; color: var(--on-night); font: 500 var(--fs-body)/1 inherit; font-family: inherit; cursor: pointer; transition: border-color var(--dur-fast); }
+.btn-outline:hover { border-color: var(--night-muted); }
+.btn-outline:focus-visible { outline: 3px solid var(--on-night); outline-offset: 3px; }
 
 /* ---------- Reveal on scroll ---------- */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s var(--ease-out), transform .8s var(--ease-out); }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
 .reveal.is-in { opacity: 1; transform: none; }
 .no-js .reveal { opacity: 1; transform: none; }
 
@@ -243,7 +225,6 @@ b, strong { font-weight: 600; }
 
 /* arrow-down icon reused as "go to" arrow */
 .rot-right { transform: rotate(-90deg); }
-.btn--secondary:hover .btn__icon:has(.rot-right) { transform: translateX(3px); }
 
 /* Handwriting, used once: the "co-founder" written by pen */
 @font-face { font-family: 'Caveat'; src: url('../fonts/Caveat-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
@@ -251,22 +232,22 @@ b, strong { font-weight: 600; }
 /* page transitions: a soft cross-fade, and a slide from the right when going to About */
 @view-transition { navigation: auto; }
 ::view-transition-group(root) { animation-duration: .3s; }
-html:active-view-transition-type(slide-left)::view-transition-old(root) { animation: vt-out-left .55s cubic-bezier(.4, 0, .2, 1) both; }
-html:active-view-transition-type(slide-left)::view-transition-new(root) { animation: vt-in-right .55s cubic-bezier(.4, 0, .2, 1) both; }
+html:active-view-transition-type(slide-left)::view-transition-old(root) { animation: vt-out-left var(--dur-slow) var(--ease-in-out) both; }
+html:active-view-transition-type(slide-left)::view-transition-new(root) { animation: vt-in-right var(--dur-slow) var(--ease-in-out) both; }
 @keyframes vt-out-left { to { transform: translateX(-30%); opacity: 0; } }
 @keyframes vt-in-right { from { transform: translateX(100%); } }
-html:active-view-transition-type(slide-right)::view-transition-old(root) { animation: vt-out-right .55s cubic-bezier(.4, 0, .2, 1) both; z-index: 2; }
-html:active-view-transition-type(slide-right)::view-transition-new(root) { animation: vt-in-left .55s cubic-bezier(.4, 0, .2, 1) both; }
+html:active-view-transition-type(slide-right)::view-transition-old(root) { animation: vt-out-right var(--dur-slow) var(--ease-in-out) both; z-index: 2; }
+html:active-view-transition-type(slide-right)::view-transition-new(root) { animation: vt-in-left var(--dur-slow) var(--ease-in-out) both; }
 @keyframes vt-out-right { to { transform: translateX(100%); } }
 @keyframes vt-in-left { from { transform: translateX(-30%); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
 
 /* Pill button: on hover a white circle with the arrow rolls in from the right edge,
    turning anticlockwise (like a wheel rolling left), and settles inside the pill. */
-.roll { --h: 56px; --ball: 44px; --inset: 6px; display: inline-flex; position: relative; align-items: center; height: var(--h); padding: 0 28px; border-radius: var(--radius-pill); overflow: hidden; background: var(--btn); color: #fff; font-weight: 500; font-size: var(--fs-body); text-decoration: none; white-space: nowrap; border: 0; font-family: inherit; cursor: pointer; transition: padding 300ms cubic-bezier(.16,1,.3,1), background-color 200ms; }
-.roll--ghost { background: var(--btn2); color: var(--ink); }
+.roll { --h: 56px; --ball: 44px; --inset: 6px; display: inline-flex; position: relative; align-items: center; height: var(--h); padding: 0 28px; border-radius: var(--radius-pill); overflow: hidden; background: var(--btn); color: #fff; font-weight: 500; font-size: var(--fs-body); text-decoration: none; white-space: nowrap; border: 0; font-family: inherit; cursor: pointer; transition: padding var(--dur-base) var(--ease-out), background-color var(--dur-fast); }
+.roll--ghost { background: var(--surface-2); color: var(--ink); }
 .roll--small { --h: 44px; --ball: 32px; padding: 0 18px; font-size: var(--fs-small); }
-.roll__ball { position: absolute; right: var(--inset); top: var(--inset); width: var(--ball); height: var(--ball); border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--ink); transform: translateX(calc(100% + 16px)) rotate(180deg); transition: transform 300ms cubic-bezier(.16,1,.3,1); }
+.roll__ball { position: absolute; right: var(--inset); top: var(--inset); width: var(--ball); height: var(--ball); border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--ink); transform: translateX(calc(100% + 16px)) rotate(180deg); transition: transform var(--dur-base) var(--ease-out); }
 .roll:is(:hover, :focus-visible) { padding-right: calc(var(--inset) + var(--ball) + 12px); }
 @media (max-width: 760px) { .roll { --h: 48px; --ball: 36px; padding: 0 20px; font-size: var(--fs-small); } .roll--small { --h: 40px; --ball: 28px; } }
 .roll:is(:hover, :focus-visible, .is-rolling) .roll__ball { transform: none; }

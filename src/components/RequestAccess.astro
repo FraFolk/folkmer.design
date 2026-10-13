@@ -40,7 +40,7 @@ import { url } from '../lib/url.js';
     <p class="pc-dialog__error" data-pc-request-error role="alert"></p>
     <p class="pc-dialog__privacy" data-pc-privacy hidden>I only use your details to answer this request. <a href={url('/privacy/')}>Privacy</a></p>
     <div class="pc-actions">
-      <button type="button" class="pc-back" data-pc-back hidden><Icon name="arrow-left" size={18} /> Back</button>
+      <button type="button" class="btn-outline" data-pc-back hidden><Icon name="arrow-left" size={18} /> Back</button>
       <button type="submit" class="roll roll--light" data-pc-next><span data-pc-send-label>Continue</span><span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span></button>
       <p class="pc-enter" data-pc-enter aria-hidden="true">or press <kbd>Enter ↵</kbd></p>
     </div>
@@ -67,7 +67,7 @@ import { url } from '../lib/url.js';
   .pc-dialog__count { color: var(--on-night); }
   .pc-recap { color: var(--night-muted); font-size: var(--fs-body); min-height: 1.5em; }
   .pc-recap :global(b) { color: var(--on-night); font-weight: 500; }
-  .pc-step { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .35em; animation: pc-step-in .4s ease-out; }
+  .pc-step { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .35em; animation: pc-step-in var(--dur-base) ease-out; }
   @keyframes pc-step-in { from { opacity: 0; transform: translateY(12px); } }
   .pc-q { font-size: var(--fs-h2); font-weight: 500; line-height: 1.15; letter-spacing: -.02em; color: var(--night-muted); }
   .pc-q--summary { color: var(--on-night); outline: none; }
@@ -75,8 +75,6 @@ import { url } from '../lib/url.js';
   .pc-step .pc-blank { font-size: var(--fs-h2); line-height: 1.15; letter-spacing: -.02em; }
   .pc-hint { width: 100%; color: var(--night-muted); font-size: var(--fs-small); margin-top: 8px; }
   .pc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
-  .pc-back { height: 48px; padding: 0 24px; display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-pill); border: 1.5px solid var(--night-edge); background: transparent; color: var(--on-night); font: 500 var(--fs-body)/1 inherit; font-family: inherit; cursor: pointer; }
-  .pc-back:hover { border-color: var(--night-muted); }
   .pc-enter { color: var(--night-muted); font-size: var(--fs-caption); }
   .pc-enter kbd { font: 12px/1 ui-monospace, monospace; border: 1px solid var(--night-edge); border-radius: var(--radius-s); padding: 3px 8px; color: var(--night-muted); }
   @media (hover: none) { .pc-enter { display: none; } }
@@ -84,8 +82,8 @@ import { url } from '../lib/url.js';
   .pc-msg--done { color: var(--on-night); }
   .pc-dialog__intro b, .pc-msg b { color: var(--orange); font-weight: 500; }
   .pc-blank { font: inherit; letter-spacing: inherit; color: var(--on-night); background: transparent; border: 0; border-bottom: 2px solid var(--night-edge); border-radius: 0; padding: 0 .05em; width: 8ch; min-width: 3ch; max-width: 100%; caret-color: var(--orange); }
-  .pc-blank::placeholder { color: #4f5753; }
-  .pc-blank:focus { outline: none; border-bottom-color: #fff; }
+  .pc-blank::placeholder { color: var(--night-faint); }
+  .pc-blank:focus { outline: none; border-bottom-color: var(--white); }
   .pc-dialog [aria-invalid='true'] { border-bottom-style: dashed; border-bottom-color: var(--orange); }
   .pc-dialog__hp { position: absolute; left: -9999px; }
   .pc-dialog__error { color: var(--orange); font-weight: 500; }

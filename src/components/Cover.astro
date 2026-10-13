@@ -63,7 +63,7 @@ const { kind, size = 'card' } = Astro.props;
 
   /* Sky */
   .cover--sky {
-    color: #fff;
+    color: var(--white);
     background: radial-gradient(120% 120% at 20% 10%, #2f5d8a 0%, #13233a 55%, #0b1220 100%);
   }
   .cover--sky .cover__big { display: inline-flex; gap: .25em; align-items: baseline; }
@@ -82,7 +82,7 @@ const { kind, size = 'card' } = Astro.props;
   }
   /* no pointer: the torch wanders on its own */
   @media (hover: none) {
-    .cover--aon .torch__layer--lit { animation: wander 7s ease-in-out infinite alternate; }
+    .cover--aon .torch__layer--lit { animation: wander var(--dur-story) ease-in-out infinite alternate; }
   }
   @keyframes wander {
     0% { --mx: 25%; --my: 40%; } 50% { --mx: 70%; --my: 60%; } 100% { --mx: 45%; --my: 35%; }

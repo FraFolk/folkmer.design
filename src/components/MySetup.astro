@@ -65,13 +65,13 @@ const apps = [
     touch-action: pan-y;
     position: relative; margin-top: 16px; max-width: 380px;
     transform: rotate(-1.5deg);
-    background: var(--paper); color: #2a2f2d;
+    background: var(--paper); color: var(--ink);
     padding: 24px 24px 24px; border-radius: 3px; font-size: var(--fs-small); line-height: 1.5;
     box-shadow: 0 2px 4px rgba(0,0,0,.12), 0 22px 40px -22px rgba(0,0,0,.45);
-    animation: note-in .45s var(--ease-out);
+    animation: note-in var(--dur-slow) var(--ease-out);
   }
   .setup__note::before { content: ''; position: absolute; top: -12px; left: 50%; width: 90px; height: 24px; margin-left: -45px; background: rgba(233,239,236,.9); transform: rotate(3deg); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
-  .setup__note-app { font: 500 28px/1 'Caveat', cursive; color: var(--orange-text); margin-bottom: 8px; }
+  .setup__note-app { font: 500 var(--fs-h3)/1 'Caveat', cursive; color: var(--orange-text); margin-bottom: 8px; }
   @keyframes note-in { from { opacity: 0; transform: translateY(6px) rotate(-3deg); } }
 
   .setup__dock {
@@ -88,16 +88,16 @@ const apps = [
     --s: 7.5cqw;
     position: relative; width: var(--s); height: var(--s); border: 0; padding: 0; cursor: pointer;
     background: none; display: block;
-    transition: width .18s ease-out, height .18s ease-out;
+    transition: width var(--dur-fast) ease-out, height var(--dur-fast) ease-out;
   }
   .setup__app img { width: 100%; height: 100%; display: block; filter: drop-shadow(0 4px 6px rgba(0,0,0,.3)); }
   .setup__spotify { display: block; width: 84%; height: 84%; margin: 8%; border-radius: 22%; background: #121212; position: relative; box-shadow: 0 4px 8px -2px rgba(0,0,0,.4); }
   .setup__spotify::after { content: ''; position: absolute; inset: 16%; background: #1ed760; -webkit-mask: var(--logo) center / contain no-repeat; mask: var(--logo) center / contain no-repeat; }
-  .setup__app[aria-pressed='true']::after { content: ''; position: absolute; bottom: -6px; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: #fff; }
-  .setup__app:focus-visible { outline: 3px solid #fff; outline-offset: 3px; border-radius: var(--radius-m); }
+  .setup__app[aria-pressed='true']::after { content: ''; position: absolute; bottom: -6px; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--white); }
+  .setup__app:focus-visible { outline: 3px solid var(--white); outline-offset: 3px; border-radius: var(--radius-m); }
   .setup__q {
     position: absolute; top: -1cqw; right: -1cqw; width: 3cqw; height: 3cqw; border-radius: 50%;
-    background: var(--orange); color: #fff; font-weight: 600; font-size: 2cqw; display: grid; place-items: center;
+    background: var(--orange); color: var(--white); font-weight: 600; font-size: 2cqw; display: grid; place-items: center;
   }
 
   @media (max-width: 900px) {

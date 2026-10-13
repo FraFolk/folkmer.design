@@ -41,7 +41,7 @@ const { slug, title, preview } = Astro.props;
   .pc__lock { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--night); color: var(--on-night); }
   .pc__text { color: var(--ink-2); }
   .pc__unlock { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
-  .pc__code { height: 56px; width: 220px; padding: 0 20px; border-radius: var(--radius-pill); border: 1.5px solid var(--line); background: #fff; font: 500 var(--fs-body)/1 ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); text-align: center; }
+  .pc__code { height: 56px; width: 220px; padding: 0 20px; border-radius: var(--radius-pill); border: 1.5px solid var(--line); background: var(--white); font: 500 var(--fs-body)/1 ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); text-align: center; }
   .pc__code::placeholder { color: var(--ink-faint); letter-spacing: .08em; }
   .pc__code:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
   .pc__error { color: var(--orange-text); font-weight: 500; }
@@ -49,7 +49,7 @@ const { slug, title, preview } = Astro.props;
   .pc__ask { background: none; border: 0; padding: 12px 8px; font: 500 var(--fs-body)/1.2 inherit; font-family: inherit; color: var(--ink); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
   .pc__ask:hover { color: var(--orange-text); }
   .pc__ask:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: var(--radius-s); }
-  .pc__content { display: flex; flex-direction: column; gap: var(--space-section); outline: none; animation: pc-in 300ms ease-out; }
+  .pc__content { display: flex; flex-direction: column; gap: var(--space-section); outline: none; animation: pc-in var(--dur-base) ease-out; }
   .pc__content :global(img) { width: 100%; max-width: 760px; height: auto; border-radius: var(--radius-l); }
   /* text and image side by side */
   .pc__content :global(.pc-split) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
@@ -59,7 +59,7 @@ const { slug, title, preview } = Astro.props;
   /* role phases: 3 cards, the last one in the palette's dark green */
   .pc__content :global(.pc-phases) { list-style: none; padding: 0 !important; margin: 0; display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px !important; }
   .pc__content :global(.pc-phases li) { background: var(--surface); border-radius: var(--radius-l); padding: 24px; display: flex; flex-direction: column; gap: 8px; }
-  .pc__content :global(.pc-phases li:last-child) { background: var(--sage-deep); color: #fff; }
+  .pc__content :global(.pc-phases li:last-child) { background: var(--sage-deep); color: var(--white); }
   .pc__content :global(.pc-phases span) { font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--sage-text); }
   .pc__content :global(.pc-phases li:last-child span), .pc__content :global(.pc-phases li:last-child p) { color: var(--surface-2); }
   .pc__content :global(.pc-phases h3) { font-size: var(--fs-h4); font-weight: 600; }

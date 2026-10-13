@@ -54,7 +54,7 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       <p class="talk__privacy" data-talk-privacy hidden>Your message goes straight to my inbox. I only use your details to reply. <a href={url('/privacy/')}>Privacy</a></p>
 
       <div class="talk__actions">
-        <button type="button" class="talk__btn talk__btn--ghost" data-talk-back hidden><Icon name="arrow-left" size={18} /> Back</button>
+        <button type="button" class="btn-outline" data-talk-back hidden><Icon name="arrow-left" size={18} /> Back</button>
         <button type="submit" class="roll roll--light" data-talk-next><span data-talk-next-label>Continue</span><span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span></button>
         <p class="talk__enter" data-talk-enter aria-hidden="true">or press <kbd>Enter ↵</kbd></p>
       </div>
@@ -88,7 +88,7 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
   .talk__form { padding-top: clamp(20px, 2.5vw, 36px); display: flex; flex-direction: column; gap: 24px; }
   .talk__recap { color: var(--night-muted); font-size: clamp(16px, 1vw + 10px, 22px); min-height: 1.5em; }
   .talk__recap :global(b) { color: var(--on-night); font-weight: 500; }
-  .talk__step { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .35em; animation: step-in .55s var(--ease-out); }
+  .talk__step { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .35em; animation: step-in var(--dur-slow) var(--ease-out); }
   @keyframes step-in { from { opacity: 0; transform: translateY(14px); } }
   .talk__q { font-size: var(--fs-h1); font-weight: 500; line-height: 1.05; letter-spacing: -.02em; color: var(--night-muted); }
   .talk__q--summary { color: var(--on-night); font-size: var(--fs-h1); max-width: 22ch; outline: none; }
@@ -100,8 +100,8 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
     caret-color: var(--orange);
   }
   .talk__blank--wide { width: 12ch; }
-  .talk__blank::placeholder { color: #4f5753; }
-  .talk__blank:focus { outline: none; border-bottom-color: #fff; }
+  .talk__blank::placeholder { color: var(--night-faint); }
+  .talk__blank:focus { outline: none; border-bottom-color: var(--white); }
   .talk__blank[aria-invalid='true'] { border-bottom-style: dashed; border-bottom-color: var(--orange); }
   .talk__hint { width: 100%; color: var(--night-muted); font-size: var(--fs-small); margin-top: 8px; }
 
@@ -110,27 +110,21 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
     display: inline-flex; align-items: center; gap: 8px;
     font: 500 var(--fs-body)/1 'Satoshi', sans-serif; color: var(--on-night);
     background: transparent; border: 1.5px solid var(--night-edge); border-radius: var(--radius-pill); height: 44px; padding: 0 20px; justify-content: center; cursor: pointer;
-    transition: border-color .25s, background-color .25s, transform .4s var(--ease-spring);
+    transition: border-color var(--dur-fast), background-color var(--dur-fast), transform var(--dur-base) var(--ease-spring);
   }
   .pill:hover { border-color: var(--night-muted); }
   .pill[aria-pressed='true'] { border-color: var(--orange); background: rgba(255,92,51,.12); }
   .pill:active { transform: scale(.96); }
-  .pill:focus-visible, .talk__btn:focus-visible { outline: 3px solid var(--on-night); outline-offset: 3px; }
+  .pill:focus-visible { outline: 3px solid var(--on-night); outline-offset: 3px; }
   .talk__enter kbd { font: 12px/1 ui-monospace, monospace; border: 1px solid var(--night-edge); border-radius: 6px; padding: 3px 8px; color: var(--night-muted); }
 
   .talk__error { color: var(--orange); font-weight: 500; min-height: 1.5em; }
   .talk__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
-  .talk__btn { font: 500 var(--fs-body)/1 'Satoshi', sans-serif; border-radius: var(--radius-pill); padding: 16px 32px; cursor: pointer; border: 1.5px solid var(--night-edge); transition: transform .4s var(--ease-spring), background-color .25s; }
   /* Back and Continue: same height */
-  .talk__btn--ghost { background: transparent; color: var(--on-night); height: 48px; padding: 0 24px; display: inline-flex; align-items: center; gap: 8px; }
   .talk .roll { --h: 48px; --ball: 36px; }
-  .talk__btn--ghost:hover { border-color: var(--night-muted); }
-  .talk__btn--primary { background: var(--on-night); color: var(--night); border-color: var(--on-night); }
-  .talk__btn--primary:hover { transform: scale(1.04); }
-  .talk__btn--send { background: var(--orange); border-color: var(--orange); color: var(--night); }
   .talk__enter { color: var(--night-muted); font-size: var(--fs-caption); display: inline-flex; align-items: center; gap: 8px; }
 
-  .talk__done { padding-top: clamp(40px, 5vw, 72px); display: flex; flex-direction: column; gap: 16px; outline: none; animation: step-in .55s var(--ease-out); }
+  .talk__done { padding-top: clamp(40px, 5vw, 72px); display: flex; flex-direction: column; gap: 16px; outline: none; animation: step-in var(--dur-slow) var(--ease-out); }
   .talk__done-sub { color: var(--night-soft); font-size: var(--fs-body); max-width: 56ch; }
   .talk__done-sub a, .talk__copy { color: var(--orange); }
   .talk__copy { font: inherit; background: none; border: 0; padding: 0; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }

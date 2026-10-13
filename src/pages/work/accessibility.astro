@@ -191,7 +191,7 @@ const steps = [
   .ca-hero__phones { position: absolute; top: 4.6%; left: 50%; height: 91%; width: auto !important; object-fit: contain !important; transform: translateX(-2%); }
   .ca-hero__title {
     position: absolute; left: 3%; top: 33%; width: 42%;
-    color: #fff; font-weight: 600; font-size: clamp(24px, 4.7vw, 62px); line-height: 1.2; text-align: center;
+    color: var(--white); font-weight: 600; font-size: clamp(24px, 4.7vw, 62px); line-height: 1.2; text-align: center;
   }
 
   /* 300+ defects: notes fan out when the section enters */
@@ -201,19 +201,19 @@ const steps = [
   .defects__notes { position: absolute; left: 50%; top: 47%; width: 34.2%; }
   .note {
     position: absolute; inset: 0 auto auto 0; width: 100%;
-    background: #fff; border-radius: var(--radius-m); padding: 8px;
+    background: var(--white); border-radius: var(--radius-m); padding: 8px;
     box-shadow: 0 1px 1px rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.15);
     display: flex; flex-direction: column; gap: 8px;
-    font-family: Inter, system-ui, sans-serif; font-size: 11px; line-height: 1.5; color: #2c2c2c;
-    transition: transform .9s var(--ease-spring);
+    font-family: Inter, system-ui, sans-serif; font-size: var(--fs-meta); line-height: 1.5; color: #2c2c2c;
+    transition: transform var(--dur-story) var(--ease-spring);
   }
-  .note__tag { background: #037787; color: #fff; border-radius: 4px; padding: 0 7px; font-weight: 500; font-size: 10px; }
+  .note__tag { background: #037787; color: var(--white); border-radius: 4px; padding: 0 7px; font-weight: 500; font-size: var(--fs-meta); }
   .reveal.is-in .note--0 { transform: rotate(12.85deg) translate(-4%, 8%); transition-delay: .15s; }
   .reveal.is-in .note--1 { transform: rotate(-9deg); transition-delay: .25s; }
   .reveal.is-in .note--2 { transform: rotate(6.87deg) translate(2%, 2%); transition-delay: .35s; }
   .note--3 { z-index: 1; }
 
-  .draw-in { clip-path: inset(0 100% 0 0); transition: clip-path 1.2s var(--ease-out) .2s; }
+  .draw-in { clip-path: inset(0 100% 0 0); transition: clip-path var(--dur-story) var(--ease-out) .2s; }
   .reveal.is-in .draw-in { clip-path: inset(0 0 0 0); }
   :global(.no-js) .draw-in { clip-path: none; }
 </style>

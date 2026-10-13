@@ -33,8 +33,8 @@ import RequestAccess from './RequestAccess.astro';
   .gate__text { color: var(--night-soft); }
   .gate__unlock { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
   .gate__code { height: 56px; width: 200px; padding: 0 20px; border-radius: var(--radius-pill); border: 1.5px solid var(--night-edge); background: transparent; font: 500 var(--fs-body)/1 ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--on-night); caret-color: var(--orange); text-align: center; }
-  .gate__code::placeholder { color: #4f5753; }
-  .gate__code:focus-visible { outline: none; border-color: #fff; }
+  .gate__code::placeholder { color: var(--night-faint); }
+  .gate__code:focus-visible { outline: none; border-color: var(--white); }
   .gate__error { color: var(--orange); font-weight: 500; }
   .gate__error:empty { display: none; }
   .gate__ask { background: none; border: 0; padding: 12px 8px; font: 500 var(--fs-body)/1.2 inherit; font-family: inherit; color: var(--on-night); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
