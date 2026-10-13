@@ -3,41 +3,27 @@
 import Base from '../../layouts/Base.astro';
 import CaseIntro from '../../components/CaseIntro.astro';
 import DeviceDuo from '../../components/DeviceDuo.astro';
+import PhoneBrowser from '../../components/PhoneBrowser.astro';
 import Icon from '../../components/Icon.astro';
 import { url } from '../../lib/url.js';
 
-const decisions = [
-  {
-    n: '01', title: 'Booking comes first',
-    text: 'One way to book, said clearly: WhatsApp or a call. And an answer to the question everyone has: "you\'ll usually get your first appointment within the week". On mobile, Call and WhatsApp stay at the bottom of every page.',
-    img: 'desk-contatti', alt: 'Contact page: "Prenota una visita" with phone, WhatsApp and email cards, and a line on when you get the first appointment.',
-  },
-  {
-    n: '02', title: 'A page for the first visit',
-    text: 'The main use case is someone who has never been there and doesn\'t know what to expect. The new page walks them through it: how the visit works, how long it takes, what to bring, children, urgent cases.',
-    img: 'desk-prima-visita', alt: 'First visit page: "La prima visita dal dentista", with a short promise, a booking button and a photo of the treatment room.',
-  },
-  {
-    n: '03', title: 'Treatments in plain words',
-    text: 'Patients don\'t search for "pedodonzia": they search for a dentist for their kids. Each treatment now has a plain name first, the technical one beside it, and who in the team takes care of it.',
-    img: 'desk-trattamenti', alt: 'Treatments page: each treatment with a plain name, the technical term in brackets and the dentist who takes care of it.',
-  },
-  {
-    n: '04', title: 'A family practice you can trust',
-    text: 'Father, son and daughter, in the same practice since 1992. Real photos of the people and the rooms, the Google rating and the reviews, placed on the pages where people make their choice. It helps patients, and it helps search engines too.',
-    img: 'desk-lo-studio', alt: 'The practice page: "Uno studio dentistico di famiglia", with the year it opened, three dentists and the Google rating.',
-  },
+const steps = [
+  ['Content audit', 'I pulled every piece of content out of the old site.'],
+  ['Information architecture', 'A new structure, built around what patients need.'],
+  ['Questionnaire', 'The practice told me about their patients, their tone, what makes them different.'],
+  ['Visual direction', 'A benchmark, then calm, bright and real photos.'],
+  ['Built with Claude', 'Design and code, then online. In two days.'],
 ];
 const phones = [
   ['mob-index', 'Home on mobile: the three dentists, the title and the booking buttons.'],
   ['mob-prima-visita', 'First visit page on mobile.'],
   ['mob-trattamenti', 'Treatments page on mobile.'],
   ['mob-lo-studio', 'The practice page on mobile.'],
-  ['mob-contatti', 'Contact page on mobile, with the phone card and the Call and WhatsApp bar.'],
+  ['mob-contatti', 'Contact page on mobile, with the Call and WhatsApp bar.'],
 ];
 ---
 <Base title="Studio Dentistico Pieri: a family dentist, redesigned · Francesca Folkmer"
-  description="A deep redesign for a family dental practice in Genoa: one clear way to book, a first-visit page, treatments in plain words and a practice you can trust. From content audit to launch, built with Claude.">
+  description="A deep redesign for a family dental practice in Genoa: a place you can trust, one clear way to book, a first-visit page and treatments in plain words. From content audit to launch in two days, built with Claude.">
   <article class="container case">
     <CaseIntro
       tags={['Healthcare', 'Website', 'End-to-end']}
@@ -63,87 +49,132 @@ const phones = [
           </ul>
         </div>
       </div>
-      <div class="split__media"><img class="shot" src={url('/img/pieri/desk-home-long.webp')} alt="The new homepage, from the hero with the three dentists to the treatment cards and the practice story." loading="lazy" /></div>
+      <div class="split__media"><img class="shot" src={url('/img/pieri/old-site.webp')} alt="The old site: a dark page with a small logo, a blue booking bar and long blocks of small text about the practice's story." loading="lazy" /></div>
     </section>
 
-    <section class="steps-plain reveal" aria-labelledby="process">
-      <p class="eyebrow">What I did</p>
-      <h2 id="process" class="h2">From the old content to a new site</h2>
-      <ol class="process">
-        <li><b>Content audit.</b> I pulled every piece of content out of the old site.</li>
-        <li><b>Information architecture.</b> I rebuilt the structure around what patients actually need.</li>
-        <li><b>Questionnaire.</b> The practice told me about their patients, their tone and what makes them different.</li>
-        <li><b>Benchmark and visual direction.</b> Calm, bright, real photos: a place you'd trust with your kids.</li>
-        <li><b>Built with Claude, in two days.</b> I designed and wrote the whole site with Claude, then put it online.</li>
+    <section class="process reveal" aria-labelledby="process">
+      <div class="split__title">
+        <p class="eyebrow">What I did</p>
+        <h2 id="process" class="h2">From the old content to a new site</h2>
+      </div>
+      <ol class="process__cards">
+        {steps.map(([t, d], i) => (
+          <li><span class="process__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><b>{t}</b><span>{d}</span></li>
+        ))}
       </ol>
     </section>
 
     <section class="decisions" aria-labelledby="decisions">
-      <div class="decisions__intro reveal">
+      <div class="split__title reveal">
         <p class="eyebrow">Key decisions</p>
-        <h2 id="decisions" class="h2">Four things I focused on</h2>
+        <h2 id="decisions" class="h2">Five things I focused on</h2>
       </div>
-      {decisions.map((d, i) => (
-        <div class={`split reveal${i % 2 ? ' split--media-first' : ''}`}>
-          <div class="split__text">
-            <div class="split__title">
-              <p class="decision__n" aria-hidden="true">{d.n}</p>
-              <h3 class="h3">{d.title}</h3>
-            </div>
-            <p>{d.text}</p>
-          </div>
-          <div class="split__media"><img class="shot" src={url(`/img/pieri/${d.img}.webp`)} alt={d.alt} loading="lazy" width="1440" height="900" /></div>
+
+      <div class="split reveal">
+        <div class="split__text">
+          <div class="split__title"><p class="decision__n" aria-hidden="true">01</p><h3 class="h3">A family, and a place you can trust</h3></div>
+          <p>Father, son and daughter, in the same practice since 1992. That's the strongest thing they have, and the old site never said it. Now it's the first thing you see: the three of them, smiling, in their own studio. Real photos of the people and the rooms show what it is: a small, calm place where someone knows your name.</p>
         </div>
-      ))}
+        <div class="split__media stack">
+          <img class="shot" src={url('/img/pieri/family-hero.webp')} alt="The new home: the three dentists smiling in their studio, the title 'Il dentista di famiglia a Genova, dal 1992' and the booking buttons." loading="lazy" />
+          <img class="stack__card stack__card--a" src={url('/img/pieri/doc-lorenzo.webp')} alt="Dentist card: Dott. Lorenzo Pieri, prosthetics, implants and oral surgery." loading="lazy" />
+          <img class="stack__card stack__card--b" src={url('/img/pieri/doc-arianna.webp')} alt="Dentist card: Dott.ssa Arianna Pieri, orthodontics, children and whitening." loading="lazy" />
+        </div>
+      </div>
+
+      <div class="split split--media-first reveal">
+        <div class="split__text">
+          <div class="split__title"><p class="decision__n" aria-hidden="true">02</p><h3 class="h3">Booking comes first</h3></div>
+          <p>One way to book, said clearly: WhatsApp or a call. And an answer to the question everyone has: "you'll usually get your first appointment within the week". On mobile, Call and WhatsApp stay at the bottom of every page.</p>
+        </div>
+        <div class="split__media"><img class="shot" src={url('/img/pieri/booking.webp')} alt="Booking section: 'Prenota una visita', with phone, WhatsApp and email cards and when you get the first appointment." loading="lazy" /></div>
+      </div>
+
+      <div class="split reveal">
+        <div class="split__text">
+          <div class="split__title"><p class="decision__n" aria-hidden="true">03</p><h3 class="h3">A page for the first visit</h3></div>
+          <p>The main use case is someone who has never been there and doesn't know what to expect. The new page walks them through it: how the visit works, step by step, how long it takes, what to bring, children, urgent cases.</p>
+        </div>
+        <div class="split__media"><img class="shot" src={url('/img/pieri/first-visit.webp')} alt="First visit page: the promise 'Nessuna cura parte senza il tuo sì' and the four steps of the visit: welcome, check-up, explanation, estimate." loading="lazy" /></div>
+      </div>
+
+      <div class="split split--media-first reveal">
+        <div class="split__text">
+          <div class="split__title"><p class="decision__n" aria-hidden="true">04</p><h3 class="h3">Treatments in plain words</h3></div>
+          <p>Patients don't search for "pedodonzia": they search for a dentist for their kids. Each treatment now has a plain name first, the technical one beside it, and who in the team takes care of it.</p>
+        </div>
+        <div class="split__media"><img class="shot" src={url('/img/pieri/treatments.webp')} alt="Two treatment groups: check-up and cleaning, and children, each with plain names, technical terms in brackets and the dentist in charge." loading="lazy" /></div>
+      </div>
+
+      <div class="split reveal">
+        <div class="split__text">
+          <div class="split__title"><p class="decision__n" aria-hidden="true">05</p><h3 class="h3">Proof that they're reliable</h3></div>
+          <p>Trust needs proof. The Google rating and the patients' reviews, the technology they use, the year they opened and the happy smiles: each one placed on the page where people make their choice. It helps patients, and it helps search engines too.</p>
+        </div>
+        <div class="split__media stack">
+          <img class="shot" src={url('/img/pieri/reviews.webp')} alt="Reviews section: 'Cosa dicono i pazienti', four five-star Google reviews." loading="lazy" />
+          <img class="stack__strip" src={url('/img/pieri/facts.webp')} alt="Key facts: open since 1992, 3 dentists, all ages, 5.0 on Google with 36 reviews." loading="lazy" />
+          <img class="stack__card stack__card--tech" src={url('/img/pieri/tech.webp')} alt="Technology section: intraoral scanner, digital X-rays and continuous training." loading="lazy" />
+        </div>
+      </div>
     </section>
 
     <section class="mobile reveal" aria-labelledby="mobile">
-      <p class="eyebrow">On mobile</p>
-      <h2 id="mobile" class="h2">Booking is always one tap away</h2>
+      <div class="split__title">
+        <p class="eyebrow">On mobile</p>
+        <h2 id="mobile" class="h2">Booking is always one tap away</h2>
+      </div>
       <ul class="mobile__row">
-        {phones.map(([img, alt]) => (
-          <li class="phone-mock">
-            <img class="phone-mock__screen" src={url(`/img/pieri/${img}.webp`)} alt={alt} loading="lazy" width="375" height="812" />
-            <img class="phone-mock__frame" src={url('/img/phone-frame-2.svg')} alt="" />
-          </li>
-        ))}
+        {phones.map(([img, alt]) => <li><PhoneBrowser src={`/img/pieri/${img}.webp`} alt={alt} /></li>)}
       </ul>
     </section>
 
-    <section class="split reveal" aria-labelledby="differently">
-      <div class="split__text">
-        <div class="split__title">
-          <p class="eyebrow">Looking back</p>
-          <h2 id="differently" class="h2">What I'd do differently</h2>
-        </div>
-        <div class="prose">
-          <p>I skipped real research: a benchmark and the questionnaire to the practice, nothing with patients. And there was no final test. The site went to some patients, the feedback was all positive, and we stopped there.</p>
-          <p>Next time I'd test the booking flow with five patients before launch. Positive feedback is nice; watching someone book is more useful.</p>
-        </div>
-      </div>
-      <div class="split__media live">
-        <a class="roll" href="https://www.studiodentisticopieri.com/" target="_blank" rel="noopener">
-          <span>Visit the live site<span class="sr-only"> (opens in a new tab)</span></span>
-          <span class="roll__ball" aria-hidden="true"><Icon name="arrow-up-right" size={22} /></span>
-        </a>
-      </div>
+    <section class="final reveal" aria-labelledby="final">
+      <h2 id="final" class="h2">Curious to see the final result?</h2>
+      <a class="roll" href="https://www.studiodentisticopieri.com/" target="_blank" rel="noopener">
+        <span>Visit the live site<span class="sr-only"> (opens in a new tab)</span></span>
+        <span class="roll__ball" aria-hidden="true"><Icon name="arrow-up-right" size={22} /></span>
+      </a>
     </section>
   </article>
 </Base>
 
 <style>
-  .pieri-cover { width: 100%; height: 100%; display: grid; place-items: center; padding: 4% 8%; background: var(--surface); border-radius: inherit; }
+  /* cover: the devices on the navy of the site's booking banner */
+  .pieri-cover { width: 100%; height: 100%; display: grid; place-items: center; padding: 4% 6%; border-radius: inherit; overflow: hidden; container-type: size;
+    background: radial-gradient(70% 90% at 85% 0%, #23439a 0%, transparent 60%), linear-gradient(135deg, #1b2340 0%, #1c2752 100%); }
+  /* the devices always fit inside the cover, whole */
+  .pieri-cover :global(.duo) { width: min(100cqw, 100cqh * 1600 / 950); height: auto; }
   .shot { width: 100%; height: auto; display: block; border-radius: var(--radius-l); box-shadow: 0 0 0 1px var(--line); }
-  .steps-plain { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
-  .process { margin: 16px 0 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 12px; }
+
+  /* What I did: five square cards; a carousel on mobile */
+  .process { display: flex; flex-direction: column; gap: var(--space-block); }
+  .process__cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+  .process__cards li { aspect-ratio: 1; display: flex; flex-direction: column; gap: 8px; padding: 24px; border-radius: var(--radius-l); background: var(--surface); }
+  .process__cards b { font-size: var(--fs-h4); font-weight: 500; line-height: 1.2; }
+  .process__cards span:last-child { color: var(--ink-2); font-size: var(--fs-small); }
+  .process__n { margin-bottom: auto; font-size: var(--fs-h3); font-weight: 500; color: var(--sage); }
+
   .decisions { display: flex; flex-direction: column; gap: var(--space-section); }
-  .decisions__intro { display: flex; flex-direction: column; gap: 8px; margin-bottom: calc(var(--space-block) - var(--space-section)); }
+  .decisions > .split__title { margin-bottom: calc(var(--space-block) - var(--space-section)); }
   .decision__n { font-size: var(--fs-h2); font-weight: 500; color: var(--sage); line-height: 1; }
-  .mobile { display: flex; flex-direction: column; gap: 16px; }
-  .mobile__row { list-style: none; margin: var(--space-block) 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(12px, 2vw, 32px); }
-  .live { display: grid; place-items: center; }
+
+  /* an image with smaller cards laid over it */
+  .stack { position: relative; padding-bottom: 12%; }
+  .stack__card { position: absolute; width: 26%; height: auto; border-radius: var(--radius-l); box-shadow: 0 12px 32px rgba(18,22,20,.22); }
+  .stack__card--a { right: 18%; bottom: 0; }
+  .stack__card--b { right: -2%; bottom: 6%; }
+  .stack__card--tech { width: 46%; right: -2%; bottom: 0; }
+  .stack__strip { position: absolute; left: -2%; top: -6%; width: 64%; height: auto; border-radius: var(--radius-m); box-shadow: 0 12px 32px rgba(18,22,20,.18); }
+
+  .mobile { display: flex; flex-direction: column; gap: var(--space-block); }
+  .mobile__row { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(12px, 2vw, 32px); }
+  .final { display: flex; flex-direction: column; align-items: center; gap: var(--space-block); text-align: center; }
+
   @media (max-width: 760px) {
+    .process__cards { grid-template-columns: repeat(5, 70%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
     .mobile__row { grid-template-columns: repeat(5, 62%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
-    .mobile__row li { scroll-snap-align: start; }
+    .process__cards li, .mobile__row li { scroll-snap-align: start; }
+    .stack__card { width: 34%; }
   }
 </style>

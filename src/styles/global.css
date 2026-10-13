@@ -277,6 +277,6 @@ html.is-paused *, html.is-paused *::before, html.is-paused *::after { animation-
 
 /* iPhone mockup (Figma "iphone 15"): used by Alé and the private case studies.
    The screen image is cropped to 375x812 and aligned to the top. */
-.phone-mock { position: relative; aspect-ratio: 143.44 / 298.22; }
+.phone-mock { position: relative; display: block; aspect-ratio: 143.44 / 298.22; }
 .phone-mock__frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .phone-mock__screen { position: absolute; left: 3.36%; top: 1.38%; width: 93.9%; height: 97.24%; object-fit: cover; object-position: top; border-radius: 9% / 4.3%; }

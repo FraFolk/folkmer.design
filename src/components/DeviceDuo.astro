@@ -1,29 +1,31 @@
 ---
-// A desktop monitor with a site inside, and an iPhone in front of it (bottom left),
-// overlapping the monitor a little without covering the screen. Used for website case studies.
+// iMac with the site in a browser window, and an iPhone (Safari) in front of it, bottom left.
+// Both devices are always fully visible. Used for website case studies.
 import { url } from '../lib/url.js';
-const { desktop, mobile } = Astro.props;
+import PhoneBrowser from './PhoneBrowser.astro';
+const { desktop, mobile, domain = 'studiodentisticopieri.com' } = Astro.props;
 ---
 <span class="duo" aria-hidden="true">
-  <span class="duo__monitor">
-    <span class="duo__screen"><img src={url(desktop)} alt="" loading="lazy" /></span>
-    <span class="duo__neck"></span>
-    <span class="duo__base"></span>
+  <span class="duo__imac">
+    <img class="duo__body" src={url('/img/imac.webp')} alt="" width="2000" height="1615" loading="lazy" />
+    <span class="duo__screen">
+      <span class="duo__chrome"><i></i><i></i><i></i><span class="duo__url">{domain}</span></span>
+      <img src={url(desktop)} alt="" loading="lazy" />
+    </span>
   </span>
-  <span class="duo__phone phone-mock">
-    <img class="phone-mock__screen" src={url(mobile)} alt="" loading="lazy" />
-    <img class="phone-mock__frame" src={url('/img/phone-frame-2.svg')} alt="" />
-  </span>
+  <PhoneBrowser src={mobile} domain={domain} class="duo__phone" />
 </span>
 
 <style>
   /* same box as the MacBook on the other cards (1600 / 950) */
   .duo { position: relative; display: block; width: 100%; aspect-ratio: 1600 / 950; }
-  .duo__monitor { position: absolute; right: 2%; top: 3%; width: 72%; display: flex; flex-direction: column; align-items: center; }
-  .duo__screen { display: block; width: 100%; aspect-ratio: 16 / 10; padding: 1.4%; border-radius: var(--radius-m); background: var(--night); box-shadow: 0 16px 40px rgba(18,22,20,.18); overflow: hidden; }
-  .duo__screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 4px; }
-  .duo__neck { width: 12%; height: 9%; aspect-ratio: 3 / 2; background: linear-gradient(var(--line), var(--ink-faint)); }
-  .duo__base { width: 30%; height: 6px; border-radius: var(--radius-pill); background: var(--ink-faint); }
-  /* iPhone in front, bottom left: it covers the monitor's bezel corner, not the screen content that matters */
-  .duo__phone { position: absolute; left: 8%; bottom: 2%; width: 19%; filter: drop-shadow(0 12px 24px rgba(18,22,20,.25)); }
+  .duo__imac { position: absolute; right: 4%; top: 2%; height: 96%; aspect-ratio: 2000 / 1615; }
+  .duo__body { width: 100%; height: 100%; display: block; }
+  /* the iMac screen area, measured on the mockup (2000 x 1615) */
+  .duo__screen { position: absolute; left: 13.4%; top: 2.85%; width: 84.2%; height: 58.5%; display: flex; flex-direction: column; overflow: hidden; background: var(--white); container-type: inline-size; }
+  .duo__chrome { flex: none; height: 4.4cqw; display: flex; align-items: center; gap: .8cqw; padding: 0 1.6cqw; background: var(--surface-2); border-bottom: 1px solid var(--line); }
+  .duo__chrome i { width: 1.1cqw; height: 1.1cqw; border-radius: 50%; background: var(--ink-faint); }
+  .duo__url { margin: 0 auto; width: 40%; height: 2.6cqw; border-radius: 1cqw; background: var(--white); display: grid; place-items: center; font-size: 1.3cqw; color: var(--ink-2); font-style: normal; }
+  .duo__screen img { flex: 1; min-height: 0; width: 100%; object-fit: cover; object-position: top; display: block; }
+  .duo :global(.duo__phone) { position: absolute; left: 19%; bottom: 3%; height: 62%; width: auto; filter: drop-shadow(0 12px 24px rgba(18,22,20,.25)); }
 </style>
