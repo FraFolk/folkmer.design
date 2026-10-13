@@ -50,17 +50,6 @@ export const lab = [
     visual: 'pdf',
   },
   {
-    slug: 'studio-pieri',
-    kind: 'Website · Live',
-    title: 'Studio Dentistico Pieri',
-    summary: 'A website for a family dental practice in Genoa: clear, fast and easy to read for every patient.',
-    href: 'https://www.studiodentisticopieri.com/',
-    external: true,
-    cta: 'Visit the site',
-    image: '/img/lab-pieri.webp',
-    alt: 'Studio Dentistico Pieri homepage: three dentists smiling, the title "Il dentista di famiglia a Genova, dal 1992" and a "Prenota una visita" button.',
-  },
-  {
     slug: 'clothing-shop',
     kind: 'Website · In progress',
     title: 'A clothing shop',

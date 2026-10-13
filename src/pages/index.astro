@@ -4,6 +4,7 @@ import LabCarousel from '../components/LabCarousel.astro';
 import Whiteboard from '../components/Whiteboard.astro';
 import Icon from '../components/Icon.astro';
 import CaseGate from '../components/CaseGate.astro';
+import DeviceDuo from '../components/DeviceDuo.astro';
 import { projects, ale } from '../lib/projects.js';
 import { url } from '../lib/url.js';
 
@@ -72,6 +73,16 @@ const quotes = [
   <section id="work" class="story container" aria-labelledby="e2e-title" tabindex="-1">
     <h2 id="e2e-title" class="h2 story__title reveal">I follow products from the first workshop to the last handoff.</h2>
     <p class="story__lead reveal">On big products I don't stop at the screens: functional analysis, flows, UI, and the developers' questions on a Friday afternoon.</p>
+    <div class="cases">
+    <a class="secret-case reveal" href={url('/work/studio-pieri/')}>
+      <span class="secret-case__text">
+        <span class="secret-case__meta"><span class="secret-case__tags">Healthcare · Website · End-to-end</span></span>
+        <span class="secret-case__title"><b>Studio Dentistico Pieri</b>: a family dentist, redesigned from the ground up.</span>
+        <span class="secret-case__sub">One clear way to book, treatments in plain words and a practice you can trust. From content audit to launch in two days, built with Claude.</span>
+        <span class="secret-case__cta">Read the case <Icon name="arrow-right" size={18} /></span>
+      </span>
+      <span class="secret-case__cover"><DeviceDuo desktop="/img/pieri/desk-index.webp" mobile="/img/pieri/mob-index.webp" /></span>
+    </a>
     <a class="secret-case reveal" href={url('/work/aon/')} data-gate="aon" data-gate-title="Aon: joined to execute, ended up owning the design">
       <span class="secret-case__text">
         <span class="secret-case__meta"><span class="secret-case__tags">Insurance · End-to-end · Ownership</span><span class="lock-chip"><Icon name="lock-closed" size={14} /> Private</span></span>
@@ -97,6 +108,7 @@ const quotes = [
         <span class="phones-box"><img class="secret-case__phones" src={url('/img/ca-phones.webp')} alt="" width="1450" height="1223" loading="lazy" /></span>
       </span>
     </a>
+    </div>
   </section>
 
   <!-- 2. Accessibility: starts from the certification -->
@@ -259,7 +271,9 @@ const quotes = [
   .plot.is-in .plot__new { clip-path: inset(-20% -5% -20% 0); }
 
   /* cases */
-  .secret-case + .secret-case { margin-top: 8px; }
+  /* the three cases: same height, always */
+  .cases { width: 100%; margin-top: 12px; display: grid; grid-auto-rows: 1fr; gap: 8px; }
+  .cases .secret-case { margin-top: 0; }
   .secret-case { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--surface); color: var(--ink); border-radius: var(--radius-card); overflow: hidden; text-decoration: none; min-height: 344px; text-align: left; align-items: center; }
   .secret-case__text { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: var(--space-inset); }
   .secret-case__tags { font-style: italic; color: var(--ink-2); }
@@ -275,7 +289,7 @@ const quotes = [
   .secret-case:is(:hover, :focus-visible) .secret-case__cta { color: var(--orange-text); }
   :is(.a11y, .secret-case):is(:hover, :focus-visible) :global(.icon) { transform: translateX(6px); }
   .secret-case__cover { position: relative; display: block; padding: 24px 32px 24px 0; }
-  .secret-case__cover > * { max-width: 440px; margin-inline: auto; }
+  .secret-case__cover > :global(*) { max-width: 440px; margin-inline: auto; }
   /* same box as the MacBook on the Aon card, so both cards are the same height; phones a bit smaller inside */
   .phones-box { position: relative; display: block; aspect-ratio: 1600 / 950; }
   .secret-case__phones { position: absolute; inset: 0; margin: auto; width: 100%; height: 82%; object-fit: contain; }

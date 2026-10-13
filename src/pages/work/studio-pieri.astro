@@ -1,0 +1,149 @@
+---
+// Studio Dentistico Pieri: a full, public case study (my own client, not Capgemini).
+import Base from '../../layouts/Base.astro';
+import CaseIntro from '../../components/CaseIntro.astro';
+import DeviceDuo from '../../components/DeviceDuo.astro';
+import Icon from '../../components/Icon.astro';
+import { url } from '../../lib/url.js';
+
+const decisions = [
+  {
+    n: '01', title: 'Booking comes first',
+    text: 'One way to book, said clearly: WhatsApp or a call. And an answer to the question everyone has: "you\'ll usually get your first appointment within the week". On mobile, Call and WhatsApp stay at the bottom of every page.',
+    img: 'desk-contatti', alt: 'Contact page: "Prenota una visita" with phone, WhatsApp and email cards, and a line on when you get the first appointment.',
+  },
+  {
+    n: '02', title: 'A page for the first visit',
+    text: 'The main use case is someone who has never been there and doesn\'t know what to expect. The new page walks them through it: how the visit works, how long it takes, what to bring, children, urgent cases.',
+    img: 'desk-prima-visita', alt: 'First visit page: "La prima visita dal dentista", with a short promise, a booking button and a photo of the treatment room.',
+  },
+  {
+    n: '03', title: 'Treatments in plain words',
+    text: 'Patients don\'t search for "pedodonzia": they search for a dentist for their kids. Each treatment now has a plain name first, the technical one beside it, and who in the team takes care of it.',
+    img: 'desk-trattamenti', alt: 'Treatments page: each treatment with a plain name, the technical term in brackets and the dentist who takes care of it.',
+  },
+  {
+    n: '04', title: 'A family practice you can trust',
+    text: 'Father, son and daughter, in the same practice since 1992. Real photos of the people and the rooms, the Google rating and the reviews, placed on the pages where people make their choice. It helps patients, and it helps search engines too.',
+    img: 'desk-lo-studio', alt: 'The practice page: "Uno studio dentistico di famiglia", with the year it opened, three dentists and the Google rating.',
+  },
+];
+const phones = [
+  ['mob-index', 'Home on mobile: the three dentists, the title and the booking buttons.'],
+  ['mob-prima-visita', 'First visit page on mobile.'],
+  ['mob-trattamenti', 'Treatments page on mobile.'],
+  ['mob-lo-studio', 'The practice page on mobile.'],
+  ['mob-contatti', 'Contact page on mobile, with the phone card and the Call and WhatsApp bar.'],
+];
+---
+<Base title="Studio Dentistico Pieri: a family dentist, redesigned · Francesca Folkmer"
+  description="A deep redesign for a family dental practice in Genoa: one clear way to book, a first-visit page, treatments in plain words and a practice you can trust. From content audit to launch, built with Claude.">
+  <article class="container case">
+    <CaseIntro
+      tags={['Healthcare', 'Website', 'End-to-end']}
+      title="Studio Dentistico Pieri: a family dentist, redesigned from the ground up"
+      facts={[['Timeline', '2 days'], ['Role', 'Solo, from content audit to launch'], ['Built with', 'Claude']]}
+    >
+      <Fragment slot="media"><div class="pieri-cover"><DeviceDuo desktop="/img/pieri/desk-index.webp" mobile="/img/pieri/mob-index.webp" /></div></Fragment>
+      <p>A family dental practice in Genoa asked for a <b>deep redesign</b>. I did it on my own, end to end: content, structure, visual direction and code, <b>built entirely with Claude in two days</b>.</p>
+    </CaseIntro>
+
+    <section class="split reveal" aria-labelledby="problem">
+      <div class="split__text">
+        <div class="split__title">
+          <p class="eyebrow">The problem</p>
+          <h2 id="problem" class="h2">Good dentists, a site that didn't show it</h2>
+        </div>
+        <div class="prose">
+          <ul>
+            <li><b>Booking was confusing:</b> a form and four different contacts. Which one do you use?</li>
+            <li><b>Treatments were unclear:</b> technical names, little explanation.</li>
+            <li><b>The family was missing:</b> nothing said it's a small practice run by a family.</li>
+            <li><b>No signs of trust:</b> no reviews, no feedback, little about who the dentists are.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="split__media"><img class="shot" src={url('/img/pieri/desk-home-long.webp')} alt="The new homepage, from the hero with the three dentists to the treatment cards and the practice story." loading="lazy" /></div>
+    </section>
+
+    <section class="steps-plain reveal" aria-labelledby="process">
+      <p class="eyebrow">What I did</p>
+      <h2 id="process" class="h2">From the old content to a new site</h2>
+      <ol class="process">
+        <li><b>Content audit.</b> I pulled every piece of content out of the old site.</li>
+        <li><b>Information architecture.</b> I rebuilt the structure around what patients actually need.</li>
+        <li><b>Questionnaire.</b> The practice told me about their patients, their tone and what makes them different.</li>
+        <li><b>Benchmark and visual direction.</b> Calm, bright, real photos: a place you'd trust with your kids.</li>
+        <li><b>Built with Claude, in two days.</b> I designed and wrote the whole site with Claude, then put it online.</li>
+      </ol>
+    </section>
+
+    <section class="decisions" aria-labelledby="decisions">
+      <div class="decisions__intro reveal">
+        <p class="eyebrow">Key decisions</p>
+        <h2 id="decisions" class="h2">Four things I focused on</h2>
+      </div>
+      {decisions.map((d, i) => (
+        <div class={`split reveal${i % 2 ? ' split--media-first' : ''}`}>
+          <div class="split__text">
+            <div class="split__title">
+              <p class="decision__n" aria-hidden="true">{d.n}</p>
+              <h3 class="h3">{d.title}</h3>
+            </div>
+            <p>{d.text}</p>
+          </div>
+          <div class="split__media"><img class="shot" src={url(`/img/pieri/${d.img}.webp`)} alt={d.alt} loading="lazy" width="1440" height="900" /></div>
+        </div>
+      ))}
+    </section>
+
+    <section class="mobile reveal" aria-labelledby="mobile">
+      <p class="eyebrow">On mobile</p>
+      <h2 id="mobile" class="h2">Booking is always one tap away</h2>
+      <ul class="mobile__row">
+        {phones.map(([img, alt]) => (
+          <li class="phone-mock">
+            <img class="phone-mock__screen" src={url(`/img/pieri/${img}.webp`)} alt={alt} loading="lazy" width="375" height="812" />
+            <img class="phone-mock__frame" src={url('/img/phone-frame-2.svg')} alt="" />
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="split reveal" aria-labelledby="differently">
+      <div class="split__text">
+        <div class="split__title">
+          <p class="eyebrow">Looking back</p>
+          <h2 id="differently" class="h2">What I'd do differently</h2>
+        </div>
+        <div class="prose">
+          <p>I skipped real research: a benchmark and the questionnaire to the practice, nothing with patients. And there was no final test. The site went to some patients, the feedback was all positive, and we stopped there.</p>
+          <p>Next time I'd test the booking flow with five patients before launch. Positive feedback is nice; watching someone book is more useful.</p>
+        </div>
+      </div>
+      <div class="split__media live">
+        <a class="roll" href="https://www.studiodentisticopieri.com/" target="_blank" rel="noopener">
+          <span>Visit the live site<span class="sr-only"> (opens in a new tab)</span></span>
+          <span class="roll__ball" aria-hidden="true"><Icon name="arrow-up-right" size={22} /></span>
+        </a>
+      </div>
+    </section>
+  </article>
+</Base>
+
+<style>
+  .pieri-cover { width: 100%; height: 100%; display: grid; place-items: center; padding: 4% 8%; background: var(--surface); border-radius: inherit; }
+  .shot { width: 100%; height: auto; display: block; border-radius: var(--radius-l); box-shadow: 0 0 0 1px var(--line); }
+  .steps-plain { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
+  .process { margin: 16px 0 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 12px; }
+  .decisions { display: flex; flex-direction: column; gap: var(--space-section); }
+  .decisions__intro { display: flex; flex-direction: column; gap: 8px; margin-bottom: calc(var(--space-block) - var(--space-section)); }
+  .decision__n { font-size: var(--fs-h2); font-weight: 500; color: var(--sage); line-height: 1; }
+  .mobile { display: flex; flex-direction: column; gap: 16px; }
+  .mobile__row { list-style: none; margin: var(--space-block) 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(12px, 2vw, 32px); }
+  .live { display: grid; place-items: center; }
+  @media (max-width: 760px) {
+    .mobile__row { grid-template-columns: repeat(5, 62%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+    .mobile__row li { scroll-snap-align: start; }
+  }
+</style>
