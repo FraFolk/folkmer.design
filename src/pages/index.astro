@@ -75,7 +75,7 @@ const quotes = [
     <a class="secret-case reveal" href={url('/work/aon/')} data-gate="aon" data-gate-title="Aon: joined to execute, ended up owning the design">
       <span class="secret-case__text">
         <span class="secret-case__tags">Insurance · End-to-end · Ownership</span>
-        <span class="secret-case__title">Joined to execute. Ended up owning the design.</span>
+        <span class="secret-case__title"><b>Aon</b>: joined to execute, ended up owning the design.</span>
         <span class="secret-case__sub">An insurance platform where I became the only design reference, from functional analysis to developer handoff.</span>
         <span class="secret-case__cta">Open the case <Icon name="arrow-right" size={18} /></span>
       </span>
@@ -89,7 +89,7 @@ const quotes = [
     <a class="secret-case reveal" href={url('/work/credit-agricole/')} data-gate="credit-agricole" data-gate-title="Crédit Agricole: evolving an app people already love">
       <span class="secret-case__text">
         <span class="secret-case__tags">Banking · Mobile App · Personalisation</span>
-        <span class="secret-case__title">Evolving an app people already love.</span>
+        <span class="secret-case__title"><b>Crédit Agricole</b>: evolving an app people already love.</span>
         <span class="secret-case__sub">Crédit Agricole's customer app was rated above 4.5. We redesigned its five core areas and made the content adapt to each customer.</span>
         <span class="secret-case__cta">Open the case <Icon name="arrow-right" size={18} /></span>
       </span>
@@ -263,6 +263,7 @@ const quotes = [
   .secret-case { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--surface); color: var(--ink); border-radius: var(--radius-card); overflow: hidden; text-decoration: none; min-height: 344px; text-align: left; align-items: center; }
   .secret-case__text { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: var(--space-inset); }
   .secret-case__tags { font-style: italic; color: var(--ink-2); }
+  .secret-case__title b { font-weight: 600; }
   .secret-case__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.2; }
   .secret-case__sub { color: var(--ink-2); max-width: 44ch; }
   .secret-case__cta, .a11y__cta { font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: color var(--dur-base) var(--ease-out); }
