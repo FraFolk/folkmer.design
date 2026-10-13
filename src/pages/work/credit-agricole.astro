@@ -24,7 +24,8 @@ import { url } from '../../lib/url.js';
 
 <style>
   /* cover: the three phones on the app's dark teal, with a soft modern gradient */
-  .ca-cover { position: relative; width: 100%; height: 100%; display: grid; place-items: center; overflow: hidden; border-radius: inherit;
+  .ca-cover { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: inherit; container-type: size;
     background: radial-gradient(80% 90% at 30% 20%, #0b5a63 0%, transparent 60%), radial-gradient(70% 80% at 85% 90%, #0f6e66 0%, transparent 55%), linear-gradient(160deg, #04404b 0%, #022c35 100%); }
-  .ca-cover img { height: 86%; width: auto; max-width: 92%; object-fit: contain; filter: drop-shadow(0 24px 48px rgba(0,0,0,.35)); }
+  /* the phones start a little below the top and run off the bottom edge: same box as every other cover, the phones are cropped, never squeezed */
+  .ca-cover img { position: absolute; top: 9cqh; left: 50%; transform: translateX(-50%); width: min(86cqw, 150cqh * 1450 / 1223); height: auto; max-width: none; filter: drop-shadow(0 24px 48px rgba(0,0,0,.35)); }
 </style>

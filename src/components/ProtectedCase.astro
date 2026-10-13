@@ -50,7 +50,7 @@ const { slug, title, preview } = Astro.props;
   .pc__ask:hover { color: var(--orange-text); }
   .pc__ask:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: var(--radius-s); }
   .pc__content { display: flex; flex-direction: column; gap: var(--space-section); outline: none; animation: pc-in var(--dur-base) ease-out; }
-  .pc__content :global(img) { width: 100%; max-width: 760px; height: auto; border-radius: var(--radius-l); }
+  .pc__content :global(img:not(.phone-mock img)) { width: 100%; max-width: 760px; height: auto; border-radius: var(--radius-l); }
   /* text and image side by side */
   .pc__content :global(.pc-split) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
   .pc__content :global(.pc-split > img) { max-width: none; }

@@ -1,7 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
 import CaseIntro from '../../components/CaseIntro.astro';
-import Cover from '../../components/Cover.astro';
 import { url } from '../../lib/url.js';
 import ProtectedCase from '../../components/ProtectedCase.astro';
 
@@ -14,7 +13,7 @@ import ProtectedCase from '../../components/ProtectedCase.astro';
       title="Aon: joined to execute, ended up owning the design"
       facts={[['Timeline', 'Jan 2026 - Oct 2026'], ['Role', 'Sole Product Designer'], ['Scope', 'Functional analysis to dev handoff']]}
     >
-      <Fragment slot="media"><Cover kind="sorry" size="hero" /></Fragment>
+      <Fragment slot="media"><div class="aon-cover"><span class="aon-cover__imac"><img class="aon-cover__body" src={url('/img/imac.webp')} alt="" width="2000" height="1615" /><span class="aon-cover__screen"><img src={url('/img/aon-screen.webp')} alt="The facility registration form of the Aon platform on a desktop screen, blurred because the project is under NDA." width="1400" height="958" /></span></span></div></Fragment>
       <p>I joined the project doing execution. Along the way I became the <b>only design reference</b>: today I take it from functional analysis to dev handoff, on my own.</p>
     </CaseIntro>
 
@@ -27,9 +26,13 @@ import ProtectedCase from '../../components/ProtectedCase.astro';
 
 <style>
 
-  .nda { max-width: 654px; }
-  .nda__text { display: flex; flex-direction: column; gap: 16px; }
-
-  @media (max-width: 900px) {
-    }
+  /* cover: the platform on an iMac, on the platform's own night blue and teal (same treatment as the Crédit Agricole cover) */
+  .aon-cover { position: relative; width: 100%; height: 100%; display: grid; place-items: center; overflow: hidden; border-radius: inherit; container-type: size;
+    background: radial-gradient(80% 90% at 25% 15%, #1f6f78 0%, transparent 60%), radial-gradient(70% 80% at 85% 95%, #2c3550 0%, transparent 55%), linear-gradient(160deg, #1b2236 0%, #10141f 100%); }
+  /* the iMac always fits whole, with some air around it */
+  .aon-cover__imac { position: relative; display: block; aspect-ratio: 2000 / 1615; height: 88cqh; max-width: 88cqw; filter: drop-shadow(0 24px 48px rgba(0,0,0,.35)); }
+  .aon-cover__body { width: 100%; height: 100%; display: block; }
+  /* the screen area, measured on the mockup (2000 x 1615) */
+  .aon-cover__screen { position: absolute; left: 13.4%; top: 2.85%; width: 84.2%; height: 58.5%; overflow: hidden; background: var(--white); }
+  .aon-cover__screen img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
 </style>
