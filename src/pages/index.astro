@@ -74,7 +74,7 @@ const quotes = [
     <p class="story__lead reveal">On big products I don't stop at the screens: functional analysis, flows, UI, and the developers' questions on a Friday afternoon.</p>
     <a class="secret-case reveal" href={url('/work/aon/')} data-gate="aon" data-gate-title="Aon: joined to execute, ended up owning the design">
       <span class="secret-case__text">
-        <span class="secret-case__tags">Insurance · End-to-end · Ownership</span>
+        <span class="secret-case__meta"><span class="secret-case__tags">Insurance · End-to-end · Ownership</span><span class="lock-chip"><Icon name="lock-closed" size={14} /> Private</span></span>
         <span class="secret-case__title"><b>Aon</b>: joined to execute, ended up owning the design.</span>
         <span class="secret-case__sub">An insurance platform where I became the only design reference, from functional analysis to developer handoff.</span>
         <span class="secret-case__cta">Open the case <Icon name="arrow-right" size={18} /></span>
@@ -88,7 +88,7 @@ const quotes = [
     </a>
     <a class="secret-case reveal" href={url('/work/credit-agricole/')} data-gate="credit-agricole" data-gate-title="Crédit Agricole: evolving an app people already love">
       <span class="secret-case__text">
-        <span class="secret-case__tags">Banking · Mobile App · Personalisation</span>
+        <span class="secret-case__meta"><span class="secret-case__tags">Banking · Mobile App · Personalisation</span><span class="lock-chip"><Icon name="lock-closed" size={14} /> Private</span></span>
         <span class="secret-case__title"><b>Crédit Agricole</b>: evolving an app people already love.</span>
         <span class="secret-case__sub">Crédit Agricole's customer app was rated above 4.5. We redesigned its five core areas and made the content adapt to each customer.</span>
         <span class="secret-case__cta">Open the case <Icon name="arrow-right" size={18} /></span>
@@ -264,6 +264,8 @@ const quotes = [
   .secret-case__text { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: var(--space-inset); }
   .secret-case__tags { font-style: italic; color: var(--ink-2); }
   .secret-case__title b { font-weight: 600; }
+  .secret-case__meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+  .lock-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--night); color: var(--on-night); font-size: var(--fs-caption); font-weight: 500; }
   .secret-case__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.2; }
   .secret-case__sub { color: var(--ink-2); max-width: 44ch; }
   .secret-case__cta, .a11y__cta { font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: color var(--dur-base) var(--ease-out); }
