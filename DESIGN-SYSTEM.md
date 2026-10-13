@@ -112,7 +112,7 @@ Exceptions: three hand-tuned curves in the flask easter egg and the "co-founder"
 | **Blank** | Footer, request dialog | Input that looks like a line to write on, grows with the text |
 
 ## 3. Molecules
-Profile pill (Header) · Lab card (`LabCarousel`) · Story card (`.secret-case`, `.a11y`, `.ale-card` in `index.astro`) · Clients strip (`.brands`) · Paper note (`MySetup`) · Polaroid stack (About) · Testimonial bubble (hero) · iPhone mockup (`.phone-mock`, global) · Lock gate (`ProtectedCase`, `CaseGate`).
+Profile pill (Header) · Lab card (`LabCarousel`) · Story card (`.secret-case`, `.a11y`, `.ale-card` in `index.astro`) · Clients strip (`.brands`) · Paper note (`MySetup`) · Polaroid stack (About) · Testimonial bubble (hero) · iPhone mockup (`.phone-mock`, global) · Phone carousel (`PhoneCarousel.astro` + `src/lib/phones.js`: the only way to show a row of screens; in private cases use the same classes) · Lock gate (`ProtectedCase`, `CaseGate`).
 
 ## 4. Organisms
 Header · Footer "Let's connect" (step form) · Request access dialog (`RequestAccess`, same pattern as the footer) · Lab carousel · Whiteboard (`Whiteboard.astro` + `worker/`) · My setup · Case intro (`CaseIntro`) · Alé timeline (`AleTimeline`).

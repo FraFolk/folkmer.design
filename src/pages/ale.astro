@@ -4,6 +4,7 @@ import CaseIntro from '../components/CaseIntro.astro';
 import AleTimeline from '../components/AleTimeline.astro';
 import { url } from '../lib/url.js';
 import Icon from '../components/Icon.astro';
+import PhoneCarousel from '../components/PhoneCarousel.astro';
 
 const screens = [
   ['ale-s-home', 'Home: search for a spot and your next adventure'],
@@ -107,19 +108,7 @@ const dock = [
       </div>
     </section>
 
-    <section class="phones" aria-label="Alé screens">
-      <ul class="phones__row" data-phones>
-        {screens.map(([img, alt]) => (
-          <li class="phones__item">
-            <div class="phone-mock">
-              <img class="phone-mock__screen" src={url(`/img/${img}.webp`)} alt={alt} loading="lazy" width="375" height="812" />
-              <img class="phone-mock__frame" src={url('/img/iphone-15-pro.webp')} alt="" />
-            </div>
-          </li>
-        ))}
-      </ul>
-      <div class="phones__bar" data-phones-bar aria-hidden="true"><span></span></div>
-    </section>
+    <PhoneCarousel class="phones--ale" label="Alé screens" screens={screens.map(([img, alt]) => [`/img/${img}.webp`, alt])} />
 
 
     <section class="retro reveal" aria-labelledby="soon">
@@ -177,15 +166,8 @@ const dock = [
   .dock__users .dock__users-icon { inset: 22%; width: 56%; height: 56%; }
 
   /* Solution: a row of iPhones; drag (mouse) or swipe to scroll */
-  .phones { margin-top: calc(clamp(80px, 10vw, 180px) * -0.5); }
-  .phones__row { list-style: none; margin: 0; padding: 8px 0 24px; display: flex; gap: 32px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: grab; }
-  .phones__row::-webkit-scrollbar { display: none; }
-  .phones__row.is-dragging { cursor: grabbing; scroll-snap-type: none; }
-  .phones__item { flex: 0 0 clamp(150px, 17vw, 230px); scroll-snap-align: start; }
+  :global(.phones--ale) { margin-top: calc(clamp(80px, 10vw, 180px) * -0.5); }
   /* one progress bar: thumb = the visible share of the row, it slides as you scroll */
-  .phones__bar { position: relative; width: min(240px, 50%); height: 4px; margin: 16px auto 0; border-radius: var(--radius-pill); background: var(--line); overflow: hidden; }
-  .phones__bar span { position: absolute; left: 0; top: 0; bottom: 0; width: var(--w, 30%); border-radius: inherit; background: var(--ink); transform: translateX(var(--x, 0)); }
-  @media (max-width: 760px) { .phones__row { gap: 16px; } .phones__item { flex-basis: calc((100% - 16px) / 2.3); } }
   .float { animation: float var(--dur-story) ease-in-out infinite; }
   @keyframes float { 50% { transform: translateY(-10px); } }
 
@@ -202,29 +184,6 @@ const dock = [
 </style>
 
 <script>
-  // iPhone row: drag with the mouse to scroll (touch scrolls natively)
-  const row = document.querySelector('[data-phones]');
-  if (row) {
-    let x0 = null, s0 = 0;
-    row.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; x0 = e.clientX; s0 = row.scrollLeft; row.classList.add('is-dragging'); row.setPointerCapture(e.pointerId); });
-    row.addEventListener('pointermove', (e) => { if (x0 !== null) row.scrollLeft = s0 - (e.clientX - x0); });
-    const end = () => { x0 = null; row.classList.remove('is-dragging'); };
-    row.addEventListener('pointerup', end); row.addEventListener('pointercancel', end);
-    row.addEventListener('dragstart', (e) => e.preventDefault());
-    // progress bar: thumb width = visible share, position = how far you scrolled
-    const bar = document.querySelector('[data-phones-bar]');
-    const thumb = bar.firstElementChild;
-    const update = () => {
-      const max = row.scrollWidth - row.clientWidth;
-      bar.hidden = max <= 2;
-      const w = (row.clientWidth / row.scrollWidth) * bar.clientWidth;
-      thumb.style.setProperty('--w', `${w}px`);
-      thumb.style.setProperty('--x', `${max > 0 ? (row.scrollLeft / max) * (bar.clientWidth - w) : 0}px`);
-    };
-    row.addEventListener('scroll', update, { passive: true });
-    addEventListener('resize', update); update();
-  }
-
   // Dock magnification (mouse only; purely decorative)
   const dock = document.querySelector('[data-dock]');
   if (dock && matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches) {

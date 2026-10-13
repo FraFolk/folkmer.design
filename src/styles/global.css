@@ -280,3 +280,14 @@ html.is-paused *, html.is-paused *::before, html.is-paused *::after { animation-
 .phone-mock { position: relative; display: block; aspect-ratio: 979 / 2000; }
 .phone-mock__frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .phone-mock__screen { position: absolute; left: 4.6%; top: 1.95%; width: 90.7%; height: 96.05%; object-fit: cover; object-position: top; border-radius: 12.6% / 5.8%; }
+
+/* Phone carousel (PhoneCarousel.astro, src/lib/phones.js): a row of iPhones you scroll, swipe or drag */
+.phones__row { list-style: none; margin: 0; padding: 8px 0 24px; display: flex; gap: 32px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: grab; }
+.phones__row::-webkit-scrollbar { display: none; }
+.phones__row.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+.phones__item { flex: 0 0 clamp(150px, 17vw, 230px); scroll-snap-align: start; }
+.phones__item .phone-mock { width: 100%; }
+.phones__bar { position: relative; width: min(240px, 50%); height: 4px; margin: 16px auto 0; border-radius: var(--radius-pill); background: var(--line); overflow: hidden; }
+.phones__bar[hidden] { display: none; }
+.phones__bar span { position: absolute; left: 0; top: 0; bottom: 0; width: var(--w, 30%); border-radius: inherit; background: var(--ink); transform: translateX(var(--x, 0)); }
+@media (max-width: 760px) { .phones__row { gap: 16px; } .phones__item { flex-basis: calc((100% - 16px) / 2.3); } }

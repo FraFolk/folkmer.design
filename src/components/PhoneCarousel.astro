@@ -1,0 +1,28 @@
+---
+// The standard row of iPhones: scroll, swipe or drag, with a progress bar underneath.
+// Used on Alé, Studio Pieri and (as plain HTML with the same classes) in the private cases.
+// screens: [[src, alt], ...]. browser: true adds the status bar for web pages (PhoneBrowser).
+import { url } from '../lib/url.js';
+import PhoneBrowser from './PhoneBrowser.astro';
+const { screens = [], browser = false, label, class: cls = '' } = Astro.props;
+---
+<div class={`phones ${cls}`} data-phones role="region" aria-label={label}>
+  <ul class="phones__row">
+    {screens.map(([src, alt]) => (
+      <li class="phones__item">
+        {browser ? <PhoneBrowser src={src} alt={alt} /> : (
+          <span class="phone-mock">
+            <img class="phone-mock__screen" src={url(src)} alt={alt} loading="lazy" width="375" height="812" />
+            <img class="phone-mock__frame" src={url('/img/iphone-15-pro.webp')} alt="" />
+          </span>
+        )}
+      </li>
+    ))}
+  </ul>
+  <div class="phones__bar" aria-hidden="true"><span></span></div>
+</div>
+
+<script>
+  import { initPhones } from '../lib/phones.js';
+  initPhones();
+</script>

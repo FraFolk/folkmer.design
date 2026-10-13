@@ -3,7 +3,7 @@
 import Base from '../../layouts/Base.astro';
 import CaseIntro from '../../components/CaseIntro.astro';
 import DeviceDuo from '../../components/DeviceDuo.astro';
-import PhoneBrowser from '../../components/PhoneBrowser.astro';
+import PhoneCarousel from '../../components/PhoneCarousel.astro';
 import Icon from '../../components/Icon.astro';
 import { url } from '../../lib/url.js';
 
@@ -124,10 +124,7 @@ const phones = [
         <p class="eyebrow">On mobile</p>
         <h2 id="mobile" class="h2">Booking is always one tap away</h2>
       </div>
-      <ul class="mobile__row" data-phones>
-        {phones.map(([img, alt]) => <li><PhoneBrowser src={`/img/pieri/${img}.webp`} alt={alt} /></li>)}
-      </ul>
-      <div class="phones__bar" data-phones-bar aria-hidden="true"><span></span></div>
+      <PhoneCarousel browser label="Studio Pieri on mobile" screens={phones.map(([img, alt]) => [`/img/pieri/${img}.webp`, alt])} />
     </section>
 
     <section class="final reveal" aria-labelledby="final">
@@ -171,19 +168,12 @@ const phones = [
   .stack__strip { position: absolute; left: -2%; top: -6%; width: 64%; height: auto; border-radius: var(--radius-l); box-shadow: 0 12px 32px rgba(18,22,20,.18); }
 
   .mobile { display: flex; flex-direction: column; gap: var(--space-block); }
-  .mobile__row { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(12px, 2vw, 32px); }
   .final { display: flex; flex-direction: column; align-items: center; gap: var(--space-block); text-align: center; }
 
-  /* progress bar under the phones carousel (mobile), same as on the Alé page */
-  .phones__bar { display: none; position: relative; width: min(240px, 50%); height: 4px; margin: 0 auto; border-radius: var(--radius-pill); background: var(--line); overflow: hidden; }
-  .phones__bar span { position: absolute; left: 0; top: 0; bottom: 0; width: var(--w, 30%); border-radius: inherit; background: var(--ink); transform: translateX(var(--x, 0)); }
 
   @media (max-width: 760px) {
     .process__cards { grid-template-columns: repeat(5, 70%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
-    .mobile__row { grid-template-columns: repeat(5, 46%); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-    .mobile__row::-webkit-scrollbar { display: none; }
-    .process__cards li, .mobile__row li { scroll-snap-align: start; }
-    .phones__bar { display: block; }
+    .process__cards li { scroll-snap-align: start; }
     /* images take less height on small screens */
     .split__media .shot { max-height: 260px; object-fit: cover; object-position: top; }
     .stack { padding-bottom: 16%; }
@@ -193,19 +183,3 @@ const phones = [
   }
 </style>
 
-<script>
-  // phones carousel: the bar shows how much you see and where you are
-  const row = document.querySelector('[data-phones]');
-  const bar = document.querySelector('[data-phones-bar]');
-  if (row && bar) {
-    const thumb = bar.firstElementChild;
-    const update = () => {
-      const max = row.scrollWidth - row.clientWidth;
-      const w = (row.clientWidth / row.scrollWidth) * bar.clientWidth;
-      thumb.style.setProperty('--w', `${w}px`);
-      thumb.style.setProperty('--x', `${max > 0 ? (row.scrollLeft / max) * (bar.clientWidth - w) : 0}px`);
-    };
-    row.addEventListener('scroll', update, { passive: true });
-    addEventListener('resize', update); update();
-  }
-</script>

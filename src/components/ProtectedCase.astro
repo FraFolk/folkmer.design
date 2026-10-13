@@ -54,7 +54,7 @@ const { slug, title, preview } = Astro.props;
   /* text and image side by side */
   .pc__content :global(.pc-split) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
   .pc__content :global(.pc-split > img) { max-width: none; }
-  .pc__content :global(.pc-section--wide) { max-width: none; }
+  .pc__content :global(.pc-section.pc-section--wide) { max-width: none; }
   .pc__content :global(.pc-section--wide > p) { max-width: 760px; }
   /* role phases: 3 cards, the last one in the palette's dark green */
   .pc__content :global(.pc-phases) { list-style: none; padding: 0 !important; margin: 0; display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px !important; }
@@ -68,15 +68,12 @@ const { slug, title, preview } = Astro.props;
   .pc__content :global(.pc-shots li) { display: flex; flex-direction: column; gap: 8px; }
   .pc__content :global(.pc-shots img) { max-width: none; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; box-shadow: inset 0 0 0 1px var(--line); border: 1px solid var(--line); }
   .pc__content :global(.pc-shots span) { font-size: var(--fs-caption); color: var(--ink-2); }
-  /* a row of iPhones, like on the Alé page */
-  .pc__content :global(.pc-phones) { list-style: none; padding: 0 !important; margin: var(--space-block) 0 0; display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 3vw, 40px) !important; }
-  .pc__content :global(.pc-phones .phone-mock__screen) { max-width: none; border-radius: 12.6% / 5.8%; }
-  .pc__content :global(.pc-phones .phone-mock__frame) { max-width: none; border-radius: 0; }
+  /* the standard phone carousel (global .phones): undo the list styles of the sections */
+  .pc__content :global(.pc-section .phones__row) { padding: 8px 0 24px; flex-direction: row; gap: 32px; }
   @media (max-width: 760px) {
     .pc__content :global(.pc-split) { grid-template-columns: 1fr; }
     .pc__content :global(.pc-phases), .pc__content :global(.pc-shots) { grid-template-columns: 1fr; }
-    .pc__content :global(.pc-phones) { grid-template-columns: repeat(4, 62%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px !important; }
-    .pc__content :global(.pc-phones li) { scroll-snap-align: start; }
+    .pc__content :global(.pc-section .phones__row) { gap: 16px; }
   }
   .pc__content :global(.pc-section) { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
   .pc__content :global(.pc-section ul) { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
@@ -92,6 +89,7 @@ const { slug, title, preview } = Astro.props;
 
 <script>
   import { formatCode, unlock, savedCode } from '../lib/access.js';
+  import { initPhones } from '../lib/phones.js';
   for (const root of document.querySelectorAll('[data-pc]')) {
     const slug = root.dataset.slug;
     const locked = root.querySelector('[data-pc-locked]');
@@ -104,6 +102,7 @@ const { slug, title, preview } = Astro.props;
       if (!r.ok) { if (focus) err.textContent = r.message; return; }
       content.innerHTML = r.html;
       locked.hidden = true; content.hidden = false;
+      initPhones(content);
       if (focus) content.focus();
     };
     formatCode(form.code);
