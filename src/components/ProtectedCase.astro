@@ -30,22 +30,42 @@ const API = import.meta.env.DEV ? 'http://localhost:8787' : 'https://folkmer-wal
   <dialog class="pc-dialog" data-pc-dialog aria-labelledby={`pc-dialog-title-${slug}`}>
     <button type="button" class="pc-dialog__close" data-pc-close aria-label="Close"><Icon name="x-mark" size={22} /></button>
     <form class="pc-dialog__form" data-pc-request novalidate>
-      <p class="pc-dialog__eyebrow" id={`pc-dialog-title-${slug}`}>Request access</p>
-      <p class="pc-msg">
-        Hi Francesca, I'm
+      <div class="pc-dialog__top">
+        <p class="pc-dialog__eyebrow" id={`pc-dialog-title-${slug}`}>Request access</p>
+        <p class="pc-dialog__count" data-pc-count aria-hidden="true">1 of 5</p>
+      </div>
+      <p class="pc-recap" data-pc-recap aria-live="polite"></p>
+
+      <div class="pc-step" data-pc-step="0">
+        <span class="pc-q">Hi Francesca, I'm</span>
         <label class="sr-only" for={`pc-first-${slug}`}>First name</label><input id={`pc-first-${slug}`} class="pc-blank" name="first" type="text" autocomplete="given-name" placeholder="first name" required />
         <label class="sr-only" for={`pc-last-${slug}`}>Last name</label><input id={`pc-last-${slug}`} class="pc-blank" name="last" type="text" autocomplete="family-name" placeholder="last name" required />
-        from
-        <label class="sr-only" for={`pc-company-${slug}`}>Company (optional)</label><input id={`pc-company-${slug}`} class="pc-blank" name="company" type="text" autocomplete="organization" placeholder="company (optional)" />.
-        I'd love to see this project because
-        <label class="sr-only" for={`pc-reason-${slug}`}>Why you'd like to see it</label><input id={`pc-reason-${slug}`} class="pc-blank" name="reason" type="text" placeholder="tell me why" required />.
-        You can send me the code at
-        <label class="sr-only" for={`pc-email-${slug}`}>Email</label><input id={`pc-email-${slug}`} class="pc-blank" name="email" type="email" autocomplete="email" placeholder="your email" required />.
-      </p>
+      </div>
+      <div class="pc-step" data-pc-step="1" hidden>
+        <label class="pc-q" for={`pc-company-${slug}`}>from</label>
+        <input id={`pc-company-${slug}`} class="pc-blank" name="company" type="text" autocomplete="organization" placeholder="company" />
+        <p class="pc-hint">Optional. Skip it if you like.</p>
+      </div>
+      <div class="pc-step" data-pc-step="2" hidden>
+        <label class="pc-q" for={`pc-reason-${slug}`}>I'd love to see this project because</label>
+        <input id={`pc-reason-${slug}`} class="pc-blank" name="reason" type="text" placeholder="tell me why" required />
+      </div>
+      <div class="pc-step" data-pc-step="3" hidden>
+        <label class="pc-q" for={`pc-email-${slug}`}>You can send me the code at</label>
+        <input id={`pc-email-${slug}`} class="pc-blank" name="email" type="email" autocomplete="email" placeholder="your email" required />
+      </div>
+      <div class="pc-step" data-pc-step="4" hidden>
+        <p class="pc-q pc-q--summary" data-pc-summary tabindex="-1"></p>
+      </div>
+
       <input class="pc-dialog__hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <p class="pc-dialog__error" data-pc-request-error role="alert"></p>
-      <p class="pc-dialog__privacy">I only use your details to answer this request. <a href={url('/privacy/')}>Privacy</a></p>
-      <button type="submit" class="roll roll--light"><span data-pc-send-label>Send request</span><span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span></button>
+      <p class="pc-dialog__privacy" data-pc-privacy hidden>I only use your details to answer this request. <a href={url('/privacy/')}>Privacy</a></p>
+      <div class="pc-actions">
+        <button type="button" class="pc-back" data-pc-back hidden><Icon name="arrow-left" size={18} /> Back</button>
+        <button type="submit" class="roll roll--light" data-pc-next><span data-pc-send-label>Continue</span><span class="roll__ball" aria-hidden="true"><Icon name="arrow-right" size={22} /></span></button>
+        <p class="pc-enter" data-pc-enter aria-hidden="true">or press <kbd>Enter ↵</kbd></p>
+      </div>
     </form>
     <div class="pc-dialog__done" data-pc-done hidden tabindex="-1">
       <p class="pc-msg pc-msg--done">Thanks, <b data-pc-who></b>! Your request is on its way.</p>
@@ -85,14 +105,31 @@ const API = import.meta.env.DEV ? 'http://localhost:8787' : 'https://folkmer-wal
   @keyframes pc-in { from { opacity: 0; transform: translateY(12px); } }
 
   /* Request access: same look as the footer form */
-  .pc-dialog { width: min(640px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: clamp(24px, 4vw, 48px); border: 0; border-radius: var(--radius-xl); background: var(--night); color: var(--on-night); }
+  .pc-dialog { width: min(760px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: clamp(24px, 4vw, 48px); border: 0; border-radius: var(--radius-xl); background: var(--night); color: var(--on-night); }
   .pc-dialog::backdrop { background: rgba(18,22,20,.6); backdrop-filter: blur(4px); }
   .pc-dialog__close { position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--night-edge); background: transparent; color: var(--on-night); display: grid; place-items: center; cursor: pointer; }
   .pc-dialog__close:hover { border-color: var(--night-muted); }
   .pc-dialog__form, .pc-dialog__done { display: flex; flex-direction: column; gap: 20px; outline: none; }
   .pc-dialog__eyebrow { font-weight: 600; text-transform: uppercase; letter-spacing: .02em; color: rgba(255,255,255,.7); }
   .pc-dialog__intro { color: var(--night-soft); }
-  /* the request is a sentence with blanks, like the footer */
+  /* one sentence at a time, like the footer */
+  .pc-dialog__top { display: flex; justify-content: space-between; align-items: baseline; padding-right: 56px; }
+  .pc-dialog__count { color: var(--on-night); }
+  .pc-recap { color: var(--night-muted); font-size: var(--fs-body); min-height: 1.5em; }
+  .pc-recap :global(b) { color: var(--on-night); font-weight: 500; }
+  .pc-step { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .35em; animation: pc-step-in .4s ease-out; }
+  @keyframes pc-step-in { from { opacity: 0; transform: translateY(12px); } }
+  .pc-q { font-size: var(--fs-h2); font-weight: 500; line-height: 1.15; letter-spacing: -.02em; color: var(--night-muted); }
+  .pc-q--summary { color: var(--on-night); outline: none; }
+  .pc-q--summary :global(b) { color: var(--orange); font-weight: 500; }
+  .pc-step .pc-blank { font-size: var(--fs-h2); line-height: 1.15; letter-spacing: -.02em; }
+  .pc-hint { width: 100%; color: var(--night-muted); font-size: var(--fs-small); margin-top: 8px; }
+  .pc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .pc-back { height: 48px; padding: 0 24px; display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius-pill); border: 1.5px solid var(--night-edge); background: transparent; color: var(--on-night); font: 500 var(--fs-body)/1 inherit; font-family: inherit; cursor: pointer; }
+  .pc-back:hover { border-color: var(--night-muted); }
+  .pc-enter { color: var(--night-muted); font-size: var(--fs-caption); }
+  .pc-enter kbd { font: 12px/1 ui-monospace, monospace; border: 1px solid var(--night-edge); border-radius: var(--radius-s); padding: 3px 8px; color: var(--night-muted); }
+  @media (hover: none) { .pc-enter { display: none; } }
   .pc-msg { font-size: var(--fs-h3); font-weight: 500; line-height: 1.6; letter-spacing: -.01em; color: var(--night-muted); padding-right: 32px; }
   .pc-msg--done { color: var(--on-night); }
   .pc-dialog__intro b, .pc-msg b { color: var(--orange); font-weight: 500; }
@@ -101,10 +138,12 @@ const API = import.meta.env.DEV ? 'http://localhost:8787' : 'https://folkmer-wal
   .pc-blank:focus { outline: none; border-bottom-color: #fff; }
   .pc-dialog [aria-invalid='true'] { border-bottom-style: dashed; border-bottom-color: var(--orange); }
   .pc-dialog__hp { position: absolute; left: -9999px; }
-  .pc-dialog__error { color: var(--orange); font-weight: 500; min-height: 1.2em; }
+  .pc-dialog__error { color: var(--orange); font-weight: 500; }
+  .pc-dialog__error:empty { display: none; }
   .pc-dialog__privacy { color: var(--night-muted); font-size: var(--fs-caption); }
   .pc-dialog__privacy a { color: inherit; text-underline-offset: 3px; }
-  .pc-dialog .roll { align-self: flex-start; --h: 48px; --ball: 36px; }
+  .pc-dialog .roll { --h: 48px; --ball: 36px; }
+  .pc-dialog__done .roll { align-self: flex-start; }
   .pc-dialog :is(button, a):focus-visible { outline: 3px solid var(--on-night); outline-offset: 3px; }
   @media (max-width: 600px) { .pc__locked { min-height: 460px; } }
   @media (prefers-reduced-motion: reduce) { .pc__content { animation: none; } }
@@ -173,38 +212,77 @@ const API = import.meta.env.DEV ? 'http://localhost:8787' : 'https://folkmer-wal
 
     // Request access dialog
     const opener = root.querySelector('[data-pc-open]');
-    opener.addEventListener('click', () => { dialog.showModal(); blanks.forEach(fit); reqForm.first.focus(); });
+    const steps = [...reqForm.querySelectorAll('[data-pc-step]')];
+    const count = reqForm.querySelector('[data-pc-count]');
+    const recap = reqForm.querySelector('[data-pc-recap]');
+    const back = reqForm.querySelector('[data-pc-back]');
+    const nextLabel = reqForm.querySelector('[data-pc-send-label]');
+    const nextBtn = reqForm.querySelector('[data-pc-next]');
+    const f = reqForm;
+    const esc = (t) => t.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const v = (n) => f[n].value.trim();
+    let cur = 0;
+    const recapHtml = (upTo) => {
+      let t = '';
+      if (upTo > 0) t = `Hi, I'm <b>${esc(v('first'))} ${esc(v('last'))}</b>`;
+      if (upTo > 1 && v('company')) t += ` from <b>${esc(v('company'))}</b>`;
+      if (upTo > 2) t += `. I'd love to see it because <b>${esc(v('reason'))}</b>`;
+      return t ? `${t}.` : '';
+    };
+    const show = (i, focus = true) => {
+      cur = i;
+      steps.forEach((st, k) => { st.hidden = k !== i; });
+      const last = i === steps.length - 1;
+      count.textContent = `${i + 1} of ${steps.length}`;
+      back.hidden = i === 0;
+      recap.innerHTML = last ? '' : recapHtml(i);
+      nextLabel.textContent = last ? 'Send request' : 'Continue';
+      nextBtn.classList.toggle('roll--send', last);
+      f.querySelector('[data-pc-enter]').hidden = last;
+      f.querySelector('[data-pc-privacy]').hidden = !last;
+      if (last) {
+        f.querySelector('[data-pc-summary]').innerHTML = `Hi Francesca, I'm <b>${esc(v('first'))} ${esc(v('last'))}</b>${v('company') ? ` from <b>${esc(v('company'))}</b>` : ''}. I'd love to see this project because <b>${esc(v('reason'))}</b>. You can send me the code at <b>${esc(v('email'))}</b>.`;
+      }
+      const inputs = [...steps[i].querySelectorAll('input')];
+      inputs.forEach(fit);
+      if (focus) (inputs[0] || f.querySelector('[data-pc-summary]')).focus({ preventScroll: true });
+    };
+    const valid = () => {
+      const bad = (n, msg) => { f[n].setAttribute('aria-invalid', 'true'); reqErr.textContent = msg; f[n].focus(); return false; };
+      reqErr.textContent = '';
+      if (cur === 0 && !v('first')) return bad('first', 'I need your first name.');
+      if (cur === 0 && !v('last')) return bad('last', 'And your last name, please.');
+      if (cur === 2 && !v('reason')) return bad('reason', 'A line on why helps me say yes.');
+      if (cur === 3 && (!v('email') || !f.email.checkValidity())) return bad('email', 'That email looks a bit off. Can you check it?');
+      return true;
+    };
+
+    opener.addEventListener('click', () => { f.hidden = false; done.hidden = true; dialog.showModal(); show(0); });
     root.querySelectorAll('[data-pc-close]').forEach((b) => b.addEventListener('click', () => dialog.close()));
     dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
     dialog.addEventListener('close', () => opener.focus());
+    back.addEventListener('click', () => { reqErr.textContent = ''; show(Math.max(0, cur - 1)); });
+    // Enter on the first name moves to the last name, not to the next step
+    f.first.addEventListener('keydown', (e) => { if (e.key === 'Enter' && v('first') && !v('last')) { e.preventDefault(); f.last.focus(); } });
 
-    reqForm.addEventListener('submit', async (e) => {
+    f.addEventListener('submit', async (e) => {
       e.preventDefault();
-      reqErr.textContent = '';
-      const f = reqForm;
-      const missing = ['first', 'last', 'email', 'reason'].find((n) => !f[n].value.trim() || (n === 'email' && !f.email.checkValidity()));
-      ['first', 'last', 'email', 'reason'].forEach((n) => f[n].removeAttribute('aria-invalid'));
-      if (missing) {
-        f[missing].setAttribute('aria-invalid', 'true');
-        reqErr.textContent = missing === 'email' ? 'That email looks a bit off. Can you check it?' : 'I need your name, email and a line on why.';
-        f[missing].focus();
-        return;
-      }
-      const label = f.querySelector('[data-pc-send-label]');
-      label.textContent = 'Sending…';
+      if (!valid()) return;
+      if (cur < steps.length - 1) { show(cur + 1); return; }
+      nextLabel.textContent = 'Sending…'; nextBtn.disabled = true;
       try {
         const res = await fetch(`${api}/access/request`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ page: slug, first: f.first.value, last: f.last.value, email: f.email.value, company: f.company.value, reason: f.reason.value, website: f.website.value }),
+          body: JSON.stringify({ page: slug, first: v('first'), last: v('last'), email: v('email'), company: v('company'), reason: v('reason'), website: f.website.value }),
         });
         if (!res.ok) throw new Error(String(res.status));
-        root.querySelector('[data-pc-who]').textContent = f.first.value.trim();
-        root.querySelector('[data-pc-mail]').textContent = f.email.value.trim();
+        root.querySelector('[data-pc-who]').textContent = v('first');
+        root.querySelector('[data-pc-mail]').textContent = v('email');
         f.hidden = true; done.hidden = false; done.focus();
       } catch (e2) {
         reqErr.textContent = e2.message === '429' ? "You've sent a few requests today. I'll get back to you soon." : "That didn't go through. Try again, or write to folkmer.design@gmail.com.";
       } finally {
-        label.textContent = 'Send request';
+        nextBtn.disabled = false; nextLabel.textContent = cur === steps.length - 1 ? 'Send request' : 'Continue';
       }
     });
   }
