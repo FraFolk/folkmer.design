@@ -30,3 +30,6 @@ CREATE TABLE IF NOT EXISTS access_fails (
   created_at TEXT DEFAULT (datetime('now')),
   ip_hash TEXT
 );
+-- fast counts for the unlock limits
+CREATE INDEX IF NOT EXISTS access_fails_time ON access_fails (created_at);
+CREATE INDEX IF NOT EXISTS access_fails_ip ON access_fails (ip_hash, created_at);

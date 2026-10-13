@@ -14,8 +14,10 @@ const CASES = {
   'credit-agricole': { title: 'Crédit Agricole: evolving the customer app', html: creditAgricole },
   aon: { title: 'Aon: joined to execute, ended up owning the design', html: aon },
 };
-const CODE_DAYS = 14;          // a code works for 14 days
+const CODE_DAYS = 7;           // a code works for 7 days by default...
+const DAY_CHOICES = [1, 3, 5, 7]; // ...and Francesca can pick another length from the request email (7 is the maximum)
 const TOKEN_HOURS = 12;        // image links work for 12 hours after unlocking
+const GLOBAL_FAILS_PER_HOUR = 300; // wrong codes from all visitors together, then unlocking pauses for the hour
 const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O, 1/I: easy to read and type
 
 const clean = (v, n) => String(v || '').replace(/[\r\n]+/g, ' ').trim().slice(0, n);
@@ -38,10 +40,16 @@ const makeToken = async (env, slug, id) => {
   const exp = Math.floor(Date.now() / 1000) + TOKEN_HOURS * 3600;
   return `${id}.${exp}.${await hmac(env.ACCESS_SECRET, `${slug}.${id}.${exp}`)}`;
 };
+// compare without leaking, through timing, how many characters were right
+function sameText(a, b) {
+  const x = new TextEncoder().encode(a), y = new TextEncoder().encode(b);
+  if (x.length !== y.length) return false;
+  return crypto.subtle.timingSafeEqual(x, y);
+}
 async function checkToken(env, slug, token) {
   const [id, exp, sig] = String(token || '').split('.');
   if (!id || !exp || !sig || Number(exp) < Date.now() / 1000) return false;
-  return sig === (await hmac(env.ACCESS_SECRET, `${slug}.${id}.${exp}`));
+  return sameText(sig, await hmac(env.ACCESS_SECRET, `${slug}.${id}.${exp}`));
 }
 
 // 1. Request access
@@ -55,6 +63,7 @@ export async function requestAccess(req, env, { json, ORIGINS, ipHash }) {
   const ip = await ipHash(req, 'access');
   const { results } = await env.DB.prepare("SELECT COUNT(*) AS n FROM access_codes WHERE ip_hash = ? AND created_at > datetime('now', '-1 day')").bind(ip).all();
   if (results[0].n >= 3) return json(req, { error: 'enough for today' }, 429);
+  if (!env.ACCESS_SECRET || env.ACCESS_SECRET.length < 32) return json(req, { error: 'not configured' }, 500);
 
   const code = newCode();
   const expires = new Date(Date.now() + CODE_DAYS * 864e5).toISOString().replace('T', ' ').slice(0, 19);
@@ -78,13 +87,16 @@ export async function requestAccess(req, env, { json, ORIGINS, ipHash }) {
     '',
     `   ${code}`,
     '',
-    `Open ${all ? 'https://folkmerdesign.com/#work' : caseUrl} and type it under the lock. It works until ${expires.slice(0, 10)}.`,
+    `Open ${all ? 'https://folkmerdesign.com/#work' : caseUrl} and type it under the lock. It works for ${CODE_DAYS} days, until ${expires.slice(0, 10)}.`,
     all ? 'Please keep it to yourself: these projects are confidential.' : 'Please keep it to yourself: the project is confidential.',
     '',
     'Francesca',
     '----------------------------------------',
     '',
-    `If you don't agree, ignore this email: the code works only if you send it.`,
+    `Want it to last less? Pick the days (the code then works for that many days from the moment you click):`,
+    ...(await Promise.all(DAY_CHOICES.map(async (d) => `   ${d} day${d > 1 ? 's' : ''}: ${new URL(req.url).origin}/access/days/${id}/${d}?s=${await hmac(env.ACCESS_SECRET, `days.${id}.${d}`)}`))),
+    '',
+    `If you don't agree, ignore this email: nobody else knows the code.`,
     `To switch it off later: D1 > folkmer-wall > access_codes > row ${id} > revoked = 1.`,
   ].join('\n');
   const raw = [
@@ -115,10 +127,13 @@ export async function unlock(req, env, { json, ORIGINS, ipHash }) {
   let m; try { m = await req.json(); } catch { return json(req, { error: 'bad json' }, 400); }
   const slug = clean(m.page, 60);
   if (!CASES[slug]) return json(req, { error: 'not found' }, 404);
-  // slow down guessing: max 10 wrong tries per day per IP
+  // slow down guessing: max 10 wrong tries per day per IP (per /64 network on IPv6, where addresses are cheap)...
   const ip = await ipHash(req, 'unlock');
   const tries = await env.DB.prepare("SELECT COUNT(*) AS n FROM access_fails WHERE ip_hash = ? AND created_at > datetime('now', '-1 day')").bind(ip).all();
   if (tries.results[0].n >= 10) return json(req, { error: 'too many tries' }, 429);
+  // ...and a ceiling for everyone together, so many IPs at once can't guess either (a real visitor rarely gets it wrong)
+  const all = await env.DB.prepare("SELECT COUNT(*) AS n FROM access_fails WHERE created_at > datetime('now', '-1 hour')").all();
+  if (all.results[0].n >= GLOBAL_FAILS_PER_HOUR) return json(req, { error: 'too many tries' }, 429);
   const rec = await env.DB.prepare("SELECT id FROM access_codes WHERE code_hash = ? AND revoked = 0 AND expires_at > datetime('now') AND (page = ? OR page = 'all')")
     .bind(await sha(normal(m.code)), slug).first();
   if (!rec) {
@@ -139,4 +154,24 @@ export async function asset(req, env, slug, file, { json }) {
   const res = await env.ASSETS.fetch(new Request(`https://assets.local/${slug}/${file}`));
   if (!res.ok) return json(req, { error: 'not found' }, 404);
   return new Response(res.body, { headers: { 'Content-Type': res.headers.get('Content-Type') || 'application/octet-stream', 'Cache-Control': 'private, max-age=3600', 'X-Robots-Tag': 'noindex' } });
+}
+
+// 2b. Francesca changes how long a code lasts, from the links in the request email.
+// GET shows a page with one button; only the button (POST) changes the date, so link scanners in the mailbox can't.
+const page = (body) => new Response(`<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Access code</title><body style="font:18px/1.5 system-ui,sans-serif;max-width:480px;margin:15vh auto;padding:0 16px;color:#2a2f2d;background:#fcfcfa">${body}</body>`, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'X-Robots-Tag': 'noindex', 'Cache-Control': 'no-store' } });
+export async function setDays(req, env, id, days) {
+  const url = new URL(req.url);
+  const n = Number(days);
+  const sig = url.searchParams.get('s') || '';
+  if (!DAY_CHOICES.includes(n) || !env.ACCESS_SECRET || !sameText(sig, await hmac(env.ACCESS_SECRET, `days.${id}.${n}`))) return page('<p>This link doesn\'t work.</p>');
+  const rec = await env.DB.prepare('SELECT first_name, last_name, revoked FROM access_codes WHERE id = ?').bind(Number(id)).first();
+  if (!rec) return page('<p>Code not found.</p>');
+  const who = `${rec.first_name} ${rec.last_name}`.replace(/[<>&"]/g, '');
+  const label = `${n} day${n > 1 ? 's' : ''}`;
+  if (req.method === 'POST') {
+    const until = new Date(Date.now() + n * 864e5).toISOString().replace('T', ' ').slice(0, 19);
+    await env.DB.prepare('UPDATE access_codes SET expires_at = ? WHERE id = ?').bind(until, Number(id)).run();
+    return page(`<h1 style="font-size:24px">Done</h1><p>The code for ${who} now works for ${label}, until <b>${until.slice(0, 16)} UTC</b>.</p><p>Remember to change the date in your reply.</p>`);
+  }
+  return page(`<h1 style="font-size:24px">Code for ${who}</h1><p>Make it work for ${label}, starting now?</p><form method="post"><button style="font:inherit;padding:12px 24px;border-radius:100px;border:0;background:#373b3a;color:#fff;cursor:pointer">Yes, ${label}</button></form>`);
 }

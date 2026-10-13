@@ -1,5 +1,5 @@
 import { EmailMessage } from "cloudflare:email";
-import { requestAccess, unlock, asset } from "./access.js";
+import { requestAccess, unlock, asset, setDays } from "./access.js";
 // Visitors' wall for folkmerdesign.com: stores drawing strokes in D1.
 // Visitors can add strokes and undo/erase only their own (each stroke has a private key kept in their browser).
 // Francesca removes strokes from the Cloudflare dashboard (D1 > folkmer-wall > strokes).
@@ -49,6 +49,14 @@ const cors = (req) => {
 };
 const json = (req, body, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', ...cors(req) } });
 const hash = async (s) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))].slice(0, 8).map((b) => b.toString(16).padStart(2, '0')).join('');
+// IPv6: one person easily gets a whole /64 network, so count the network, not the single address
+const network = (ip) => {
+  if (!ip.includes(':')) return ip;
+  const [head, tail = ''] = ip.split('::');
+  const h = head ? head.split(':') : [], t = tail ? tail.split(':') : [];
+  const full = [...h, ...Array(Math.max(0, 8 - h.length - t.length)).fill('0'), ...t];
+  return full.slice(0, 4).map((x) => x.toLowerCase().replace(/^0+(?=.)/, '')).join(':') + '::/64';
+};
 const okColour = (c) => /^#[0-9a-f]{6}$/i.test(c);
 
 export default {
@@ -57,9 +65,11 @@ export default {
     if (req.method === 'OPTIONS') return new Response(null, { headers: cors(req) });
     if (url.pathname === '/contact' && req.method === 'POST') return contact(req, env);
     // private case studies (see access.js)
-    const helpers = { json, ORIGINS, ipHash: (r, salt) => hash((r.headers.get('CF-Connecting-IP') || '') + salt + new Date().toISOString().slice(0, 10)) };
+    const helpers = { json, ORIGINS, ipHash: (r, salt) => hash(network(r.headers.get('CF-Connecting-IP') || '') + salt + new Date().toISOString().slice(0, 10)) };
     if (url.pathname === '/access/request' && req.method === 'POST') return requestAccess(req, env, helpers);
     if (url.pathname === '/access/unlock' && req.method === 'POST') return unlock(req, env, helpers);
+    const d = url.pathname.match(/^\/access\/days\/(\d+)\/(\d+)$/);
+    if (d && (req.method === 'GET' || req.method === 'POST')) return setDays(req, env, d[1], d[2]);
     const a = url.pathname.match(/^\/access\/asset\/([\w-]+)\/([\w.-]+)$/);
     if (a && req.method === 'GET') return asset(req, env, a[1], a[2], helpers);
     const del = url.pathname.match(/^\/strokes\/(\d+)$/);
