@@ -50,7 +50,7 @@ export async function requestAccess(req, env, { json, ORIGINS, ipHash }) {
   let m; try { m = await req.json(); } catch { return json(req, { error: 'bad json' }, 400); }
   if (m.website) return json(req, { ok: true }); // honeypot
   const first = clean(m.first, 60), last = clean(m.last, 60), email = clean(m.email, 160);
-  const company = clean(m.company, 120), reason = clean(m.reason, 600), page = clean(m.page, 60);
+  const company = clean(m.company, 120), reason = clean(m.reason, 600), page = clean(m.page, 60), all = m.all === true;
   if (!first || !last || !reason || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || !CASES[page]) return json(req, { error: 'invalid' }, 400);
   const ip = await ipHash(req, 'access');
   const { results } = await env.DB.prepare("SELECT COUNT(*) AS n FROM access_codes WHERE ip_hash = ? AND created_at > datetime('now', '-1 day')").bind(ip).all();
@@ -59,11 +59,12 @@ export async function requestAccess(req, env, { json, ORIGINS, ipHash }) {
   const code = newCode();
   const expires = new Date(Date.now() + CODE_DAYS * 864e5).toISOString().replace('T', ' ').slice(0, 19);
   const row = await env.DB.prepare('INSERT INTO access_codes (expires_at, code_hash, first_name, last_name, email, company, reason, page, ip_hash) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)')
-    .bind(expires, await sha(normal(code)), first, last, email, company, reason, page, ip).run();
+    .bind(expires, await sha(normal(code)), first, last, email, company, reason, all ? 'all' : page, ip).run();
   const id = row.meta.last_row_id;
   const caseUrl = `https://folkmerdesign.com/work/${page}/`;
+  const what = all ? `all the private cases (asked from "${CASES[page].title}")` : `"${CASES[page].title}"`;
   const text = [
-    `${first} ${last} would like to see "${CASES[page].title}".`,
+    `${first} ${last} would like to see ${what}.`,
     '',
     `Email: ${email}`,
     `Company: ${company || '-'}`,
@@ -73,12 +74,12 @@ export async function requestAccess(req, env, { json, ORIGINS, ipHash }) {
     '----------------------------------------',
     `Hi ${first},`,
     '',
-    'thanks for your interest! Here is your personal code to read the full case:',
+    all ? 'thanks for your interest! Here is your personal code: it opens all my private cases.' : 'thanks for your interest! Here is your personal code to read the full case:',
     '',
     `   ${code}`,
     '',
-    `Open ${caseUrl} and type it under the lock. It works until ${expires.slice(0, 10)}.`,
-    'Please keep it to yourself: the project is confidential.',
+    `Open ${all ? 'https://folkmerdesign.com/#work' : caseUrl} and type it under the lock. It works until ${expires.slice(0, 10)}.`,
+    all ? 'Please keep it to yourself: these projects are confidential.' : 'Please keep it to yourself: the project is confidential.',
     '',
     'Francesca',
     '----------------------------------------',
@@ -90,7 +91,7 @@ export async function requestAccess(req, env, { json, ORIGINS, ipHash }) {
     'From: Portfolio <portfolio@folkmerdesign.com>',
     'To: folkmer.design@gmail.com',
     `Reply-To: ${email}`,
-    `Subject: =?UTF-8?B?${b64(`Access request: ${first} ${last} (${CASES[page].title})`)}?=`,
+    `Subject: =?UTF-8?B?${b64(`Access request: ${first} ${last} (${all ? 'all cases' : CASES[page].title})`)}?=`,
     `Message-ID: <${crypto.randomUUID()}@folkmerdesign.com>`,
     `Date: ${new Date().toUTCString()}`,
     'MIME-Version: 1.0',
@@ -118,7 +119,7 @@ export async function unlock(req, env, { json, ORIGINS, ipHash }) {
   const ip = await ipHash(req, 'unlock');
   const tries = await env.DB.prepare("SELECT COUNT(*) AS n FROM access_fails WHERE ip_hash = ? AND created_at > datetime('now', '-1 day')").bind(ip).all();
   if (tries.results[0].n >= 10) return json(req, { error: 'too many tries' }, 429);
-  const rec = await env.DB.prepare("SELECT id FROM access_codes WHERE code_hash = ? AND revoked = 0 AND expires_at > datetime('now') AND page = ?")
+  const rec = await env.DB.prepare("SELECT id FROM access_codes WHERE code_hash = ? AND revoked = 0 AND expires_at > datetime('now') AND (page = ? OR page = 'all')")
     .bind(await sha(normal(m.code)), slug).first();
   if (!rec) {
     await env.DB.prepare('INSERT INTO access_fails (ip_hash) VALUES (?)').bind(ip).run();

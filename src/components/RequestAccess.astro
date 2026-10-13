@@ -33,6 +33,7 @@ import { url } from '../lib/url.js';
     </div>
     <div class="pc-step" data-pc-step="4" hidden>
       <p class="pc-q pc-q--summary" data-pc-summary tabindex="-1"></p>
+      <label class="pc-all"><input type="checkbox" name="all" /> <span>Ask for access to all my private cases, not just this one</span></label>
     </div>
 
     <input class="pc-dialog__hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
@@ -94,6 +95,9 @@ import { url } from '../lib/url.js';
   .pc-dialog .roll { --h: 48px; --ball: 36px; }
   .pc-dialog__done .roll { align-self: flex-start; }
   .pc-dialog :is(button, a):focus-visible { outline: 3px solid var(--on-night); outline-offset: 3px; }
+  .pc-all { width: 100%; display: flex; align-items: center; gap: 12px; margin-top: 16px; color: var(--night-soft); font-size: var(--fs-body); cursor: pointer; }
+  .pc-all input { width: 22px; height: 22px; margin: 0; accent-color: var(--orange); flex: none; cursor: pointer; }
+  .pc-all input:focus-visible { outline: 3px solid var(--on-night); outline-offset: 3px; }
   .pc-blank--area { display: block; flex-basis: 100%; width: 100% !important; resize: none; overflow: hidden; font-size: var(--fs-h2); line-height: 1.25; letter-spacing: -.02em; font-family: inherit; font-weight: 500; }
 </style>
 
@@ -184,7 +188,7 @@ import { url } from '../lib/url.js';
       try {
         const res = await fetch(`${API}/access/request`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ page: slug, first: v('first'), last: v('last'), email: v('email'), company: v('company'), reason: v('reason'), website: f.website.value }),
+          body: JSON.stringify({ page: slug, first: v('first'), last: v('last'), email: v('email'), company: v('company'), reason: v('reason'), all: f.all.checked, website: f.website.value }),
         });
         if (!res.ok) throw new Error(String(res.status));
         dialog.querySelector('[data-pc-who]').textContent = v('first');

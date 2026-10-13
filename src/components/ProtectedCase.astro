@@ -50,10 +50,10 @@ const { slug, title, preview } = Astro.props;
   .pc__ask:hover { color: var(--orange-text); }
   .pc__ask:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: var(--radius-s); }
   .pc__content { display: flex; flex-direction: column; gap: clamp(64px, 8vw, 128px); outline: none; animation: pc-in 300ms ease-out; }
-  .pc__content :global(img) { width: 100%; height: auto; border-radius: var(--radius-l); }
+  .pc__content :global(img) { width: 100%; max-width: 760px; height: auto; border-radius: var(--radius-l); }
   .pc__content :global(.pc-section) { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
   .pc__content :global(.pc-section ul) { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
-  .pc__content :global(.pc-stats) { list-style: none; padding: 0 !important; display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 24px !important; max-width: none; }
+  .pc__content :global(.pc-stats) { list-style: none; padding: 0 !important; display: grid !important; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px 24px !important; max-width: none; }
   .pc__content :global(.pc-stats li) { display: flex; flex-direction: column; gap: 4px; color: var(--ink-2); }
   .pc__content :global(.pc-stats b) { font-size: var(--fs-display); font-weight: 500; line-height: 1; color: var(--sage-text); }
   @media (max-width: 760px) { .pc__content :global(.pc-stats) { grid-template-columns: 1fr 1fr; } }
