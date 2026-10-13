@@ -20,9 +20,9 @@ const sha = async (s) => [...new Uint8Array(await crypto.subtle.digest('SHA-256'
 const normal = (code) => String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
 
 function newCode() {
-  const bytes = crypto.getRandomValues(new Uint8Array(12));
+  const bytes = crypto.getRandomValues(new Uint8Array(8));
   const chars = [...bytes].map((b) => ALPHABET[b % ALPHABET.length]).join('');
-  return `${chars.slice(0, 4)}-${chars.slice(4, 8)}-${chars.slice(8, 12)}`; // e.g. K7MP-Q2XR-9DHT
+  return `${chars.slice(0, 4)}-${chars.slice(4, 8)}`; // e.g. K7MP-Q2XR
 }
 
 async function hmac(secret, msg) {
