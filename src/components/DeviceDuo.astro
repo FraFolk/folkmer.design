@@ -1,19 +1,18 @@
 ---
-// iMac with the site in a browser window, and an iPhone (Safari) in front of it, bottom left.
+// iMac with the site on screen, and an iPhone in front of it, bottom left.
 // Both devices are always fully visible. Used for website case studies.
 import { url } from '../lib/url.js';
 import PhoneBrowser from './PhoneBrowser.astro';
-const { desktop, mobile, domain = 'studiodentisticopieri.com' } = Astro.props;
+const { desktop, mobile } = Astro.props;
 ---
 <span class="duo" aria-hidden="true">
   <span class="duo__imac">
     <img class="duo__body" src={url('/img/imac.webp')} alt="" width="2000" height="1615" loading="lazy" />
     <span class="duo__screen">
-      <span class="duo__chrome"><i></i><i></i><i></i><span class="duo__url">{domain}</span></span>
       <img src={url(desktop)} alt="" loading="lazy" />
     </span>
   </span>
-  <PhoneBrowser src={mobile} domain={domain} class="duo__phone" />
+  <PhoneBrowser src={mobile} class="duo__phone" />
 </span>
 
 <style>
@@ -23,9 +22,6 @@ const { desktop, mobile, domain = 'studiodentisticopieri.com' } = Astro.props;
   .duo__body { width: 100%; height: 100%; display: block; }
   /* the iMac screen area, measured on the mockup (2000 x 1615) */
   .duo__screen { position: absolute; left: 13.4%; top: 2.85%; width: 84.2%; height: 58.5%; display: flex; flex-direction: column; overflow: hidden; background: var(--white); container-type: inline-size; }
-  .duo__chrome { flex: none; height: 4.4cqw; display: flex; align-items: center; gap: .8cqw; padding: 0 1.6cqw; background: var(--surface-2); border-bottom: 1px solid var(--line); }
-  .duo__chrome i { width: 1.1cqw; height: 1.1cqw; border-radius: 50%; background: var(--ink-faint); }
-  .duo__url { margin: 0 auto; width: 40%; height: 2.6cqw; border-radius: 1cqw; background: var(--white); display: grid; place-items: center; font-size: 1.3cqw; color: var(--ink-2); font-style: normal; }
   .duo__screen img { flex: 1; min-height: 0; width: 100%; object-fit: cover; object-position: top; display: block; }
   .duo :global(.duo__phone) { position: absolute; left: 19%; bottom: 3%; height: 62%; width: auto; filter: drop-shadow(0 12px 24px rgba(18,22,20,.25)); }
 </style>

@@ -113,7 +113,7 @@ const dock = [
           <li class="phones__item">
             <div class="phone-mock">
               <img class="phone-mock__screen" src={url(`/img/${img}.webp`)} alt={alt} loading="lazy" width="375" height="812" />
-              <img class="phone-mock__frame" src={url('/img/phone-frame-2.svg')} alt="" />
+              <img class="phone-mock__frame" src={url('/img/iphone-15-pro.webp')} alt="" />
             </div>
           </li>
         ))}
@@ -135,9 +135,6 @@ const dock = [
 
 <style>
   /* phone mockup (Figma "iphone 15") */
-  .phone { position: absolute; aspect-ratio: 143.44 / 298.22; }
-  .phone__frame { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .phone__screen { position: absolute; left: 3.36%; top: 1.38%; width: 93.9%; height: 97.24%; object-fit: cover; border-radius: 6% / 3%; }
   .ale-hero__phone { left: 44.6%; top: 20.6%; height: 57.3%; animation: rise var(--dur-story) var(--ease-out) .2s both; }
   @keyframes rise { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
 

@@ -77,15 +77,15 @@ const quotes = [
     <a class="secret-case reveal" href={url('/work/studio-pieri/')}>
       <span class="secret-case__text">
         <span class="secret-case__meta"><span class="secret-case__tags">Healthcare · Website · End-to-end</span></span>
-        <span class="secret-case__title"><b>Studio Dentistico Pieri</b>: a family dentist, redesigned from the ground up.</span>
-        <span class="secret-case__sub">One clear way to book, treatments in plain words and a practice you can trust. From content audit to launch in two days, built with Claude.</span>
+        <span class="secret-case__title">A family dentist, redesigned from the ground up.</span>
+        <span class="secret-case__sub">A deep redesign for <b>Studio Dentistico Pieri</b>: one clear way to book, treatments in plain words and a practice you can trust. From content audit to launch in two days, built with Claude.</span>
         <span class="secret-case__cta">Read the case <Icon name="arrow-right" size={18} /></span>
       </span>
       <span class="secret-case__cover"><DeviceDuo desktop="/img/pieri/desk-index.webp" mobile="/img/pieri/mob-index.webp" /></span>
     </a>
     <a class="secret-case reveal" href={url('/work/aon/')} data-gate="aon" data-gate-title="Aon: joined to execute, ended up owning the design">
       <span class="secret-case__text">
-        <span class="secret-case__meta"><span class="secret-case__tags">Insurance · End-to-end · Ownership</span><span class="lock-chip"><Icon name="lock-closed" size={14} /> Private</span></span>
+        <span class="secret-case__meta"><span class="secret-case__tags">Insurance · End-to-end · Ownership</span><span class="lock-chip"><span class="lock-chip__icons" aria-hidden="true"><Icon name="lock-closed" size={14} class="lock-chip__closed" /><Icon name="lock-open" size={14} class="lock-chip__open" /></span> Private</span></span>
         <span class="secret-case__title">Joined to execute. Ended up owning the design.</span>
         <span class="secret-case__sub">An insurance platform for <b>Aon</b> where I became the only design reference, from functional analysis to developer handoff.</span>
       </span>
@@ -98,7 +98,7 @@ const quotes = [
     </a>
     <a class="secret-case reveal" href={url('/work/credit-agricole/')} data-gate="credit-agricole" data-gate-title="Crédit Agricole: evolving an app people already love">
       <span class="secret-case__text">
-        <span class="secret-case__meta"><span class="secret-case__tags">Banking · Mobile App · Personalisation</span><span class="lock-chip"><Icon name="lock-closed" size={14} /> Private</span></span>
+        <span class="secret-case__meta"><span class="secret-case__tags">Banking · Mobile App · Personalisation</span><span class="lock-chip"><span class="lock-chip__icons" aria-hidden="true"><Icon name="lock-closed" size={14} class="lock-chip__closed" /><Icon name="lock-open" size={14} class="lock-chip__open" /></span> Private</span></span>
         <span class="secret-case__title">Evolving an app people already love.</span>
         <span class="secret-case__sub"><b>Crédit Agricole</b>'s customer app was rated above 4.5. We redesigned its five core areas and made the content adapt to each customer.</span>
       </span>
@@ -285,7 +285,15 @@ const quotes = [
   /* hover/focus on the whole card: the arrow moves ahead, text and icon change colour */
   .a11y:is(:hover, :focus-visible) .a11y__cta { color: var(--orange-text); }
   .secret-case:is(:hover, :focus-visible) .secret-case__cta { color: var(--orange-text); }
-  :is(.a11y, .secret-case):is(:hover, :focus-visible) :global(.icon) { transform: translateX(6px); }
+  /* only the CTA arrow moves; the Private chip lightens and its lock opens */
+  :is(.a11y, .secret-case):is(:hover, :focus-visible) :is(.a11y__cta, .secret-case__cta) :global(.icon) { transform: translateX(6px); }
+  .lock-chip { transition: background-color var(--dur-fast); }
+  .lock-chip__icons { position: relative; display: inline-grid; }
+  .lock-chip__icons :global(.icon) { grid-area: 1 / 1; transition: opacity var(--dur-fast); }
+  .lock-chip :global(.lock-chip__open) { opacity: 0; }
+  .secret-case:is(:hover, :focus-visible) .lock-chip { background: var(--btn); }
+  .secret-case:is(:hover, :focus-visible) .lock-chip :global(.lock-chip__closed) { opacity: 0; }
+  .secret-case:is(:hover, :focus-visible) .lock-chip :global(.lock-chip__open) { opacity: 1; }
   .secret-case__cover { position: relative; display: block; padding: 24px 32px 24px 0; }
   .secret-case__cover > :global(*) { max-width: 440px; margin-inline: auto; }
   /* same box as the MacBook on the Aon card, so both cards are the same height; phones a bit smaller inside */
