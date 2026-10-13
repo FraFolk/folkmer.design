@@ -7,7 +7,7 @@ import Icon from './Icon.astro';
 const { headingLevel = 3, start = 1, intro = false } = Astro.props;
 const H = `h${headingLevel}`;
 ---
-<div class="lc" data-lc data-start={start} data-intro={intro ? "pending" : undefined} role="region" aria-roledescription="carousel" aria-label="Lab projects">
+<div class="lc" data-lc data-start={start} data-intro={intro ? "pending" : undefined} role="region" aria-roledescription="carousel" aria-label="AI Lab projects">
   <div class="lc__viewport">
     <ul class="lc__track" data-lc-track>
       {lab.map((item, i) => {

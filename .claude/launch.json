@@ -3,9 +3,10 @@
   "configurations": [
     {
       "name": "portfolio",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["astro", "dev", "--port", "4321"],
-      "port": 4321
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "npx astro dev --port ${PORT:-4321}"],
+      "port": 4321,
+      "autoPort": true
     }
   ]
 }

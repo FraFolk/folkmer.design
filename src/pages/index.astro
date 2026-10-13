@@ -79,6 +79,7 @@ const quotes = [
     <a class="a11y reveal" href={url('/work/accessibility/')}>
       <span class="a11y__stat" aria-hidden="true">
         <span class="a11y__from">50%</span><span class="a11y__arrow">→</span><span class="a11y__to">85%</span>
+        <span class="a11y__label">accessible</span>
       </span>
       <span class="a11y__text">
         <span class="a11y__title">{projects[0].title}</span>
@@ -114,7 +115,7 @@ const quotes = [
           <svg viewBox="7.75 4.75 32.5 40.5"><path class="flask__glass" d="M18 6h12M20 6v12L9 38a4 4 0 0 0 3.5 6h23A4 4 0 0 0 39 38L28 18V6" /><path class="flask__liquid" d="M14.6 30h18.8L37 37.5a3 3 0 0 1-2.7 4.5H13.7a3 3 0 0 1-2.7-4.5z" /></svg>
           <span class="flask__drop"></span>
         </button>
-        <h2 id="lab-title">Lab</h2>
+        <h2 id="lab-title">AI Lab</h2>
       </div>
       <p>What I build and explore with AI.</p>
     </div>
@@ -243,6 +244,7 @@ const quotes = [
   .a11y__from { font-size: calc(var(--fs-display) * .55); color: #7d8581; }
   .a11y__arrow { font-size: calc(var(--fs-display) * .4); color: var(--ink-2); font-weight: 400; }
   .a11y__to { font-size: calc(var(--fs-display) * 1.4); color: var(--sage-text); }
+  .a11y__label { flex-basis: 100%; margin-top: 8px; font-size: var(--fs-h4); font-weight: 500; letter-spacing: 0; color: var(--sage-text); }
   .a11y__text { display: flex; flex-direction: column; gap: 16px; }
   .a11y__title { font-size: var(--fs-h3); font-weight: 500; }
 
@@ -250,7 +252,7 @@ const quotes = [
   .ale-card img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; transition: transform .9s var(--ease-out); }
   .ale-card:hover img { transform: scale(1.03); }
   /* dark-to-transparent gradient under the text, so white text always reads (WCAG AA) */
-  .ale-card__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 144px 32px 32px; display: flex; flex-direction: column; gap: 12px;
+  .ale-card__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 144px 32px 32px; display: flex; flex-direction: column; gap: 4px;
     background: linear-gradient(to top, rgba(12,15,14,.92) 0%, rgba(12,15,14,.78) 40%, rgba(12,15,14,0) 100%); }
   .ale-card__title { font-size: var(--fs-h3); font-weight: 500; }
   .ale-card__sub { font-size: var(--fs-small); color: rgba(255,255,255,.85); }
