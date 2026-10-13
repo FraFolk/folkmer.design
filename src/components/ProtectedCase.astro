@@ -49,8 +49,35 @@ const { slug, title, preview } = Astro.props;
   .pc__ask { background: none; border: 0; padding: 12px 8px; font: 500 var(--fs-body)/1.2 inherit; font-family: inherit; color: var(--ink); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
   .pc__ask:hover { color: var(--orange-text); }
   .pc__ask:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: var(--radius-s); }
-  .pc__content { display: flex; flex-direction: column; gap: clamp(64px, 8vw, 128px); outline: none; animation: pc-in 300ms ease-out; }
+  .pc__content { display: flex; flex-direction: column; gap: var(--space-section); outline: none; animation: pc-in 300ms ease-out; }
   .pc__content :global(img) { width: 100%; max-width: 760px; height: auto; border-radius: var(--radius-l); }
+  /* text and image side by side */
+  .pc__content :global(.pc-split) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
+  .pc__content :global(.pc-split > img) { max-width: none; }
+  .pc__content :global(.pc-section--wide) { max-width: none; }
+  .pc__content :global(.pc-section--wide > p) { max-width: 760px; }
+  /* role phases: 3 cards, the last one in the palette's dark green */
+  .pc__content :global(.pc-phases) { list-style: none; padding: 0 !important; margin: 0; display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px !important; }
+  .pc__content :global(.pc-phases li) { background: var(--surface); border-radius: var(--radius-l); padding: 24px; display: flex; flex-direction: column; gap: 8px; }
+  .pc__content :global(.pc-phases li:last-child) { background: var(--sage-deep); color: #fff; }
+  .pc__content :global(.pc-phases span) { font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--sage-text); }
+  .pc__content :global(.pc-phases li:last-child span), .pc__content :global(.pc-phases li:last-child p) { color: var(--surface-2); }
+  .pc__content :global(.pc-phases h3) { font-size: var(--fs-h4); font-weight: 600; }
+  /* screens grid with captions */
+  .pc__content :global(.pc-shots) { list-style: none; padding: 0 !important; margin: var(--space-block) 0 0; display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px !important; }
+  .pc__content :global(.pc-shots li) { display: flex; flex-direction: column; gap: 8px; }
+  .pc__content :global(.pc-shots img) { max-width: none; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; box-shadow: inset 0 0 0 1px var(--line); border: 1px solid var(--line); }
+  .pc__content :global(.pc-shots span) { font-size: var(--fs-caption); color: var(--ink-2); }
+  /* a row of iPhones, like on the Alé page */
+  .pc__content :global(.pc-phones) { list-style: none; padding: 0 !important; margin: var(--space-block) 0 0; display: grid !important; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 3vw, 40px) !important; }
+  .pc__content :global(.pc-phones .phone-mock__screen) { max-width: none; border-radius: 9% / 4.3%; }
+  .pc__content :global(.pc-phones .phone-mock__frame) { max-width: none; border-radius: 0; }
+  @media (max-width: 760px) {
+    .pc__content :global(.pc-split) { grid-template-columns: 1fr; }
+    .pc__content :global(.pc-phases), .pc__content :global(.pc-shots) { grid-template-columns: 1fr; }
+    .pc__content :global(.pc-phones) { grid-template-columns: repeat(4, 62%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px !important; }
+    .pc__content :global(.pc-phones li) { scroll-snap-align: start; }
+  }
   .pc__content :global(.pc-section) { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
   .pc__content :global(.pc-section ul) { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
   .pc__content :global(.pc-stats) { list-style: none; padding: 0 !important; display: grid !important; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px 24px !important; max-width: none; }

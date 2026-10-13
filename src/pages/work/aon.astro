@@ -5,12 +5,6 @@ import Cover from '../../components/Cover.astro';
 import { url } from '../../lib/url.js';
 import ProtectedCase from '../../components/ProtectedCase.astro';
 
-// TODO(Francesca): confirm Timeline.
-const phases = [
-  { label: 'At the start', title: 'Execution', text: 'I joined the project designing screens on a defined scope, inside a larger team.' },
-  { label: 'Along the way', title: 'More ownership', text: 'I took on more decisions, more conversations with stakeholders, and more of the flow end to end.' },
-  { label: 'Today', title: 'The only design reference', text: 'I lead the design on my own: from functional analysis to dev handoff, and everything in between.' },
-];
 ---
 <Base title="Aon: joined to execute, ended up owning the design · Francesca Folkmer"
   description="An end-to-end project for Aon where I grew from execution to sole design owner. Details under NDA, happy to talk about it.">
@@ -24,21 +18,6 @@ const phases = [
       <p>I joined the project doing execution. Along the way I became the <b>only design reference</b>: today I take it from functional analysis to dev handoff, on my own.</p>
     </CaseIntro>
 
-    <section class="phases" aria-labelledby="overview">
-      <div class="results__intro reveal">
-        <p class="eyebrow">Overview</p>
-        <h2 id="overview" class="h2">How the role grew</h2>
-      </div>
-      <ol class="phases__list">
-        {phases.map((p) => (
-          <li class="phase reveal">
-            <span class="phase__label">{p.label}</span>
-            <h3>{p.title}</h3>
-            <p>{p.text}</p>
-          </li>
-        ))}
-      </ol>
-    </section>
 
     <ProtectedCase slug="aon" title="Aon: joined to execute, ended up owning the design" preview="/img/aon-screen.webp" />
 
@@ -47,21 +26,10 @@ const phases = [
 </Base>
 
 <style>
-  .phases { display: flex; flex-direction: column; gap: 32px; }
-  .phases__list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; counter-reset: p; position: relative; }
-  .phase { background: var(--surface); border-radius: var(--radius-l); padding: 24px; display: flex; flex-direction: column; gap: 8px; }
-  /* Today: dark green from the palette, where I am now */
-  .phase:last-child { background: var(--sage-deep); color: #fff; }
-  .phase:last-child .phase__label, .phase:last-child p { color: var(--surface-2); }
-  .phase h3 { font-size: var(--fs-h4); font-weight: 600; }
-  .phase__label { font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--sage-text); }
-  .phases__list .phase:nth-child(2) { transition-delay: .12s; }
-  .phases__list .phase:nth-child(3) { transition-delay: .24s; }
 
   .nda { max-width: 654px; }
   .nda__text { display: flex; flex-direction: column; gap: 16px; }
 
   @media (max-width: 900px) {
-    .phases__list { grid-template-columns: 1fr; }
-  }
+    }
 </style>

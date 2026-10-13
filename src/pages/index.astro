@@ -238,7 +238,7 @@ const quotes = [
 
   /* ---------- Sections: story first, then the case ---------- */
   /* (wall spacing lives in PhotoBooth) */
-  .story, .lab-section { margin-bottom: clamp(72px, 12vw, 200px); }
+  .story, .lab-section { margin-bottom: var(--space-section); }
   .story { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; scroll-margin-top: 120px; }
   .story:focus { outline: none; }
   .story__title { max-width: 22ch; }
@@ -262,7 +262,7 @@ const quotes = [
   /* cases */
   .secret-case + .secret-case { margin-top: 8px; }
   .secret-case { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--surface); color: var(--ink); border-radius: var(--radius-card); overflow: hidden; text-decoration: none; min-height: 344px; text-align: left; align-items: center; }
-  .secret-case__text { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: clamp(28px, 4vw, 64px); }
+  .secret-case__text { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: var(--space-inset); }
   .secret-case__tags { font-style: italic; color: var(--ink-2); }
   .secret-case__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.2; }
   .secret-case__sub { color: var(--ink-2); max-width: 44ch; }
@@ -283,7 +283,7 @@ const quotes = [
   .mac__screen img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
   .secret-case:focus-visible, .a11y:focus-visible, .ale-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
 
-  .a11y { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; text-align: left; text-decoration: none; background: var(--surface); border-radius: var(--radius-card); padding: clamp(28px, 4vw, 64px); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow .35s var(--ease-out); }
+  .a11y { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; text-align: left; text-decoration: none; background: var(--surface); border-radius: var(--radius-card); padding: var(--space-inset); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow .35s var(--ease-out); }
   .a11y__stat { display: flex; flex-wrap: wrap; align-items: baseline; gap: .15em; min-width: 0; font-weight: 600; letter-spacing: -.04em; line-height: .9; }
   .a11y__from { font-size: calc(var(--fs-display) * .55); color: #7d8581; }
   .a11y__arrow { font-size: calc(var(--fs-display) * .4); color: var(--ink-2); font-weight: 400; }
@@ -298,7 +298,7 @@ const quotes = [
   /* dark-to-transparent gradient under the text, so white text always reads (WCAG AA) */
   .ale-card__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 144px 32px 32px; display: flex; flex-direction: column; gap: 4px;
     background: linear-gradient(to top, rgba(12,15,14,.92) 0%, rgba(12,15,14,.78) 40%, rgba(12,15,14,0) 100%); }
-  .brands { display: flex; flex-direction: column; align-items: center; gap: 24px; padding-top: clamp(48px, 6vw, 96px); margin-bottom: clamp(72px, 12vw, 200px); }
+  .brands { display: flex; flex-direction: column; align-items: center; gap: 24px; padding-top: var(--space-block); margin-bottom: var(--space-section); }
   .brands__title { font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
   .brands__list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; row-gap: 12px; }
   .brands__list li { position: relative; display: flex; align-items: center; gap: 12px; font-size: var(--fs-body); color: var(--ink-2); padding: 8px 20px; }
@@ -306,7 +306,7 @@ const quotes = [
   .brands__list li + li::before { content: ''; position: absolute; left: 0; top: 50%; width: 1px; height: 16px; margin-top: -8px; background: var(--line); }
   .brands__list img { width: 24px; height: 24px; object-fit: contain; border-radius: 6px; }
   @media (max-width: 760px) { .brands__list li { font-size: var(--fs-small); padding: 6px 12px; } }
-  .more { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding-top: clamp(72px, 10vw, 160px); padding-bottom: clamp(48px, 6vw, 96px); }
+  .more { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; margin-bottom: var(--space-section); }
   .more__text { color: var(--ink-2); max-width: 44ch; margin-bottom: 8px; }
   .ale-card__title { font-size: var(--fs-h3); font-weight: 500; }
   .ale-card__sub { font-size: var(--fs-small); color: rgba(255,255,255,.85); }
@@ -359,7 +359,7 @@ const quotes = [
   }
 
   /* ---------- Work ---------- */
-  .work { padding-bottom: clamp(80px, 8vw, 180px); scroll-margin-top: 120px; }
+  .work { padding-bottom: var(--space-section); scroll-margin-top: 120px; }
   .work:focus { outline: none; }
 
 

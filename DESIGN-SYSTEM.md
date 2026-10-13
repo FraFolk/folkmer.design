@@ -54,7 +54,15 @@ Fluid: mobile value at 375px, desktop value at 1440px, smooth in between.
 Weights: 400 body · 500 headings and labels · 600 max (emphasis). Line-height: 1.1–1.25 headings, 1.5–1.6 body.
 
 ### Spacing (8pt grid, 4pt for micro gaps)
-4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 · 128. Sections: `clamp(72px, 12vw, 200px)`.
+4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96 · 128.
+
+One rule for the rhythm of every page, as tokens in `global.css`:
+
+| Token | Mobile → Desktop | Use |
+|---|---|---|
+| `--space-section` | 96 → 160 | Between blocks and sections, on every page. Always this, never a custom value |
+| `--space-block` | 32 → 48 | From a block title to its content, small intro spacing |
+| `--space-inset` | 24 → 64 | Padding inside big cards |
 
 ### Radius
 | Token | Value | Use |

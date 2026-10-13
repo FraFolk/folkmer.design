@@ -3,8 +3,8 @@
 // Private part: on the Worker (worker/protected/credit-agricole.html), unlocked with a personal code.
 import Base from '../../layouts/Base.astro';
 import CaseIntro from '../../components/CaseIntro.astro';
-import Cover from '../../components/Cover.astro';
 import ProtectedCase from '../../components/ProtectedCase.astro';
+import { url } from '../../lib/url.js';
 ---
 <Base noindex title="Crédit Agricole: evolving the customer app · Francesca Folkmer"
   description="The evolution of the Crédit Agricole customer app: five core areas redesigned and a personalisation strategy built on personas. The full case is private: request access to read it.">
@@ -14,10 +14,17 @@ import ProtectedCase from '../../components/ProtectedCase.astro';
       title="Crédit Agricole: evolving an app people already love"
       facts={[['Timeline', 'Jul 2025 - Sep 2025'], ['Role', 'UX/UI Designer, in a team of 3'], ['Scope', '5 core areas + personalisation']]}
     >
-      <Fragment slot="media"><Cover kind="nda" size="hero" /></Fragment>
+      <Fragment slot="media"><div class="ca-cover"><img src={url('/img/ca-phones-sharp.webp')} alt="Three versions of the new Crédit Agricole home page, one per account type: pink, teal and gold cards above balance, quick actions and recent transactions." width="1450" height="1223" /></div></Fragment>
       <p>The app was already rated <b>above 4.5 stars</b>. The job: make it better without touching what's underneath. We redesigned the <b>five areas</b> customers use most and built a <b>personalisation strategy</b> on personas.</p>
     </CaseIntro>
 
     <ProtectedCase slug="credit-agricole" title="Crédit Agricole: evolving the customer app" preview="/img/ca-locked-preview.webp" />
   </article>
 </Base>
+
+<style>
+  /* cover: the three phones on the app's dark teal, with a soft modern gradient */
+  .ca-cover { position: relative; width: 100%; height: 100%; display: grid; place-items: center; overflow: hidden; border-radius: inherit;
+    background: radial-gradient(80% 90% at 30% 20%, #0b5a63 0%, transparent 60%), radial-gradient(70% 80% at 85% 90%, #0f6e66 0%, transparent 55%), linear-gradient(160deg, #04404b 0%, #022c35 100%); }
+  .ca-cover img { height: 86%; width: auto; max-width: 92%; object-fit: contain; filter: drop-shadow(0 24px 48px rgba(0,0,0,.35)); }
+</style>
