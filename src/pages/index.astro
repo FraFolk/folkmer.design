@@ -276,7 +276,8 @@ const quotes = [
   .secret-case__text { display: flex; flex-direction: column; justify-content: center; gap: 16px; padding: var(--space-inset); }
   .secret-case__tags { font-style: italic; color: var(--ink-2); }
   .secret-case__sub b { font-weight: 600; color: var(--ink); }
-  .secret-case__meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+  /* the Private chip sits above the tags; on mobile (image below) it goes back to the right of the tags */
+  .secret-case__meta { display: flex; flex-direction: column-reverse; align-items: flex-start; gap: 12px; }
   .lock-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--night); color: var(--on-night); font-size: var(--fs-caption); font-weight: 500; }
   .secret-case__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.2; }
   .secret-case__sub { color: var(--ink-2); max-width: 44ch; }
@@ -368,6 +369,7 @@ const quotes = [
 
   @media (max-width: 900px) {
     .secret-case, .a11y { grid-template-columns: 1fr; }
+    .secret-case__meta { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
     .ale-card img { aspect-ratio: 4 / 3; object-position: 50% 50%; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -398,6 +400,24 @@ const quotes = [
 </style>
 
 <script>
+  // Clients strip: if the logos wrap, spread them evenly over the rows, so no logo is ever alone on a line
+  const brandList = document.querySelector('.brands__list');
+  if (brandList) {
+    const rows = () => new Set([...brandList.children].map((li) => li.offsetTop)).size;
+    const balance = () => {
+      brandList.style.maxWidth = '';
+      const n = rows();
+      if (n < 2) return;
+      let lo = 0, hi = brandList.clientWidth;
+      while (hi - lo > 4) {
+        const mid = (lo + hi) / 2;
+        brandList.style.maxWidth = `${mid}px`;
+        if (rows() > n) lo = mid; else hi = mid;
+      }
+      brandList.style.maxWidth = `${Math.ceil(hi)}px`;
+    };
+    new ResizeObserver(() => requestAnimationFrame(balance)).observe(brandList.parentElement);
+  }
   const bubbles = [...document.querySelectorAll('.bubble')];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
