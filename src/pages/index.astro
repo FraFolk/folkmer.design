@@ -117,6 +117,7 @@ const quotes = [
       <span class="a11y__stat" aria-hidden="true">
         <span class="a11y__from">50%</span><span class="a11y__arrow">→</span><span class="a11y__to">85%</span>
         <span class="a11y__label">Accessibility compliance</span>
+        <img class="a11y__stamp" src={url('/img/cpacc-badge.webp')} alt="" width="180" height="180" loading="lazy" />
       </span>
       <span class="a11y__text">
         <span class="a11y__title">{projects[0].title}</span>
@@ -289,6 +290,8 @@ const quotes = [
   /* only the CTA arrow moves; the Private chip lightens and its lock opens */
   :is(.a11y, .secret-case):is(:hover, :focus-visible) :is(.a11y__cta, .secret-case__cta) :global(.icon) { transform: translateX(6px); }
   .lock-chip { transition: background-color var(--dur-fast); }
+  /* private cards: a shade darker than the public one (text stays above 5.4:1) */
+  .secret-case[data-gate] { background: var(--surface-2); }
   .lock-chip__icons { position: relative; display: inline-grid; }
   .lock-chip__icons :global(.icon) { grid-area: 1 / 1; transition: opacity var(--dur-fast); }
   .lock-chip :global(.lock-chip__open) { opacity: 0; }
@@ -296,7 +299,11 @@ const quotes = [
   .secret-case:is(:hover, :focus-visible) .lock-chip :global(.lock-chip__closed) { opacity: 0; }
   .secret-case:is(:hover, :focus-visible) .lock-chip :global(.lock-chip__open) { opacity: 1; }
   .secret-case__cover { position: relative; display: block; padding: 24px 32px 24px 0; }
-  .secret-case__cover > :global(*) { max-width: 440px; margin-inline: auto; }
+  /* every cover takes the same box, a bit bigger, and its visible device sits in the middle */
+  .secret-case__cover > :global(*) { max-width: 520px; margin-inline: auto; }
+  /* the mockup files carry a shadow on the left: shift them so the devices look centred */
+  .secret-case__cover > .mac { transform: translateX(-12%); }
+  .secret-case__cover > :global(.duo) { transform: translateX(-7%); }
   /* same box as the MacBook on the Aon card, so both cards are the same height; phones a bit smaller inside */
   .phones-box { position: relative; display: block; aspect-ratio: 1600 / 950; }
   .secret-case__phones { position: absolute; inset: 0; margin: auto; width: 100%; height: 82%; object-fit: contain; }
@@ -307,7 +314,9 @@ const quotes = [
   .secret-case:focus-visible, .a11y:focus-visible, .ale-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
 
   .a11y { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; text-align: left; text-decoration: none; background: var(--surface); border-radius: var(--radius-card); padding: var(--space-inset); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow var(--dur-base) var(--ease-out); }
-  .a11y__stat { display: flex; flex-wrap: wrap; align-items: baseline; gap: .15em; min-width: 0; font-weight: 600; letter-spacing: -.04em; line-height: .9; }
+  /* the CPACC badge, slightly tilted like a rubber stamp */
+  .a11y__stamp { position: absolute; top: -8px; right: 0; width: clamp(80px, 8vw, 112px); height: auto; transform: rotate(-12deg); filter: drop-shadow(0 4px 10px rgba(18,22,20,.15)); }
+  .a11y__stat { position: relative; display: flex; flex-wrap: wrap; align-items: baseline; gap: .15em; min-width: 0; font-weight: 600; letter-spacing: -.04em; line-height: .9; }
   .a11y__from { font-size: calc(var(--fs-display) * .55); color: var(--ink-2); }
   .a11y__arrow { font-size: calc(var(--fs-display) * .4); color: var(--ink-2); font-weight: 400; }
   .a11y__to { font-size: calc(var(--fs-display) * 1.4); color: var(--sage-text); }
@@ -326,6 +335,8 @@ const quotes = [
   .brands__list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; row-gap: 12px; }
   .brands__list li { position: relative; display: flex; align-items: center; gap: 12px; font-size: var(--fs-body); color: var(--ink-2); padding: 8px 20px; }
   /* short separators between names */
+  /* no divider at the start of a line (rows can wrap) */
+  .brands__list li.is-row-start::before { display: none; }
   .brands__list li + li::before { content: ''; position: absolute; left: 0; top: 50%; width: 1px; height: 16px; margin-top: -8px; background: var(--line); }
   .brands__list img { width: 24px; height: 24px; object-fit: contain; border-radius: 6px; }
   @media (max-width: 760px) { .brands__list li { font-size: var(--fs-small); padding: 6px 12px; } }
@@ -416,7 +427,12 @@ const quotes = [
       }
       brandList.style.maxWidth = `${Math.ceil(hi)}px`;
     };
-    new ResizeObserver(() => requestAnimationFrame(balance)).observe(brandList.parentElement);
+    // the first logo of each line gets no divider before it
+    const markRows = () => {
+      let top = null;
+      for (const li of brandList.children) { li.classList.toggle('is-row-start', li.offsetTop !== top); top = li.offsetTop; }
+    };
+    new ResizeObserver(() => requestAnimationFrame(() => { balance(); markRows(); })).observe(brandList.parentElement);
   }
   const bubbles = [...document.querySelectorAll('.bubble')];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
