@@ -7,13 +7,6 @@ import PhoneCarousel from '../../components/PhoneCarousel.astro';
 import Icon from '../../components/Icon.astro';
 import { url } from '../../lib/url.js';
 
-const steps = [
-  ['Content audit', 'I pulled every piece of content out of the old site, to see what was there and what was missing.'],
-  ['Information architecture', 'A new structure around what patients need: booking, first visit, treatments, the practice.'],
-  ['Questionnaire', 'The practice told me about their patients, their tone of voice and what makes them different.'],
-  ['Visual direction', 'A benchmark of other practices, then a calm, bright look with real photos of the studio.'],
-  ['Built with Claude', 'Design and code with Claude, then online. From the first file to launch in two days.'],
-];
 const phones = [
   ['mob-index', 'Home on mobile: the three dentists, the title and the booking buttons.'],
   ['mob-services', 'What we do: the list of treatments and the "What do you need?" cards, in plain words.'],
@@ -52,53 +45,31 @@ const phones = [
       <div class="split__media"><img class="shot" src={url('/img/pieri/old-site.webp')} alt="The old site: a dark page with a small logo, a blue booking bar and long blocks of small text about the practice's story." loading="lazy" /></div>
     </section>
 
-    <section class="process reveal" aria-labelledby="process">
-      <div class="split__title">
-        <p class="eyebrow">What I did</p>
-        <h2 id="process" class="h2">One designer, Claude and two days</h2>
-      </div>
-      <ol class="process__cards">
-        {steps.map(([t, d], i) => (
-          <li><span class="process__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><b>{t}</b><span>{d}</span></li>
-        ))}
-      </ol>
-    </section>
-
     <section class="duet reveal" aria-labelledby="duet">
       <div class="split__title">
         <p class="eyebrow">Working with Claude</p>
         <h2 id="duet" class="h2">I directed, Claude built</h2>
       </div>
-      <p class="duet__lead">Every design choice was mine. I sketched the hero and the home page in Figma, chose the palette and wrote the rules. Claude turned them into a design system and code, page by page. I checked every step, on desktop and on mobile.</p>
+      <p class="duet__lead">Every design choice was mine. I chose the pages, the content and the look, and wrote the rules. Claude turned them into a design system and code, page by page. I checked every step, on desktop and on mobile.</p>
       <div class="duet__cards">
         <div class="duet__card">
           <h3 class="h4">What I did</h3>
           <ul>
-            <li>Structure and content: what goes on each page, and what doesn't</li>
-            <li>Visual direction, sketched in Figma</li>
-            <li>The rules Claude had to follow: one goal (book the first visit), WCAG 2.2 AA, plain words, real photos only, no AI images</li>
-            <li>The review of every page</li>
+            <li>A set of dedicated skills for Claude: accessibility, tone of voice, content</li>
+            <li>The pages, and what goes into each one</li>
+            <li>The visual direction. Figma was only for sketching, like pen and paper</li>
           </ul>
         </div>
         <div class="duet__card duet__card--dark">
           <h3 class="h4">What Claude did</h3>
           <ul>
-            <li>The design system, from my visual reference</li>
-            <li>The code: plain HTML, CSS and JavaScript, no framework</li>
-            <li>SEO and structured data for Google</li>
-            <li>The move to the new hosting, on the practice's own domain</li>
+            <li>A design system</li>
+            <li>The pages, following my rules</li>
+            <li>The code: plain HTML, CSS and JavaScript</li>
+            <li>SEO</li>
+            <li>Hosting and domain</li>
           </ul>
         </div>
-      </div>
-      <div class="duet__cuts">
-        <h3 class="h4">Where I stepped in: mostly cutting</h3>
-        <ul>
-          <li><b>No "Our story" section.</b> An opening year and two new dentists aren't a story. The family says it better.</li>
-          <li><b>No "Book a visit" under every treatment.</b> One clear way to book is enough.</li>
-          <li><b>No contact form.</b> The practice only books by WhatsApp and phone, so the form went.</li>
-          <li><b>No "Book with Dr Pieri" on each dentist.</b> The practice decides who treats you after the first visit.</li>
-          <li><b>"1,000+ happy smiles"</b> instead of an estimate of 4,000 patients. A smaller number they can stand behind.</li>
-        </ul>
       </div>
     </section>
 
@@ -195,15 +166,6 @@ const phones = [
   .duet ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
   .duet__card ul { color: var(--ink-2); }
   .duet__card--dark ul { color: var(--night-soft); }
-  .duet__cuts { display: flex; flex-direction: column; gap: 16px; max-width: 760px; }
-  .duet__cuts li { color: var(--ink-2); }
-  .duet__cuts b { color: var(--ink); font-weight: 600; }
-  .process { display: flex; flex-direction: column; gap: var(--space-block); }
-  .process__cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 16px; }
-  .process__cards li { min-height: clamp(200px, 17vw, 260px); display: flex; flex-direction: column; justify-content: flex-start; gap: 8px; padding: 24px; border-radius: var(--radius-l); background: var(--surface); }
-  .process__cards b { font-size: var(--fs-h4); font-weight: 500; line-height: 1.2; }
-  .process__cards span:last-child { color: var(--ink-2); font-size: var(--fs-small); }
-  .process__n { margin-bottom: 16px; font-size: var(--fs-h3); font-weight: 500; color: var(--sage); }
 
   .decisions { display: flex; flex-direction: column; gap: var(--space-section); }
   .decisions > .split__title { margin-bottom: calc(var(--space-block) - var(--space-section)); }
@@ -222,8 +184,6 @@ const phones = [
 
 
   @media (max-width: 760px) {
-    .process__cards { grid-template-columns: repeat(5, 70%); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
-    .process__cards li { scroll-snap-align: start; }
     .duet__cards { grid-template-columns: 1fr; }
     /* images take less height on small screens */
     .split__media .shot { max-height: 260px; object-fit: cover; object-position: top; }
