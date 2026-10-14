@@ -4,7 +4,7 @@ export const projects = [
     slug: 'accessibility',
     tags: ['Accessibility', 'Crédit Agricole', 'Sky'],
     title: 'Accessibility that sticks',
-    summary: 'From 300+ recurring defects to a process that prevents them. Then the proof: one client from 50% to 85% compliance, two touchpoints at 100%.',
+    summary: 'Two approaches. At Sky, 50% to 85% compliance, two touchpoints at 100%. At Crédit Agricole, accessibility moved into the design, before the code.',
     cover: 'sky',
   },
   {

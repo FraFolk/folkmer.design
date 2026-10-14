@@ -1,32 +1,83 @@
 ---
 import Base from '../../layouts/Base.astro';
 import CaseIntro from '../../components/CaseIntro.astro';
-import Cover from '../../components/Cover.astro';
 import { url } from '../../lib/url.js';
 
 // TODO(Francesca): Sky timeline and team; replace the .visual-slot with a before/after visual.
 const steps = [
   { n: '01', title: 'Audit', text: 'Every touchpoint checked against UNI EN 301 549, criterion by criterion.' },
-  { n: '02', title: 'Design fixes', text: 'Contrast, focus states, labels, reading order, touch targets. Fixed in the design first, with the same kind of annotations we built for Crédit Agricole.' },
+  { n: '02', title: 'Design fixes', text: 'Contrast, focus states, labels, reading order, touch targets. Fixed in the design first, with annotations for the developers.' },
   { n: '03', title: 'Review', text: 'Design and development reviewed against the criteria, so the fixes actually made it to production.' },
   { n: '04', title: 'Training', text: 'Sessions with the developers on the why, not only the how. Bugs stop coming back when the people writing the code know the reason.' },
 ];
 ---
 <Base title="Accessibility that sticks · Francesca Folkmer"
-  description="Two accessibility projects, one lesson: from 300+ recurring defects at Crédit Agricole to a measured jump from 50% to 85% compliance at Sky.">
+  description="Two accessibility projects, two approaches: at Sky, a measured jump from 50% to 85% compliance; at Crédit Agricole, accessibility moved into the design, before the code.">
   <article class="container case">
     <CaseIntro
-      tags={['Accessibility', 'Banking', 'Media', 'Developer training']}
+      tags={['Accessibility', 'Media', 'Banking', 'Developer training']}
       title="Accessibility that sticks"
-      facts={[['Projects', 'Crédit Agricole (2025 - Now), Sky (Sep 2025 - Oct 2026)'], ['Role', 'Accessibility lead & UX/UI Designer'], ['Standards', 'WCAG 2.2, UNI EN 301 549']]}
+      facts={[['Projects', 'Sky (Sep 2025 - Oct 2026), Crédit Agricole (2025 - Now)'], ['Role', 'Accessibility lead & UX/UI Designer'], ['Standards', 'WCAG 2.2, UNI EN 301 549']]}
     >
-      <Fragment slot="media"><Cover kind="sky" size="hero" /></Fragment>
-      <p>Two projects, one lesson. At Crédit Agricole, 300+ accessibility defects taught us that fixing bugs one by one doesn't work: the process has to change. At Sky we applied the same approach and measured it. Compliance went from <b>50% to 85%</b>, with <b>two touchpoints at 100%</b>.</p>
+      <Fragment slot="media"><img src={url('/img/a11y-cover.svg')} alt="An illustration of accessibility in Sky colours: a Tab key, braille dots, a crossed-out eye, an ear, a screen reader, a microphone, text sizes and a cursor clicking HERE." width="1328" height="520" /></Fragment>
+      <p>Two projects, two approaches. At Sky I audited and fixed seven live touchpoints, and we measured it: compliance went from <b>50% to 85%</b>, with <b>two touchpoints at 100%</b>. At Crédit Agricole, 300+ defects kept coming back, so the approach changed: accessibility now goes <b>into the design</b>, before a line of code.</p>
     </CaseIntro>
+
+    <header class="chapter reveal" aria-labelledby="ch-sky">
+      <h2 id="ch-sky" class="h2 chapter__title">Sky</h2>
+      <p class="chapter__lead">Seven touchpoints already live: audit, fix, review, teach, and measure everything. September 2025 to October 2026.</p>
+    </header>
+
+    <section class="measure reveal" aria-labelledby="measure">
+      <div class="measure__text">
+        <p class="eyebrow">The starting point</p>
+        <h3 id="measure" class="h2">Half accessible isn't accessible</h3>
+        <p>Seven Sky touchpoints met about half of the applicable criteria of UNI EN 301 549, the European standard that includes WCAG. We measured one simple thing: criteria passed ÷ applicable criteria. Easy to repeat, easy to explain to people who have never heard of WCAG.</p>
+      </div>
+      <img class="measure__img" src={url('/img/sky-code.webp')} width="1273" height="607" loading="lazy"
+        alt="A Sky checkout page next to the browser developer tools, open on its HTML: where each criterion gets checked." />
+    </section>
+
+    <section class="steps" aria-labelledby="how">
+      <div class="results__intro reveal">
+        <p class="eyebrow">What I did</p>
+        <h3 id="how" class="h2">Audit, fix, review, teach</h3>
+      </div>
+      <ol class="steps__list">
+        {steps.map((s) => (
+          <li class="step reveal">
+            <span class="step__n" aria-hidden="true">{s.n}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="results" aria-labelledby="results">
+      <div class="results__intro reveal">
+        <p class="eyebrow">What changed</p>
+        <h3 id="results" class="h2">Seven touchpoints later</h3>
+      </div>
+      <div class="results__grid">
+        <div class="result result--stat reveal">
+          <p class="result__num">85%</p>
+          <p><span class="result__label">Measured</span>UNI EN 301 549 compliance across the seven touchpoints.</p>
+        </div>
+        <div class="result result--stat reveal">
+          <p class="result__num">2</p>
+          <p><span class="result__label">Touchpoints</span>pass every applicable criterion.</p>
+        </div>
+        <div class="result reveal">
+          <b>A team that knows why</b>
+          <p>Developers trained on accessibility, so new features start from a better place.</p>
+        </div>
+      </div>
+    </section>
 
     <header class="chapter reveal" aria-labelledby="ch-ca">
       <h2 id="ch-ca" class="h2 chapter__title">Crédit Agricole</h2>
-      <p class="chapter__lead">A banking app with 300+ accessibility defects, and the decision to stop fixing them one by one.</p>
+      <p class="chapter__lead">A banking app with 300+ accessibility defects. Fixing them at the end stopped working, so the approach changed: we step in directly in the design.</p>
     </header>
 
     <section class="split" aria-labelledby="ca-problem">
@@ -93,58 +144,6 @@ const steps = [
       </div>
       <div class="split__media reveal">
         <img src={url("/img/ca-solution.webp")} alt="A mortgage screen annotated with accessibility labels: A1 alternative text on the image, #1 back button with its aria-label." width="542" height="483" />
-      </div>
-    </section>
-
-    <header class="chapter reveal" aria-labelledby="ch-sky">
-      <h2 id="ch-sky" class="h2 chapter__title">Sky</h2>
-      <p class="chapter__lead">The same approach on a media brand, and this time we measured everything. September 2025 to October 2026.</p>
-    </header>
-
-    <section class="measure reveal" aria-labelledby="measure">
-      <div class="measure__text">
-        <p class="eyebrow">The starting point</p>
-        <h3 id="measure" class="h2">Half accessible isn't accessible</h3>
-        <p>Seven Sky touchpoints met about half of the applicable criteria of UNI EN 301 549, the European standard that includes WCAG. We measured one simple thing: criteria passed ÷ applicable criteria. Easy to repeat, easy to explain to people who have never heard of WCAG.</p>
-      </div>
-      <img class="measure__img" src={url('/img/sky-code.webp')} width="1273" height="607" loading="lazy"
-        alt="A Sky checkout page next to the browser developer tools, open on its HTML: where each criterion gets checked." />
-    </section>
-
-    <section class="steps" aria-labelledby="how">
-      <div class="results__intro reveal">
-        <p class="eyebrow">What I did</p>
-        <h3 id="how" class="h2">Audit, fix, review, teach</h3>
-      </div>
-      <ol class="steps__list">
-        {steps.map((s) => (
-          <li class="step reveal">
-            <span class="step__n" aria-hidden="true">{s.n}</span>
-            <h3>{s.title}</h3>
-            <p>{s.text}</p>
-          </li>
-        ))}
-      </ol>
-    </section>
-
-    <section class="results" aria-labelledby="results">
-      <div class="results__intro reveal">
-        <p class="eyebrow">What changed</p>
-        <h3 id="results" class="h2">Seven touchpoints later</h3>
-      </div>
-      <div class="results__grid">
-        <div class="result result--stat reveal">
-          <p class="result__num">85%</p>
-          <p><span class="result__label">Measured</span>UNI EN 301 549 compliance across the seven touchpoints.</p>
-        </div>
-        <div class="result result--stat reveal">
-          <p class="result__num">2</p>
-          <p><span class="result__label">Touchpoints</span>pass every applicable criterion.</p>
-        </div>
-        <div class="result reveal">
-          <b>A team that knows why</b>
-          <p>Developers trained on accessibility, so new features start from a better place.</p>
-        </div>
       </div>
     </section>
 

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1328 520" width="1328" height="520">
+  <rect width="1328" height="520" fill="#F1EEFF"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M-20 140 C 180 60, 260 330, 470 250 S 760 40, 900 160 S 1180 420, 1360 300" stroke="#F21E3C" stroke-width="2"/>
+    <path d="M40 560 C 120 380, 300 470, 380 330 S 560 120, 700 -20" stroke="#F21E3C" stroke-width="2"/>
+    <path d="M820 560 C 900 420, 1100 470, 1180 320 S 1300 120, 1250 -20" stroke="#F21E3C" stroke-width="2"/>
+    <path d="M-30 330 C 120 300, 200 120, 380 90 S 620 10, 700 -40" stroke="#0B0A2E" stroke-width="16"/>
+    <path d="M600 160 C 640 260, 700 420, 690 560" stroke="#1E3CF0" stroke-width="16"/>
+    <path d="M760 560 C 790 420, 980 380, 1010 470 S 1080 600, 1120 560" stroke="#8A0FD9" stroke-width="14"/>
+    <path d="M1060 30 C 1120 140, 1240 120, 1270 60 S 1200 -20, 1150 60 S 1180 200, 1350 170" stroke="#FF8A00" stroke-width="14"/>
+  </g>
+
+  <!-- tab key -->
+  <g transform="translate(40 -10) rotate(-4)"><rect width="190" height="150" fill="#F21E3C"/><text x="28" y="118" font-family="Helvetica, Arial, sans-serif" font-size="40" font-weight="700" fill="#FFD7E8">tab</text></g>
+
+  <!-- person (accessibility) -->
+  <g transform="translate(330 60) rotate(8)"><rect width="170" height="170" fill="#FF8A00"/>
+    <circle cx="85" cy="44" r="16" fill="#1E3CF0"/>
+    <path d="M40 72 H130 V92 H100 L104 150 H84 L85 112 L82 150 H62 L68 92 H40 Z" fill="#1E3CF0"/></g>
+
+  <!-- colour swatches -->
+  <g transform="translate(120 190) rotate(-8)"><rect width="190" height="190" fill="#FFE3F0"/>
+    <g transform="translate(36 40)"><rect width="26" height="96" fill="#8A0FD9"/><rect x="30" width="26" height="96" fill="#1E3CF0"/><rect x="60" y="10" width="26" height="86" fill="#FF8A00"/><rect x="10" y="100" width="110" height="26" fill="#C9C4E6"/><circle cx="22" cy="113" r="5" fill="#F21E3C"/></g></g>
+
+  <!-- braille strip -->
+  <g transform="translate(40 330) rotate(-14)"><rect width="620" height="150" fill="#E70C6D"/>
+    <g fill="#0B0A2E"><circle cx="70" cy="70" r="9"/><circle cx="104" cy="70" r="9"/><circle cx="70" cy="104" r="9"/><circle cx="180" cy="50" r="9"/><circle cx="214" cy="84" r="9"/><circle cx="214" cy="50" r="9"/><circle cx="300" cy="104" r="9"/><circle cx="334" cy="70" r="9"/><circle cx="420" cy="50" r="9"/><circle cx="420" cy="84" r="9"/><circle cx="454" cy="84" r="9"/><circle cx="540" cy="50" r="9"/><circle cx="540" cy="104" r="9"/><circle cx="574" cy="70" r="9"/></g></g>
+
+  <!-- eye, crossed -->
+  <g transform="translate(560 170)"><rect width="180" height="180" fill="#0B0A2E"/>
+    <path d="M30 90 Q90 30 150 90 Q90 150 30 90 Z" fill="#FFFFFF"/><circle cx="90" cy="90" r="22" fill="#1E3CF0"/>
+    <path d="M42 34 L140 150" stroke="#FF8A00" stroke-width="12" stroke-linecap="square"/></g>
+
+  <!-- ear -->
+  <g transform="translate(720 110) rotate(-12)"><rect width="190" height="190" fill="#8A0FD9"/>
+    <path d="M128 140 C 150 120, 142 96, 140 80 A 46 46 0 1 0 50 84" fill="none" stroke="#FFD7E8" stroke-width="16" stroke-linecap="round"/>
+    <path d="M78 96 C 78 70, 118 70, 112 96" fill="none" stroke="#FFD7E8" stroke-width="12" stroke-linecap="round"/>
+    <path d="M30 60 A 70 70 0 0 0 30 130" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/></g>
+
+  <!-- screen reader -->
+  <g transform="translate(1000 150) rotate(4)"><rect width="200" height="180" fill="#1E3CF0"/>
+    <circle cx="80" cy="74" r="28" fill="#FFFFFF"/><path d="M28 150 C 30 112, 130 112, 132 150 Z" fill="#FFFFFF"/>
+    <path d="M140 50 Q160 74 140 98 M156 34 Q186 74 156 114" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round"/></g>
+
+  <!-- here + cursor -->
+  <g transform="translate(860 -40) rotate(6)"><rect width="360" height="120" rx="60" fill="#0B0A2E"/><text x="60" y="96" font-family="Helvetica, Arial, sans-serif" font-size="78" font-weight="400" fill="#FF8A00">HERE</text></g>
+  <g transform="translate(1070 60)"><path d="M0 0 L0 84 L20 64 L36 98 L50 92 L34 58 L62 58 Z" fill="#FFFFFF" stroke="#0B0A2E" stroke-width="4" stroke-dasharray="4 3"/></g>
+
+  <!-- type size -->
+  <g transform="translate(980 330) rotate(-10)"><rect width="200" height="200" fill="#F21E3C"/><text x="26" y="140" font-family="Helvetica, Arial, sans-serif" font-size="110" font-weight="700" fill="#FFE3F0">Aa</text></g>
+  <g transform="translate(770 380) rotate(3)"><rect width="150" height="150" fill="#FF8A00"/><text x="30" y="100" font-family="Helvetica, Arial, sans-serif" font-size="56" font-weight="700" fill="#0B0A2E">Aa</text></g>
+
+  <!-- voice -->
+  <g transform="translate(330 380) rotate(6)"><rect width="170" height="170" fill="#0B0A2E"/>
+    <rect x="68" y="30" width="34" height="64" rx="17" fill="#FF8A00"/>
+    <path d="M50 78 A 35 35 0 0 0 120 78 M85 113 V140 M66 140 H104" fill="none" stroke="#FF8A00" stroke-width="9" stroke-linecap="round"/></g>
+</svg>
