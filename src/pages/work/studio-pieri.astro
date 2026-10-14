@@ -60,7 +60,7 @@ const phones = [
             <li>The visual direction. Figma was only for sketching, like pen and paper</li>
           </ul>
         </div>
-        <div class="duet__card duet__card--dark">
+        <div class="duet__card duet__card--alt">
           <h3 class="h4">What Claude did</h3>
           <ul>
             <li>A design system</li>
@@ -131,7 +131,7 @@ const phones = [
     <section class="mobile reveal" aria-labelledby="mobile">
       <div class="split__title">
         <p class="eyebrow">On mobile</p>
-        <h2 id="mobile" class="h2">Booking is always one tap away</h2>
+        <h2 id="mobile" class="h2">Made for a thumb, not a mouse</h2>
       </div>
       <PhoneCarousel browser label="Studio Pieri on mobile" screens={phones.map(([img, alt]) => [`/img/pieri/${img}.webp`, alt])} />
     </section>
@@ -162,10 +162,9 @@ const phones = [
   .duet__lead { max-width: 760px; font-size: var(--fs-lead); }
   .duet__cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .duet__card { display: flex; flex-direction: column; gap: 16px; padding: var(--space-inset); border-radius: var(--radius-l); background: var(--surface); }
-  .duet__card--dark { background: var(--night); color: var(--on-night); }
+  .duet__card--alt { background: var(--surface-2); }
   .duet ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
   .duet__card ul { color: var(--ink-2); }
-  .duet__card--dark ul { color: var(--night-soft); }
 
   .decisions { display: flex; flex-direction: column; gap: var(--space-section); }
   .decisions > .split__title { margin-bottom: calc(var(--space-block) - var(--space-section)); }
