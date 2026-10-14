@@ -114,15 +114,11 @@ const quotes = [
     <h2 id="a11y-title" class="h2 story__title reveal cert">I make <mark class="cert__mark">accessibility</mark> the first step, not the last fix.</h2>
     <p class="story__lead reveal">I'm <b>CPACC-certified</b>. I review the accessibility strategy, build it into the components and explain the why to the people who write the code. On real projects, it looks like this.</p>
     <a class="a11y reveal" href={url('/work/accessibility/')}>
-      <span class="a11y__stat" aria-hidden="true">
-        <span class="a11y__from">50%</span><span class="a11y__arrow">→</span><span class="a11y__to">85%</span>
-        <span class="a11y__label">Accessibility compliance</span>
-        <img class="a11y__stamp" src={url('/img/cpacc-badge.webp')} alt="" width="180" height="180" loading="lazy" />
-      </span>
+      <img class="a11y__stamp" src={url('/img/cpacc-badge.webp')} alt="" width="180" height="180" loading="lazy" />
       <span class="a11y__text">
-        <span class="a11y__title">{projects[0].title}</span>
-        <span>300+ defects kept coming back, so we stopped chasing bugs and changed the process. Then we measured it: two touchpoints now pass every criterion.</span>
-        <span class="sr-only">Compliance went from 50% to 85%.</span>
+        <span class="a11y__tags">Accessibility · Process · Measured</span>
+        <span class="a11y__title">From 50% to 85% accessibility compliance.</span>
+        <span class="a11y__sub">Seven <b>Sky</b> touchpoints, measured criterion by criterion against UNI EN 301 549. Two of them now pass every one. It started at <b>Crédit Agricole</b>, where 300+ defects kept coming back: we stopped chasing bugs and changed the process.</span>
         <span class="a11y__cta">Read the case <Icon name="arrow-right" size={18} /></span>
       </span>
     </a>
@@ -290,8 +286,6 @@ const quotes = [
   /* only the CTA arrow moves; the Private chip lightens and its lock opens */
   :is(.a11y, .secret-case):is(:hover, :focus-visible) :is(.a11y__cta, .secret-case__cta) :global(.icon) { transform: translateX(6px); }
   .lock-chip { transition: background-color var(--dur-fast); }
-  /* private cards: a shade darker than the public one (text stays above 5.4:1) */
-  .secret-case[data-gate] { background: var(--surface-2); }
   .lock-chip__icons { position: relative; display: inline-grid; }
   .lock-chip__icons :global(.icon) { grid-area: 1 / 1; transition: opacity var(--dur-fast); }
   .lock-chip :global(.lock-chip__open) { opacity: 0; }
@@ -313,16 +307,15 @@ const quotes = [
   .mac__screen img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
   .secret-case:focus-visible, .a11y:focus-visible, .ale-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
 
-  .a11y { margin-top: 12px; width: 100%; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: center; text-align: left; text-decoration: none; background: var(--surface); border-radius: var(--radius-card); padding: var(--space-inset); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow var(--dur-base) var(--ease-out); }
+  .a11y { position: relative; margin-top: 12px; width: 100%; display: block; text-align: left; text-decoration: none; color: var(--ink); background: var(--surface); border-radius: var(--radius-card); padding: var(--space-inset); padding-right: clamp(24px, 14vw, 200px); box-shadow: inset 0 0 0 2px transparent; transition: box-shadow var(--dur-base) var(--ease-out); }
+  /* the CPACC badge sits on the top right corner, half outside the card, tilted like a rubber stamp */
+  .a11y__stamp { position: absolute; top: clamp(-40px, -3vw, -24px); right: clamp(16px, 4vw, 56px); width: clamp(88px, 9vw, 128px); height: auto; transform: rotate(-12deg); filter: drop-shadow(0 4px 10px rgba(18,22,20,.15)); }
+  .a11y__tags { font-style: italic; color: var(--ink-2); }
+  .a11y__title { font-size: var(--fs-h3); font-weight: 500; line-height: 1.2; padding-right: 96px; }
+  .a11y__sub { color: var(--ink-2); max-width: 60ch; }
+  .a11y__sub b { font-weight: 600; color: var(--ink); }
   /* the CPACC badge, slightly tilted like a rubber stamp */
-  .a11y__stamp { position: absolute; top: -8px; right: 0; width: clamp(80px, 8vw, 112px); height: auto; transform: rotate(-12deg); filter: drop-shadow(0 4px 10px rgba(18,22,20,.15)); }
-  .a11y__stat { position: relative; display: flex; flex-wrap: wrap; align-items: baseline; gap: .15em; min-width: 0; font-weight: 600; letter-spacing: -.04em; line-height: .9; }
-  .a11y__from { font-size: calc(var(--fs-display) * .55); color: var(--ink-2); }
-  .a11y__arrow { font-size: calc(var(--fs-display) * .4); color: var(--ink-2); font-weight: 400; }
-  .a11y__to { font-size: calc(var(--fs-display) * 1.4); color: var(--sage-text); }
-  .a11y__label { flex-basis: 100%; margin-top: 8px; font-size: var(--fs-h4); font-weight: 500; letter-spacing: 0; color: var(--sage-text); }
   .a11y__text { display: flex; flex-direction: column; gap: 16px; }
-  .a11y__title { font-size: var(--fs-h3); font-weight: 500; }
 
   .ale-card { position: relative; display: block; width: 100%; margin-top: 12px; border-radius: var(--radius-card); overflow: hidden; text-decoration: none; color: var(--white); text-align: left; }
   .ale-card img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; transition: transform var(--dur-story) var(--ease-out); }
@@ -379,7 +372,7 @@ const quotes = [
   :global(.no-js) .spill { opacity: 1; transform: translateX(-50%); }
 
   @media (max-width: 900px) {
-    .secret-case, .a11y { grid-template-columns: 1fr; }
+    .secret-case { grid-template-columns: 1fr; }
     .secret-case__meta { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
     .ale-card img { aspect-ratio: 4 / 3; object-position: 50% 50%; }
   }
