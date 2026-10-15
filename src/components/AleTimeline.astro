@@ -252,7 +252,8 @@ const code = [
       if (e.key === 'Home') { pos = 0; render(); e.preventDefault(); }
       if (e.key === 'End') { pos = months - 1; render(); e.preventDefault(); }
     });
-    addEventListener('resize', render);
+    let lastW = innerWidth;
+    addEventListener('resize', () => { if (innerWidth === lastW) return; lastW = innerWidth; render(); });
     render();
   }
 </script>

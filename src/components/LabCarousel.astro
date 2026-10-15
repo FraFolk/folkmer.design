@@ -203,7 +203,9 @@ const H = `h${headingLevel}`;
       layout();
       setTimeout(() => cards.forEach((c) => { c.style.transition = ''; }), 600);
     });
-    addEventListener('resize', () => layout());
+    // iOS fires resize while scrolling (the toolbar hides): react only to real width changes
+    let lastW = innerWidth;
+    addEventListener('resize', () => { if (innerWidth === lastW) return; lastW = innerWidth; layout(); });
     document.fonts?.ready.then(() => layout());
     layout();
   }

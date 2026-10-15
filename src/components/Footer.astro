@@ -179,7 +179,8 @@ const topics = ['a role in our team', 'accessibility', 'AI in design', 'Alé', '
       el.style.width = `${Math.ceil(probe.offsetWidth) + 24}px`;
     };
     document.fonts?.ready.then(() => [name, company, topic, email].forEach(fit));
-    addEventListener('resize', () => [name, company, topic, email].forEach(fit));
+    let lastW = innerWidth;
+    addEventListener('resize', () => { if (innerWidth === lastW) return; lastW = innerWidth; [name, company, topic, email].forEach(fit); });
     [name, company, topic, email].forEach((el) => { el.addEventListener('input', () => { fit(el); el.removeAttribute('aria-invalid'); err.textContent = ''; }); fit(el); });
 
     // pills compose the topic; the field stays editable

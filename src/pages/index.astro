@@ -324,7 +324,7 @@ const quotes = [
   /* dark-to-transparent gradient under the text, so white text always reads (WCAG AA) */
   .ale-card__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 144px 32px 32px; display: flex; flex-direction: column; gap: 4px;
     background: linear-gradient(to top, rgba(12,15,14,.92) 0%, rgba(12,15,14,.78) 40%, rgba(12,15,14,0) 100%); }
-  .brands { display: flex; flex-direction: column; align-items: center; gap: 24px; padding-top: var(--space-block); margin-bottom: var(--space-section); }
+  .brands { overflow-anchor: none; display: flex; flex-direction: column; align-items: center; gap: 24px; padding-top: var(--space-block); margin-bottom: var(--space-section); }
   .brands__title { font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
   .brands__list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; row-gap: 12px; }
   .brands__list li { position: relative; display: flex; align-items: center; gap: 12px; font-size: var(--fs-body); color: var(--ink-2); padding: 8px 20px; }
@@ -405,28 +405,34 @@ const quotes = [
 </style>
 
 <script>
-  // Clients strip: if the logos wrap, spread them evenly over the rows, so no logo is ever alone on a line
+  // Clients strip: if the logos wrap, spread them evenly over the rows, so no logo is ever alone on a line.
+  // The rows are worked out with arithmetic on the logo widths, and the width is set once:
+  // changing the layout again and again made iOS Safari jump the scroll position in a loop.
   const brandList = document.querySelector('.brands__list');
   if (brandList) {
-    const rows = () => new Set([...brandList.children].map((li) => li.offsetTop)).size;
-    const balance = () => {
-      brandList.style.maxWidth = '';
-      const n = rows();
-      if (n < 2) return;
-      let lo = 0, hi = brandList.clientWidth;
-      while (hi - lo > 4) {
-        const mid = (lo + hi) / 2;
-        brandList.style.maxWidth = `${mid}px`;
-        if (rows() > n) lo = mid; else hi = mid;
-      }
-      brandList.style.maxWidth = `${Math.ceil(hi)}px`;
+    const items = [...brandList.children];
+    let widths = null, lastW = 0;
+    // how many rows the logos need in a given width (same greedy wrapping as flexbox)
+    const rowsFor = (max) => { let rows = 1, line = 0; for (const w of widths) { if (line && line + w > max) { rows++; line = w; } else line += w; } return rows; };
+    const apply = () => {
+      const box = brandList.parentElement, cs = getComputedStyle(box);
+      const avail = Math.floor(box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight));
+      if (!avail || avail === lastW) return; // only when the screen width changes, never on scroll
+      lastW = avail;
+      widths ??= items.map((li) => li.getBoundingClientRect().width + 0.5);
+      const total = widths.reduce((a, b) => a + b, 0);
+      const n = rowsFor(avail);
+      let target = avail;
+      if (n > 1) { let lo = total / n, hi = avail; while (hi - lo > 2) { const mid = (lo + hi) / 2; if (rowsFor(mid) > n) lo = mid; else hi = mid; } target = Math.ceil(hi); }
+      const value = n > 1 ? `${target}px` : '';
+      if (brandList.style.maxWidth !== value) brandList.style.maxWidth = value;
+      // the first logo of each line gets no divider before it
+      let line = 0;
+      widths.forEach((w, i) => { const start = i === 0 || line + w > target; items[i].classList.toggle('is-row-start', start); line = start ? w : line + w; });
     };
-    // the first logo of each line gets no divider before it
-    const markRows = () => {
-      let top = null;
-      for (const li of brandList.children) { li.classList.toggle('is-row-start', li.offsetTop !== top); top = li.offsetTop; }
-    };
-    new ResizeObserver(() => requestAnimationFrame(() => { balance(); markRows(); })).observe(brandList.parentElement);
+    document.fonts?.ready.then(() => { widths = null; lastW = 0; apply(); });
+    addEventListener('resize', apply, { passive: true });
+    apply();
   }
   const bubbles = [...document.querySelectorAll('.bubble')];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;

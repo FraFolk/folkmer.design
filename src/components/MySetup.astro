@@ -123,7 +123,7 @@ const apps = [
       name.textContent = curName; text.textContent = cur;
       note.style.minHeight = `${max}px`;
     };
-    document.fonts?.ready.then(fitNote); addEventListener('resize', fitNote); fitNote();
+    document.fonts?.ready.then(fitNote); let lastW = innerWidth; addEventListener('resize', () => { if (innerWidth === lastW) return; lastW = innerWidth; fitNote(); }); fitNote();
     // touch: swipe sideways on the note (or the screen) to move to the next/previous app
     let tx = null;
     const swipeArea = [note, root.querySelector('.setup__screen')];
