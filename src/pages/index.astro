@@ -1,4 +1,7 @@
 ---
+// Studio Pieri case: hidden while Francesca reworks it. The page is src/pages/work/_studio-pieri.astro
+// (the underscore keeps it out of the build). To bring it back: rename it and set this to true.
+const SHOW_PIERI = false;
 import Base from '../layouts/Base.astro';
 import LabCarousel from '../components/LabCarousel.astro';
 import Whiteboard from '../components/Whiteboard.astro';
@@ -74,6 +77,7 @@ const quotes = [
     <h2 id="e2e-title" class="h2 story__title reveal">I follow products from the first workshop to the last handoff.</h2>
     <p class="story__lead reveal">On big products I don't stop at the screens: functional analysis, flows, UI, and the developers' questions on a Friday afternoon.</p>
     <div class="cases">
+    {SHOW_PIERI && (
     <a class="secret-case reveal" href={url('/work/studio-pieri/')}>
       <span class="secret-case__text">
         <span class="secret-case__meta"><span class="secret-case__tags">Healthcare · Website · AI Workflow</span></span>
@@ -83,6 +87,7 @@ const quotes = [
       </span>
       <span class="secret-case__cover"><DeviceDuo desktop="/img/pieri/desk-index.webp" mobile="/img/pieri/mob-index.webp" /></span>
     </a>
+    )}
     <a class="secret-case reveal" href={url('/work/aon/')} data-gate="aon" data-gate-title="Aon: joined to execute, ended up owning the design">
       <span class="secret-case__text">
         <span class="secret-case__meta"><span class="secret-case__tags">Insurance · End-to-end · Ownership</span><span class="lock-chip"><span class="lock-chip__icons" aria-hidden="true"><Icon name="lock-closed" size={14} class="lock-chip__closed" /><Icon name="lock-open" size={14} class="lock-chip__open" /></span> Private</span></span>
